@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RouterApp</string>
+    <string name="greeting_loading_error">greeting loading error</string>
+
+    <string name="hour">giờ</string>
+    <string name="day">ngày</string>
+    <string name="month">tháng</string>
+    <string name="year">năm</string>
+
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+
+    <string name="version">Phiên bản</string>
+
+</resources>

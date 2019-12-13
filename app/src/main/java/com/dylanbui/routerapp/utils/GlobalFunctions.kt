@@ -1,0 +1,65 @@
+package com.dylanbui.routerapp.utils
+
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.reflect.TypeToken
+
+// Or : val myNonNullString = myString?.let { it } ?: return
+/* Example:
+    var myString : String? = null
+    // myNonNullString is a String, not a String?
+    val myNonNullString = myString.guard { return }
+* */
+inline fun <T> T.guard(func: T.() -> Unit): T {
+    if (this == null) { func() }
+    this.let { return it }
+}
+
+inline fun <reified T> fromJson(json: JsonElement): T {
+    return Gson().fromJson(json, object: TypeToken<T>(){}.type)
+}
+
+
+/*
+
+// Will print
+val (first, second, third) = guardLet("Hello", 3, Thing("Hello")) { return }
+println(first)
+println(second)
+println(third)
+
+// Will return
+val (first, second, third) = guardLet("Hello", null, Thing("Hello")) { return }
+println(first)
+println(second)
+println(third)
+
+// Will print
+ifLet("Hello", "A", 9) { (first, second, third) ->
+    println(first)
+    println(second)
+    println(third)
+}
+
+// Won't print
+ifLet("Hello", 9, null) { (first, second, third) ->
+    println(first)
+    println(second)
+    println(third)
+}
+
+* */
+
+inline fun <T: Any> guardLet(vararg elements: T?, closure: () -> Nothing): List<T> {
+    return if (elements.all { it != null }) {
+        elements.filterNotNull()
+    } else {
+        closure()
+    }
+}
+
+inline fun <T: Any> ifLet(vararg elements: T?, closure: (List<T>) -> Unit) {
+    if (elements.all { it != null }) {
+        closure(elements.filterNotNull())
+    }
+}

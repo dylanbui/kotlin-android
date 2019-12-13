@@ -1,0 +1,166 @@
+package com.dylanbui.routerapp
+
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.bluelinelabs.conductor.Conductor
+import com.bluelinelabs.conductor.Router
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
+import com.dylanbui.routerapp.demofragment.FirstViewController
+import com.dylanbui.routerapp.retrofit.PostViewController
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+
+//import com.google.android.material.animation.AnimationUtils
+
+//class Post {
+//    @SerializedName("title")
+//    @Expose
+//    var title: String? = null
+//
+//    @SerializedName("body")
+//    @Expose
+//    var body: String? = null
+//
+//    @SerializedName("userId")
+//    @Expose
+//    var userId: Int? = null
+//
+//    @SerializedName("id")
+//    @Expose
+//    var id: Int? = null
+//
+//    override fun toString(): String {
+//        return "Post{" +
+//                "title='" + title + '\'' +
+//                ", body='" + body + '\'' +
+//                ", userId=" + userId +
+//                ", id=" + id +
+//                '}'
+//    }
+//}
+
+
+
+class MainActivity : AppCompatActivity()
+{
+
+    // @BindView(R.id.controller_container)
+    lateinit var container: ViewGroup
+    lateinit var toolbar: Toolbar
+
+    private lateinit var router: Router
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        // ButterKnife.bind(this)
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Get action bar
+        //supportActionBar?.hide()
+
+
+
+        container = findViewById(R.id.controller_container)
+        router = Conductor.attachRouter(this, container, savedInstanceState)
+        if (!router.hasRootController()) {
+             //router.setRoot(RouterTransaction.with(GreetingViewController()))
+             //router.setRoot(RouterTransaction.with(UserViewController()))
+            router.setRoot(RouterTransaction.with(PostViewController()))
+//            router.setRoot(RouterTransaction.with(FirstViewController())
+//                .pushChangeHandler(FadeChangeHandler())
+//                .popChangeHandler(FadeChangeHandler()))
+        }
+
+        // Convert hashmap to JSONObject
+//        val postData = HashMap<String, String?>()
+//        postData["Google"] = "San Jose"
+//        postData["Facebook"] = "Mountain View"
+//        postData["Datamake"] = "NYC"
+//        postData["Twitter"] = "SFO"
+//        postData["Microsoft"] = null
+//        println("Raw Map ===> ${postData}")
+//
+//        // Construct a JSONObject from a Map.
+//        val crunchifyObject = JSONObject(postData)
+//        println("Method-2: Using new JSONObject() ==> ${crunchifyObject}")
+
+    }
+
+    override fun onStart()
+    {
+        super.onStart()
+    }
+
+
+    override fun onBackPressed()
+    {
+        if (!router.handleBack()) {
+            super.onBackPressed()
+        }
+    }
+
+    fun setToolBarTitle(title: String?) {
+        // toolbar.title = title
+
+        var txtTitle = getToolbarTitle() as? TextView
+        txtTitle?.let {
+            it.text = title
+            val animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
+            it.startAnimation(animation)
+
+        }
+
+    }
+
+    fun enableUpArrow(enabled: Boolean) {
+        if (enabled) {
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+            toolbar.setNavigationOnClickListener { _ ->
+                if (router.backstackSize > 1) {
+                    router.popCurrentController()
+                    // Toast.makeText(this, "setNavigationOnClickListener", Toast.LENGTH_LONG).show()
+                }
+            }
+        } else {
+            toolbar.navigationIcon = null
+        }
+    }
+
+    fun enableToolBar(enabled: Boolean) {
+        if (enabled) {
+            toolbar.visibility = View.VISIBLE
+            val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+            toolbar.startAnimation(animation)
+        } else {
+            toolbar.visibility = View.GONE
+            val animation = AnimationUtils.loadAnimation(this, R.anim.fade_out)
+            toolbar.startAnimation(animation)
+
+        }
+    }
+
+    private fun getToolbarTitle(): View? {
+        val childCount = toolbar.childCount
+        for (i in 0 until childCount) {
+            val child: View = toolbar.getChildAt(i)
+            if (child is TextView) {
+                return child
+            }
+        }
+        return null
+    }
+
+
+
+}
