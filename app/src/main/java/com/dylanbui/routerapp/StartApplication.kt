@@ -29,7 +29,7 @@ class StartApplication : Application() {
         super.onCreate()
         context = this
 
-        //AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
+        AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
 
 //        var okHttpClient = OkHttpClient().newBuilder()
 //            .addInterceptor(ChuckInterceptor(this))
