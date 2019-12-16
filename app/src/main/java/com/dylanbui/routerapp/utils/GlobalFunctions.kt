@@ -1,5 +1,8 @@
 package com.dylanbui.routerapp.utils
 
+import android.content.Context
+import android.net.Uri
+import android.provider.MediaStore
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
@@ -62,4 +65,21 @@ inline fun <T: Any> ifLet(vararg elements: T?, closure: (List<T>) -> Unit) {
     if (elements.all { it != null }) {
         closure(elements.filterNotNull())
     }
+}
+
+
+fun Uri.getPathString(context: Context): String {
+    var path: String = ""
+
+    context.contentResolver.query(
+        this, arrayOf(MediaStore.Images.Media.DATA),
+        null, null, null
+    )?.apply {
+        val columnIndex = getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        moveToFirst()
+        path = getString(columnIndex)
+        close()
+    }
+
+    return path
 }

@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.networking
 
+import android.R.attr.description
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -32,8 +33,8 @@ import java.net.URLEncoder
 
 class AppNetworkServiceError(var errorCode: String, var errorMessage: String)
 
-typealias onResponseSuccess = (responseBody: CloudResponse) -> Unit?
-typealias onResponseFailed = (errorData: AppNetworkServiceError) -> Unit?
+typealias onResponseSuccess = (responseBody: CloudResponse) -> Unit
+typealias onResponseFailed = (errorData: AppNetworkServiceError) -> Unit
 typealias onProgressCallback = (progress: Float) -> Unit
 
 typealias DictionaryType = HashMap<String, Any?>
@@ -72,11 +73,16 @@ interface AppNetworkApiService {
     fun makePostRequest(@Url url: String?,
                         @Body requestBody: RequestBody?): Call<CloudResponse>
 
-    // @Multipart don use with json
+    @Multipart // don use with json
     @POST()
     fun makeUploadFileRequest(@Url url: String?,
-                              @Body requestBody: RequestBody?,
+//                              @Body requestBody: RequestBody?,
+                              @PartMap() partMap: HashMap<String, RequestBody>?,
                               @Part file: MultipartBody.Part): Call<CloudResponse>
+
+//    fun makeUploadFileRequest(@Url url: String?,
+//                              @Body requestBody: RequestBody?,
+//                              @Part file: MultipartBody.Part): Call<CloudResponse>
 
     // Old
     @POST()
@@ -222,7 +228,7 @@ object AppNetwork {
 
     }
 
-    fun doRequest(path: String, method: Method, params: DictionaryType? = null,
+    fun doRequest(path: String, method: Method, params: DictionaryType? = null, async: Boolean = true,
                   onResponse: onResponseSuccess,
                   onFailed: onResponseFailed? = null) {
         // Default set Method GET
@@ -246,26 +252,43 @@ object AppNetwork {
             }
         }
 
-        doAsyncCall(call, onResponse, onFailed)
+        if (async)
+            doAsyncCall(call, onResponse, onFailed)
+        else
+            doExecuteCall(call, onResponse, onFailed)
     }
 
     fun doUploadFile(path: String,
                      fileField: String,
                      fileUpload: File,
+                     params: DictionaryType? = null,
                      onResponse: onResponseSuccess,
                      onProgress: onProgressCallback,
                      onFailed: onResponseFailed) {
+
+//        uploadData.fileId = "file"
+//        uploadData.fileName = "avatar.jpg"
+//        uploadData.mimeType = "image/jpeg"
 
         // create RequestBody instance from file
         val requestFile = RequestBodyWithProgress(fileUpload, RequestBodyWithProgress.ContentType.JPG_IMAGE, onProgress)
 
         // MultipartBody.Part is used to send also the actual file name
-        val body = MultipartBody.Part.createFormData(fileField, fileUpload.name, requestFile)
+        val body = MultipartBody.Part.createFormData(fileField, "filename.jpg", requestFile)
 
-        var call: Call<CloudResponse> = makeApiService().makeUploadFileRequest(path, null, body)
+        val map: HashMap<String, RequestBody> = HashMap<String, RequestBody>()
+        params?.let { params ->
+            params.forEach {
+                //map[it.key] = it.value.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+                map[it.key] = it.value.toString().toRequestBody()
+            }
+        }
+
+        var call: Call<CloudResponse> = makeApiService().makeUploadFileRequest(path, map, body)
 
         doAsyncCall(call, onResponse, onFailed)
     }
+
 
     // Asynchronously
     private fun doAsyncCall(call: Call<CloudResponse>, onResponse: onResponseSuccess, onFailed: onResponseFailed?) {
@@ -389,7 +412,7 @@ class RequestBodyWithProgress(
 
     enum class ContentType(val description: String) {
         PNG_IMAGE("image/png"),
-        JPG_IMAGE("image/jpg"),
+        JPG_IMAGE("image/jpeg"),
         IMAGE("image/*")
     }
 }
