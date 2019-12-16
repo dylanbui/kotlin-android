@@ -49,7 +49,7 @@ class UploadViewController : Controller()
 
     private fun onViewBound(view: View)
     {
-        AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
+        // AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
 
         imgView = view.findViewById(R.id.preview) as ImageView
 
@@ -100,41 +100,7 @@ class UploadViewController : Controller()
 
         }
 
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        try { // When an Image is picked
-//            if (requestCode === 0 && resultCode === RESULT_OK && null != data) { // Get the Image from data
-//                val selectedImage: Uri = data.data
-//                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-//                val cursor: Cursor = activity?.contentResolver?.query(selectedImage, filePathColumn, null, null, null)!!
-//                cursor.moveToFirst()
-//                val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-//                mediaPath = cursor.getString(columnIndex)
-//                // Set the Image in ImageView for Previewing the Media
-//                imgView.setImageBitmap(BitmapFactory.decodeFile(mediaPath))
-//                cursor.close()
-//            } else {
-//                Toast.makeText(activity, "You haven't picked Image/Video", Toast.LENGTH_LONG).show()
-//            }
-//        } catch (e: Exception) {
-//            Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG).show()
-//        }
-
     }
-
-//    fun getRealPathFromUri(contentUri: Uri?): String? {
-//        var cursor: Cursor? = null
-//        return try {
-//            val proj = arrayOf(MediaStore.Images.Media.DATA)
-//            cursor = activity?.contentResolver?.query(contentUri, proj, null, null, null)
-//            assert(cursor != null)
-//            val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-//            cursor?.moveToFirst()
-//            cursor?.getString(columnIndex!!)
-//        } finally {
-//            cursor?.close()
-//        }
-//    }
 
     private fun doUpload() {
 

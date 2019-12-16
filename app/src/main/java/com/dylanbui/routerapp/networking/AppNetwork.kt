@@ -108,17 +108,17 @@ object AppNetwork {
     }
 
     private var BASE_URL = "http://45.117.162.60:8080/diy/api/"
-    private lateinit var retrofit: Retrofit
+    // private lateinit var retrofit: Retrofit
 
-    // Set at Application()
-    fun setBaseUrl(str: String) {
+    val makeApiService : AppNetworkApiService by lazy {
+        Log.d("WebAccess", "Creating retrofit client")
+
         // -- Log for Retrofit --
         var httpLoggingInterceptor = HttpLoggingInterceptor()
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY
         // See http://square.github.io/okhttp/3.x/logging-interceptor/ to see the options.
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        BASE_URL = str
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
@@ -126,12 +126,51 @@ object AppNetwork {
             .addNetworkInterceptor(httpLoggingInterceptor)
             .build()
 
-        retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+        val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
 
+//        val retrofit = Retrofit.Builder()
+//            // The 10.0.2.2 address routes request from the Android emulator
+//            // to the localhost / 127.0.0.1 of the host PC
+//            .baseUrl(BASE_URL)
+//            // Moshi maps JSON to classes
+//            .addConverterFactory(MoshiConverterFactory.create())
+//            // The call adapter handles threads
+//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//            .build()
+
+        // Create Retrofit client
+        return@lazy retrofit.create(AppNetworkApiService::class.java)
     }
+
+    // Set at Application()
+    fun setBaseUrl(str: String) {
+        // -- Log for Retrofit --
+//        var httpLoggingInterceptor = HttpLoggingInterceptor()
+//        // Can be Level.BASIC, Level.HEADERS, or Level.BODY
+//        // See http://square.github.io/okhttp/3.x/logging-interceptor/ to see the options.
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        BASE_URL = str
+//        val interceptor = HttpLoggingInterceptor()
+//        interceptor.level = HttpLoggingInterceptor.Level.BODY
+//        val client = OkHttpClient.Builder()
+//            .addInterceptor(interceptor)
+//            .addNetworkInterceptor(httpLoggingInterceptor)
+//            .build()
+//
+//        retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .client(client)
+//            .build()
+    }
+
+//    private fun makeApiService(): AppNetworkApiService {
+//        return retrofit.create(AppNetworkApiService::class.java)
+//    }
+
 
     fun convertToJsonObject(dict: DictionaryType): JsonObject {
         var jsonObject = JsonObject()
@@ -232,11 +271,11 @@ object AppNetwork {
                   onResponse: onResponseSuccess,
                   onFailed: onResponseFailed? = null) {
         // Default set Method GET
-        var call: Call<CloudResponse> = makeApiService().makeGetRequest(path)
+        var call: Call<CloudResponse> = makeApiService.makeGetRequest(path)
 
         when (method) {
             Method.GET -> {
-                call = makeApiService().makeGetRequest(path)
+                call = makeApiService.makeGetRequest(path)
             }
             Method.POST -> {
                 var requestBody: RequestBody? = null
@@ -245,7 +284,7 @@ object AppNetwork {
                     requestBody = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 }
 
-                call = makeApiService().makePostRequest(path, requestBody)
+                call = makeApiService.makePostRequest(path, requestBody)
             }
             else -> { // Note the block
                 // print("x is neither 1 nor 2")
@@ -284,7 +323,7 @@ object AppNetwork {
             }
         }
 
-        var call: Call<CloudResponse> = makeApiService().makeUploadFileRequest(path, map, body)
+        var call: Call<CloudResponse> = makeApiService.makeUploadFileRequest(path, map, body)
 
         doAsyncCall(call, onResponse, onFailed)
     }
@@ -369,11 +408,6 @@ object AppNetwork {
             }
         }
     }
-
-    private fun makeApiService(): AppNetworkApiService {
-        return retrofit.create(AppNetworkApiService::class.java)
-    }
-
 
 
 }
