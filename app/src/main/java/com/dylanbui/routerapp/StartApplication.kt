@@ -53,4 +53,5 @@ class StartApplication : Application() {
 //        val config = RealmConfiguration.Builder().name("surveyapp.realm").build()
 //        Realm.setDefaultConfiguration(config)
     }
+
 }

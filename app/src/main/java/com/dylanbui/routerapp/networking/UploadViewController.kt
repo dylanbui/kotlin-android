@@ -14,10 +14,10 @@ import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.toast
 import com.dylanbui.routerapp.utils.Utils
 import com.dylanbui.routerapp.utils.fromJson
 import com.dylanbui.routerapp.utils.getPathString
+import com.dylanbui.routerapp.utils.toast
 import java.io.File
 
 

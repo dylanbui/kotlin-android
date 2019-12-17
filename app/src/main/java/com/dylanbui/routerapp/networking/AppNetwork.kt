@@ -76,7 +76,6 @@ interface AppNetworkApiService {
     @Multipart // don use with json
     @POST()
     fun makeUploadFileRequest(@Url url: String?,
-//                              @Body requestBody: RequestBody?,
                               @PartMap() partMap: HashMap<String, RequestBody>?,
                               @Part file: MultipartBody.Part): Call<CloudResponse>
 
@@ -108,9 +107,8 @@ object AppNetwork {
     }
 
     private var BASE_URL = "http://45.117.162.60:8080/diy/api/"
-    // private lateinit var retrofit: Retrofit
 
-    val makeApiService : AppNetworkApiService by lazy {
+    private val makeApiService : AppNetworkApiService by lazy {
         Log.d("WebAccess", "Creating retrofit client")
 
         // -- Log for Retrofit --
