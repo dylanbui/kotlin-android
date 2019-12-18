@@ -1,15 +1,11 @@
 package com.dylanbui.routerapp
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.dylanbui.routerapp.networking.AppNetwork
 import com.dylanbui.routerapp.utils.Utils
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
-import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
 
 class StartApplication : Application() {
 
@@ -30,6 +26,13 @@ class StartApplication : Application() {
         context = this
 
         AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
+
+        // Debug picasso
+        val picasso = Picasso.Builder(applicationContext)
+            .indicatorsEnabled(true)
+            .loggingEnabled(true) //add other settings as needed
+            .build()
+        Picasso.setSingletonInstance(picasso) //apply to default singleton instance
 
 //        var okHttpClient = OkHttpClient().newBuilder()
 //            .addInterceptor(ChuckInterceptor(this))

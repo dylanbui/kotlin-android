@@ -23,6 +23,7 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.dylanbui.routerapp.demofragment.FirstViewController
 import com.dylanbui.routerapp.networking.UploadViewController
 import com.dylanbui.routerapp.retrofit.PostViewController
+import com.dylanbui.routerapp.typicode.ListPhotoViewController
 import com.dylanbui.routerapp.utils.ManagePermissions
 import com.dylanbui.routerapp.utils.toast
 import com.google.gson.annotations.Expose
@@ -90,7 +91,8 @@ class MainActivity : AppCompatActivity()
              //router.setRoot(RouterTransaction.with(GreetingViewController()))
              //router.setRoot(RouterTransaction.with(UserViewController()))
             // router.setRoot(RouterTransaction.with(PostViewController()))
-            router.setRoot(RouterTransaction.with(UploadViewController()))
+            // router.setRoot(RouterTransaction.with(UploadViewController()))
+            router.setRoot(RouterTransaction.with(ListPhotoViewController()))
 //            router.setRoot(RouterTransaction.with(FirstViewController())
 //                .pushChangeHandler(FadeChangeHandler())
 //                .popChangeHandler(FadeChangeHandler()))

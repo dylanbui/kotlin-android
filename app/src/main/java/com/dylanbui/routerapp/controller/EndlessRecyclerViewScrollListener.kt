@@ -10,13 +10,13 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
     // before loading more.
     private var visibleThreshold = 5
     // The current offset index of data you have loaded
-    private var currentPage = 1
+    private var currentPage = 0
     // The total number of items in the dataset after the last load
     private var previousTotalItemCount = 0
     // True if we are still waiting for the last set of data to load.
     private var loading = true
     // Sets the starting page index
-    private val startingPageIndex = 1
+    private val startingPageIndex = 0
 
     internal var mLayoutManager: RecyclerView.LayoutManager
 
@@ -26,12 +26,12 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
 
     constructor(layoutManager: GridLayoutManager) {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+        visibleThreshold *= layoutManager.spanCount
     }
 
     constructor(layoutManager: StaggeredGridLayoutManager) {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+        visibleThreshold *= layoutManager.spanCount
     }
 
     fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {

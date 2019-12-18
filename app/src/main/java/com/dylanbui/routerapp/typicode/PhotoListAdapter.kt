@@ -1,12 +1,15 @@
 package com.dylanbui.routerapp.typicode
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.retrofit.BaseRecyclerViewAdapter
 import com.dylanbui.routerapp.retrofit.BaseRecyclerViewHolder
+import com.squareup.picasso.Picasso
 
 class PhotoListAdapter(context: Context, listener: PhotoRowListener? = null) :
     BaseRecyclerViewAdapter<TyPhoto>(
@@ -31,11 +34,13 @@ class PhotoListAdapter(context: Context, listener: PhotoRowListener? = null) :
     class ViewHolder(itemView: View) : BaseRecyclerViewHolder<TyPhoto>(itemView) {
         private val txtTitle: TextView = itemView.findViewById(R.id.title)
         private val txtUrl: TextView = itemView.findViewById(R.id.url)
+        private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
         private val layout: LinearLayout = itemView.findViewById(R.id.parentRow)
 
         fun bindItems(context: Context, position: Int, photo: TyPhoto, listener: PhotoRowListener?) {
             layout.setOnClickListener { v: View? ->
+                // v?.setBackgroundColor(Color.BLUE)
                 listener?.onRowClick(position, photo)
             }
 
@@ -43,8 +48,9 @@ class PhotoListAdapter(context: Context, listener: PhotoRowListener? = null) :
         }
 
         override fun onBind(data: TyPhoto) {
-            txtTitle.text = "${data.title}"
+            txtTitle.text = "${data.id} -- ${data.title}"
             txtUrl.text = data.url
+            Picasso.get().load(data.thumbnailUrl).into(imageView)
         }
     }
 

@@ -42,6 +42,23 @@ object TyPhotoApi {
         })
     }
 
+    fun getDetailPhoto(photoId: Int = 0, callback: (TyPhoto, AppNetworkServiceError?) -> Unit) {
+
+        var strUrl = "photos/${photoId}"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(TyPhoto(), error)
+            }
+        })
+    }
+
 }
 
 
@@ -170,6 +187,9 @@ object TypicodeApi {
                             // Xu ly cac loi cua CloudResponse tra ve tu server, goi ham neu can
                             // onFailed(MyNetworkingServiceError("123", "khong loi"))
                             // onResponse(it)
+
+                            //Thread.sleep(2000)
+
                             callback.success(it)
                             return
                         }
