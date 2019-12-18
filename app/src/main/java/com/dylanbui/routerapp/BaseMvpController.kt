@@ -1,6 +1,7 @@
 package com.dylanbui.routerapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,20 @@ interface ActionBarProvider {
     fun supportActionBar(): ActionBar?
 }
 
-abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>
+//@Suppress("OverridingDeprecatedMember", "DEPRECATION")
+open abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>, BaseMvpView
 {
     // private lateinit var unbinder: Unbinder
+    // Inject dependencies once per life of Controller
+    private val inject by lazy { injectDependencies() }
 
-    protected constructor() {
+    protected constructor(): this(null) {
 
     }
 
     protected constructor(args: Bundle?) : super(args) {
-
+        // Van giu Controler in Memory, khi push new controller
+        retainViewMode = RetainViewMode.RETAIN_DETACH
     }
 
     // Note: This is just a quick demo of how an ActionBar *can* be accessed, not necessarily how it *should*
@@ -45,8 +50,13 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
 
     protected abstract fun onViewBound(view: View)
 
+    protected abstract fun injectDependencies()
+
     override fun onAttach(view: View)
     {
+        // Call inject variable
+        inject
+
         super.onAttach(view)
 
         var mainActivity = activity as? MainActivity

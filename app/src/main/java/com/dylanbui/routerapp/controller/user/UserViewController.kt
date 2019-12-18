@@ -65,24 +65,35 @@ class UserViewController : BaseMvpController<UserActionView, UserPresenter>(), U
 
     }
 
+
+    override fun injectDependencies()
+    {
+        presenter.getUserList(1, false)
+    }
+
     override fun onAttach(view: View)
     {
         super.onAttach(view)
 
-        presenter.getUserList(1, false)
-    }
-
-    override fun showLoading()
-    {
-//        greetingTextView.visibility = View.GONE
-//        loadingIndicator.visibility = View.VISIBLE
-    }
-
-    override fun hideLoading()
-    {
-//        loadingIndicator.visibility = View.GONE
 
     }
+
+//    override fun showLoading()
+//    {
+////        greetingTextView.visibility = View.GONE
+////        loadingIndicator.visibility = View.VISIBLE
+//    }
+//
+//    override fun hideLoading()
+//    {
+////        loadingIndicator.visibility = View.GONE
+//
+//    }
+//override fun getStringResource(resourceString: Int): String
+//{
+//    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//}
+
 
     override fun onUserRowClick(user: User) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -115,14 +126,27 @@ class UserViewController : BaseMvpController<UserActionView, UserPresenter>(), U
         layoutRefresh.isRefreshing = false
     }
 
-    override fun getStringResource(resourceString: Int): String
-    {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onRowClick(position: Int, user: User)
     {
         Toast.makeText(applicationContext, "position ${position} - ${user.name}", Toast.LENGTH_LONG).show()
+    }
+
+
+    override fun showLoading()
+    {
+//        greetingTextView.visibility = View.GONE
+//        loadingIndicator.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading()
+    {
+//        loadingIndicator.visibility = View.GONE
+
+    }
+
+    override fun getStringResource(resourceString: Int): String
+    {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
