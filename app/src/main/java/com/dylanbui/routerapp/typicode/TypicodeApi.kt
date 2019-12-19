@@ -21,6 +21,65 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.net.URLEncoder
 
+object TyPostApi {
+
+    fun getPost(callback: (List<TyPost>, AppNetworkServiceError?) -> Unit) {
+
+        var strUrl = "posts"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(listOf<TyPost>(), error)
+            }
+        })
+    }
+
+    fun getPostDetail(postId: Int = 0, callback: (TyPost, AppNetworkServiceError?) -> Unit) {
+
+        var strUrl = "posts/${postId}"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(TyPost(), error)
+            }
+        })
+    }
+
+}
+
+object TyCommentApi {
+
+    fun getCommentByPostId(postId: Int, callback: (List<TyComment>, AppNetworkServiceError?) -> Unit) {
+
+        var strUrl = "posts/${postId}/comments"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(listOf<TyComment>(), error)
+            }
+        })
+    }
+
+}
+
 object TyPhotoApi {
 
     fun getPhoto(page: Int = 0, callback: (List<TyPhoto>, AppNetworkServiceError?) -> Unit) {

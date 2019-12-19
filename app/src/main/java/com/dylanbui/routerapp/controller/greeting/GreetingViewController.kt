@@ -82,4 +82,8 @@ class GreetingViewController : BaseMvpController<GreetingContract.View, Greeting
     override fun setTitle(): String? {
         return "Greeting"
     }
+
+    override fun onPreAttach() {
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

@@ -8,7 +8,7 @@ import com.dylanbui.routerapp.R
 
 class PostsAdapter(context: Context, listener: PostRowListener? = null) :
     BaseRecyclerViewAdapter<Post>(
-        dataSet = arrayListOf(),
+        dataSet = arrayListOf<Post>(),
         toBeInflated = R.layout.item_post,
         createHolder = { v -> PostsAdapter.ViewHolder(v) }) {
 

@@ -14,19 +14,20 @@ interface ActionBarProvider {
     fun supportActionBar(): ActionBar?
 }
 
-//@Suppress("OverridingDeprecatedMember", "DEPRECATION")
-open abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>, BaseMvpView
+@Suppress("OverridingDeprecatedMember", "DEPRECATION")
+abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>, BaseMvpView
 {
-    // private lateinit var unbinder: Unbinder
+    protected var progressView: ViewGroup? = null
+
     // Inject dependencies once per life of Controller
-    private val inject by lazy { injectDependencies() }
+    private val injectRunOnce by lazy { onPreAttach() }
 
     protected constructor(): this(null) {
 
     }
 
     protected constructor(args: Bundle?) : super(args) {
-        // Van giu Controler in Memory, khi push new controller
+        // Van giu controller in Memory, khi push new controller
         retainViewMode = RetainViewMode.RETAIN_DETACH
     }
 
@@ -43,19 +44,19 @@ open abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpContr
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
     {
         val view: View = inflateView(inflater, container)
-        // unbinder = ButterKnife.bind(this, view)
+        progressView = view.findViewById(R.id.progressView)
         onViewBound(view)
         return view
     }
 
     protected abstract fun onViewBound(view: View)
 
-    protected abstract fun injectDependencies()
+    protected abstract fun onPreAttach()
 
     override fun onAttach(view: View)
     {
         // Call inject variable
-        inject
+        injectRunOnce
 
         super.onAttach(view)
 
@@ -71,10 +72,21 @@ open abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpContr
     override fun onDestroyView(view: View)
     {
         super.onDestroyView(view)
-        // unbinder.unbind()
     }
 
     protected abstract fun setTitle(): String?
+
+    // -- Interface BaseMvpView --
+
+    override fun getStringResource(resourceString: Int): String = ""
+
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading() {
+
+    }
 
 //    protected fun setTitle(strTitle: String)
 //    {

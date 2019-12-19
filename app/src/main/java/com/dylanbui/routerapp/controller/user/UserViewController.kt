@@ -65,17 +65,9 @@ class UserViewController : BaseMvpController<UserActionView, UserPresenter>(), U
 
     }
 
-
-    override fun injectDependencies()
-    {
-        presenter.getUserList(1, false)
-    }
-
     override fun onAttach(view: View)
     {
         super.onAttach(view)
-
-
     }
 
 //    override fun showLoading()
@@ -147,6 +139,11 @@ class UserViewController : BaseMvpController<UserActionView, UserPresenter>(), U
     override fun getStringResource(resourceString: Int): String
     {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPreAttach() {
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        presenter.getUserList(1, false)
     }
 
 
