@@ -1,34 +1,20 @@
 package com.dylanbui.routerapp
 
 import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
-import com.dylanbui.routerapp.demofragment.FirstViewController
-import com.dylanbui.routerapp.networking.UploadViewController
-import com.dylanbui.routerapp.retrofit.PostViewController
-import com.dylanbui.routerapp.typicode.ListPhotoViewController
+import com.dylanbui.routerapp.typicode.AppCoordinator
 import com.dylanbui.routerapp.typicode.post.PostListViewController
 import com.dylanbui.routerapp.utils.ManagePermissions
 import com.dylanbui.routerapp.utils.toast
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 
 
 //import com.google.android.material.animation.AnimationUtils
@@ -72,6 +58,9 @@ class MainActivity : AppCompatActivity()
     private val permissionsRequestCode = 123
     private lateinit var managePermissions: ManagePermissions
 
+
+    var appCoordinator: AppCoordinator? = null
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -88,17 +77,22 @@ class MainActivity : AppCompatActivity()
 
         container = findViewById(R.id.controller_container)
         router = Conductor.attachRouter(this, container, savedInstanceState)
-        if (!router.hasRootController()) {
-             //router.setRoot(RouterTransaction.with(GreetingViewController()))
-             //router.setRoot(RouterTransaction.with(UserViewController()))
-            // router.setRoot(RouterTransaction.with(PostViewController()))
-            // router.setRoot(RouterTransaction.with(UploadViewController()))
-            // router.setRoot(RouterTransaction.with(ListPhotoViewController()))
-            router.setRoot(RouterTransaction.with(PostListViewController()))
-//            router.setRoot(RouterTransaction.with(FirstViewController())
-//                .pushChangeHandler(FadeChangeHandler())
-//                .popChangeHandler(FadeChangeHandler()))
-        }
+
+        appCoordinator = AppCoordinator(router)
+        appCoordinator?.start()
+
+
+//        if (!router.hasRootController()) {
+//             //router.setRoot(RouterTransaction.with(GreetingViewController()))
+//             //router.setRoot(RouterTransaction.with(UserViewController()))
+//            // router.setRoot(RouterTransaction.with(PostViewController()))
+//            // router.setRoot(RouterTransaction.with(UploadViewController()))
+//            // router.setRoot(RouterTransaction.with(ListPhotoViewController()))
+//            router.setRoot(RouterTransaction.with(PostListViewController()))
+////            router.setRoot(RouterTransaction.with(FirstViewController())
+////                .pushChangeHandler(FadeChangeHandler())
+////                .popChangeHandler(FadeChangeHandler()))
+//        }
 
         // Convert hashmap to JSONObject
 //        val postData = HashMap<String, String?>()

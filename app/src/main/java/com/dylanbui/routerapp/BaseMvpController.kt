@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
+import com.dylanbui.routerapp.typicode.DbNavigation
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.hannesdorfmann.mosby3.mvp.conductor.MvpController
@@ -17,6 +18,8 @@ interface ActionBarProvider {
 @Suppress("OverridingDeprecatedMember", "DEPRECATION")
 abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>, BaseMvpView
 {
+    open var nav: DbNavigation? = null
+
     protected var progressView: ViewGroup? = null
 
     // Inject dependencies once per life of Controller
