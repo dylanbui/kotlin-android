@@ -105,13 +105,15 @@ class PostListViewController : BaseMvpController<PostListActionView, PostListPre
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         // activity?.toast("No click vao tao: ${position.toString()}")
 
-        var vcl = PostDetailViewController()
-        vcl.tyPost = post
+        nav?.navigate(ApplicationRoute.GotoPostDetail, null, post)
 
-        router.pushController(
-            RouterTransaction.with(vcl)
-                .pushChangeHandler(HorizontalChangeHandler())
-                .popChangeHandler(HorizontalChangeHandler()))
+//        var vcl = PostDetailViewController()
+//        vcl.tyPost = post
+//
+//        router.pushController(
+//            RouterTransaction.with(vcl)
+//                .pushChangeHandler(HorizontalChangeHandler())
+//                .popChangeHandler(HorizontalChangeHandler()))
     }
 
     override fun updatePostList(page: Int, list: List<TyPost>) {

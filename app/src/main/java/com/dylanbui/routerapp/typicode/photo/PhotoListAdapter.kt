@@ -1,7 +1,6 @@
-package com.dylanbui.routerapp.typicode
+package com.dylanbui.routerapp.typicode.photo
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -9,13 +8,18 @@ import android.widget.TextView
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.retrofit.BaseRecyclerViewAdapter
 import com.dylanbui.routerapp.retrofit.BaseRecyclerViewHolder
+import com.dylanbui.routerapp.typicode.TyPhoto
 import com.squareup.picasso.Picasso
 
 class PhotoListAdapter(context: Context, listener: PhotoRowListener? = null) :
     BaseRecyclerViewAdapter<TyPhoto>(
         dataSet = arrayListOf(),
         toBeInflated = R.layout.item_photo,
-        createHolder = { v -> PhotoListAdapter.ViewHolder(v) }) {
+        createHolder = { v ->
+            ViewHolder(
+                v
+            )
+        }) {
 
     private val context: Context = context
     private val mListener = listener
@@ -24,7 +28,7 @@ class PhotoListAdapter(context: Context, listener: PhotoRowListener? = null) :
 
     override fun onBindViewHolder(holder: BaseRecyclerViewHolder<TyPhoto>, position: Int) {
         // super.onBindViewHolder(holder, position)
-        var myViewHolder = holder as? PhotoListAdapter.ViewHolder
+        var myViewHolder = holder as? ViewHolder
         myViewHolder?.let {
             myViewHolder.bindItems(context, position, this.dataSet[position], mListener)
         }

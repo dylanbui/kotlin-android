@@ -1,4 +1,4 @@
-package com.dylanbui.routerapp.typicode
+package com.dylanbui.routerapp.typicode.photo
 
 import android.os.Parcelable
 import android.util.Log
@@ -14,11 +14,13 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
-import com.dylanbui.routerapp.utils.guard
+import com.dylanbui.routerapp.typicode.TyPhoto
+import com.dylanbui.routerapp.typicode.TyPhotoApi
 import com.dylanbui.routerapp.utils.toast
 
 
-class ListPhotoViewController : Controller(), PhotoListAdapter.PhotoRowListener {
+class ListPhotoViewController : Controller(),
+    PhotoListAdapter.PhotoRowListener {
     lateinit var recyclerView: RecyclerView
     lateinit var layoutRefresh: SwipeRefreshLayout
     var progressView: ViewGroup? = null
@@ -48,7 +50,11 @@ class ListPhotoViewController : Controller(), PhotoListAdapter.PhotoRowListener 
         layoutRefresh = view.findViewById(R.id.refreshLayout)
         progressView = view.findViewById(R.id.progressView)
 
-        photoAdapter = PhotoListAdapter(view.context, this)
+        photoAdapter =
+            PhotoListAdapter(
+                view.context,
+                this
+            )
 
         var layoutManager = LinearLayoutManager(view.context)
         recyclerView.setHasFixedSize(true)
@@ -137,7 +143,8 @@ class ListPhotoViewController : Controller(), PhotoListAdapter.PhotoRowListener 
         //activity?.toast(photo.title ?: "Khong co")
         //recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState() //save
 
-        var vcl = DetailPhotoViewController()
+        var vcl =
+            DetailPhotoViewController()
         vcl.tyPhoto = photo
 
         router.pushController(

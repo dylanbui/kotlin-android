@@ -1,4 +1,4 @@
-package com.dylanbui.routerapp.typicode
+package com.dylanbui.routerapp.typicode.user
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +10,12 @@ import com.bluelinelabs.conductor.Controller
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
+import com.dylanbui.routerapp.typicode.TyUser
+import com.dylanbui.routerapp.typicode.TyUserApi
 import com.dylanbui.routerapp.utils.toast
 
-class ListUserViewController : Controller(), UserListAdapter.UserRowListener
+class ListUserViewController : Controller(),
+    UserListAdapter.UserRowListener
 {
     lateinit var recyclerView: RecyclerView
     lateinit var layoutRefresh: SwipeRefreshLayout
@@ -34,7 +37,11 @@ class ListUserViewController : Controller(), UserListAdapter.UserRowListener
         recyclerView = view.findViewById(R.id.cycView)
         layoutRefresh = view.findViewById(R.id.refreshLayout)
 
-        userAdapter = UserListAdapter(view.context, this)
+        userAdapter =
+            UserListAdapter(
+                view.context,
+                this
+            )
 
         var layoutManager = LinearLayoutManager(view.context)
         recyclerView.setHasFixedSize(true)

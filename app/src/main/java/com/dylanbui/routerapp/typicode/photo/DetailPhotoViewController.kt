@@ -1,17 +1,15 @@
-package com.dylanbui.routerapp.typicode
+package com.dylanbui.routerapp.typicode.photo
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bluelinelabs.conductor.Controller
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
+import com.dylanbui.routerapp.typicode.TyPhoto
+import com.dylanbui.routerapp.typicode.TyPhotoApi
 import com.dylanbui.routerapp.utils.toast
 import com.squareup.picasso.Picasso
 
