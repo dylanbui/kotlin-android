@@ -3,6 +3,7 @@ package com.dylanbui.routerapp.typicode
 import android.util.Log
 import com.dylanbui.routerapp.networking.*
 import com.dylanbui.routerapp.utils.fromJson
+import com.dylanbui.routerapp.utils.guardLet
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
@@ -19,9 +20,27 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.io.IOException
 import java.net.URLEncoder
 
 object TyPostApi {
+
+    fun getPostSyn(callback: (List<TyPost>, AppNetworkServiceError?) -> Unit) {
+
+        var strUrl = "posts"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.getSynch(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(listOf<TyPost>(), error)
+            }
+        })
+    }
 
     fun getPost(callback: (List<TyPost>, AppNetworkServiceError?) -> Unit) {
 
@@ -81,6 +100,25 @@ object TyCommentApi {
 }
 
 object TyPhotoApi {
+
+    fun getPhotoSyn(page: Int = 0, callback: (List<TyPhoto>, AppNetworkServiceError?) -> Unit) {
+
+        val offset = 20
+        var start = page * offset
+        var strUrl = "photos?_start=${start}&_limit=${offset}"
+        Log.d("TAG", "String Url : $strUrl")
+
+        TypicodeApi.getSynch(strUrl, object : TypicodeApiCallback {
+            override fun success(responseData: JsonElement) {
+                callback(fromJson(responseData), null)
+            }
+
+            override fun failure(error: AppNetworkServiceError) {
+                // Empty list
+                callback(listOf<TyPhoto>(), error)
+            }
+        })
+    }
 
     fun getPhoto(page: Int = 0, callback: (List<TyPhoto>, AppNetworkServiceError?) -> Unit) {
 
@@ -262,6 +300,33 @@ object TypicodeApi {
                     callback.failure(AppNetworkServiceError("404", t.message ?: "Unknown"))
                 }
             })
+
+    }
+
+    fun getSynch(path: String, callback: TypicodeApiCallback) {
+
+        var call: Call<JsonElement> = makeApiService.makeGetRequest(path)
+        // Run in the same thread
+        try {
+            // call and handle response
+            var response: Response<JsonElement> = call.execute()
+            if (response.code() == 200) {
+                var (body) = guardLet(response.body()) {
+                    // Co loi, tra ve loi o day
+                    callback.failure(AppNetworkServiceError(response.code().toString(), response.message()))
+                    return
+                }
+                // -- Successfully
+                callback.success(body)
+
+            } else {
+                callback.failure(AppNetworkServiceError(response.code().toString(), response.message()))
+
+
+            }
+        } catch (t: IOException) {
+            callback.failure(AppNetworkServiceError("404", t.message ?: "Catch IOException"))
+        }
 
     }
 }

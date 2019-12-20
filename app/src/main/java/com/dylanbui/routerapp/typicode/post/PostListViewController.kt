@@ -105,7 +105,9 @@ class PostListViewController : BaseMvpController<PostListActionView, PostListPre
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         // activity?.toast("No click vao tao: ${position.toString()}")
 
-        nav?.navigate(ApplicationRoute.GotoPostDetail, null, post)
+        // nav?.navigate(ApplicationRoute.GotoPostDetail(post), null, post)
+        nav?.navigate(ApplicationRoute.GotoPostDetail(post))
+        //nav?.navigate(ApplicationRoute.GotoAnyWhere())
 
 //        var vcl = PostDetailViewController()
 //        vcl.tyPost = post

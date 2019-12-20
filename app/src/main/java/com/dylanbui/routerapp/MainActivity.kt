@@ -1,11 +1,13 @@
 package com.dylanbui.routerapp
 
 import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.Conductor
@@ -46,12 +48,13 @@ import com.dylanbui.routerapp.utils.toast
 //    }
 //}
 
+
 class MainActivity : AppCompatActivity()
 {
 
     // @BindView(R.id.controller_container)
     lateinit var container: ViewGroup
-    lateinit var toolbar: Toolbar
+    var toolbar: Toolbar? = null
 
     private lateinit var router: Router
 
@@ -65,15 +68,16 @@ class MainActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // ButterKnife.bind(this)
 
+        // Allow toolbar null
         toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        toolbar?.let {
+            setSupportActionBar(it)
+        }
+
 
         // Get action bar
         //supportActionBar?.hide()
-
-
 
         container = findViewById(R.id.controller_container)
         router = Conductor.attachRouter(this, container, savedInstanceState)
@@ -137,7 +141,7 @@ class MainActivity : AppCompatActivity()
     }
 
     fun setToolBarTitle(title: String?) {
-        // toolbar.title = title
+        // toolbar_custom.title = title
 
         var txtTitle = getToolbarTitle() as? TextView
         txtTitle?.let {
@@ -150,38 +154,43 @@ class MainActivity : AppCompatActivity()
     }
 
     fun enableUpArrow(enabled: Boolean) {
-        if (enabled) {
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-            toolbar.setNavigationOnClickListener { _ ->
-                if (router.backstackSize > 1) {
-                    router.popCurrentController()
-                    // Toast.makeText(this, "setNavigationOnClickListener", Toast.LENGTH_LONG).show()
+        toolbar?.let {
+            if (enabled) {
+                it.setNavigationIcon(R.drawable.ic_arrow_back)
+                it.setNavigationOnClickListener { _ ->
+                    if (router.backstackSize > 1) {
+                        router.popCurrentController()
+                        // Toast.makeText(this, "setNavigationOnClickListener", Toast.LENGTH_LONG).show()
+                    }
                 }
+            } else {
+                it.navigationIcon = null
             }
-        } else {
-            toolbar.navigationIcon = null
         }
+
     }
 
     fun enableToolBar(enabled: Boolean) {
         if (enabled) {
-            toolbar.visibility = View.VISIBLE
+            toolbar?.visibility = View.VISIBLE
             val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-            toolbar.startAnimation(animation)
+            toolbar?.startAnimation(animation)
         } else {
-            toolbar.visibility = View.GONE
+            toolbar?.visibility = View.GONE
             val animation = AnimationUtils.loadAnimation(this, R.anim.fade_out)
-            toolbar.startAnimation(animation)
+            toolbar?.startAnimation(animation)
 
         }
     }
 
     private fun getToolbarTitle(): View? {
-        val childCount = toolbar.childCount
-        for (i in 0 until childCount) {
-            val child: View = toolbar.getChildAt(i)
-            if (child is TextView) {
-                return child
+        toolbar?.let {
+            val childCount = it.childCount
+            for (i in 0 until childCount) {
+                val child: View = it.getChildAt(i)
+                if (child is TextView) {
+                    return child
+                }
             }
         }
         return null

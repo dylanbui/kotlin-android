@@ -67,8 +67,8 @@ abstract class BaseController: Controller(), LayoutContainer {
         }
 
 //        if (router.backstackSize > 1) {
-//            toolbar?.setNavigationIcon(R.drawable.ic_arrow_back)
-//            toolbar?.setNavigationOnClickListener {
+//            toolbar_custom?.setNavigationIcon(R.drawable.ic_arrow_back)
+//            toolbar_custom?.setNavigationOnClickListener {
 //                // router.pop()
 //                router.popCurrentController()
 //            }
@@ -109,7 +109,7 @@ abstract class BaseController: Controller(), LayoutContainer {
 
     protected fun setTitle() {
 //        val title = getTitle() ?: ""
-//        toolbar?.let {
+//        toolbar_custom?.let {
 //            it.title = title
 //        }
         var txtTitle = getToolbarTitle() as? TextView
