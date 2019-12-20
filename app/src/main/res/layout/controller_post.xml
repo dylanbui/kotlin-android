@@ -2,47 +2,62 @@
 
 <!-- This is template display RecyclerView -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- Include toolbar, remove this line when hide -->
+    <include layout="@layout/toolbar_native" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnFirst"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Show Control" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnNextControl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="Next Control" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cycView"
+            <Button
+                android:id="@+id/btnFirst"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Show Control" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <Button
+                android:id="@+id/btnNextControl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Next Control" />
 
-    </LinearLayout>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <!-- Include progress page view -->
-    <include layout="@layout/include_progress_view" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cycView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-</RelativeLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <!-- Include progress page view -->
+        <include layout="@layout/include_progress_view" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
+
+
 
 

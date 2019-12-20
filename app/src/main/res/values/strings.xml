@@ -12,4 +12,20 @@
 
     <string name="version">Phiên bản</string>
 
+
+    <!-- FONT STRING -->
+    <string name="font_awesome">font_awesome.ttf</string>
+    <string name="font_regular">helveticaneue.ttf</string>
+    <string name="font_bold">helveticaneuebold.ttf</string>
+    <string name="font_bold_italic">helveticaneuebolditalic.ttf</string>
+    <string name="font_condensedblack">helveticaneuecondensedblack.ttf</string>
+    <string name="font_condensedbold">helveticaneuecondensedbold.ttf</string>
+    <string name="font_italic">helveticaneueitalic.ttf</string>
+    <string name="font_light">helveticaneuelight.ttf</string>
+    <string name="font_lightitalic">helveticaneuelightitalic.ttf</string>
+    <string name="font_medium">helveticaneuemedium.ttf</string>
+    <string name="font_ltralight">helveticaneueultralight.ttf</string>
+    <string name="font_ltralightitalic">helveticaneueultralightitalic.ttf</string>
+
+
 </resources>
