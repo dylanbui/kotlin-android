@@ -3,6 +3,7 @@ package com.dylanbui.routerapp.utils
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -88,4 +89,8 @@ fun Uri.getPathString(context: Context): String {
 // Extension function to show toast message
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun dLog(str: String) {
+    Log.d("TAG", str)
 }

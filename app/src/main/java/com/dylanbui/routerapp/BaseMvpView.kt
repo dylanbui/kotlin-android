@@ -7,6 +7,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -35,6 +37,11 @@ interface BaseMvpView : MvpView
     fun showLoading()
     fun hideLoading()
 }
+
+// dispatches execution into Android main thread
+val uiDispatcher: CoroutineDispatcher = Dispatchers.Main
+// represent a pool of shared threads as coroutine dispatcher
+val bgDispatcher: CoroutineDispatcher = Dispatchers.IO
 
 abstract class BaseMvpPresenter<V : BaseMvpView> : MvpBasePresenter<V>()
 {

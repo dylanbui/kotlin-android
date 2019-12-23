@@ -3,39 +3,27 @@ package com.dylanbui.routerapp.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.ConnectivityManager
-import android.os.Build
-import android.text.SpannableString
-import android.text.TextUtils
 import android.text.format.DateFormat
-import android.text.style.UnderlineSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
-import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.utils.Constants.Companion.TAG
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.dylanbui.routerapp.networking.DictionaryType
+import com.google.gson.JsonNull
+import com.google.gson.JsonObject
+import kotlinx.coroutines.*
+import java.net.URLEncoder
 import java.util.*
-import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import kotlin.math.roundToInt
 
@@ -44,73 +32,8 @@ import kotlin.math.roundToInt
 @SuppressLint("all")
 object Utils {
 
-    @SuppressLint("MissingPermission")
-    fun isOnline(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        //should check null because in airplane mode it will be null
-        return netInfo != null && netInfo.isConnected
-    }
-
     fun View.OnClickListener.listenToViews(vararg views: View) =
         views.forEach { it.setOnClickListener(this) }
-
-    fun hideKeyboard(activity: Activity) {
-        val inputManager = activity
-            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        // check if no view has focus:
-        val currentFocusedView = activity.currentFocus
-        if (currentFocusedView != null) {
-            inputManager!!.hideSoftInputFromWindow(
-                currentFocusedView.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
-        }
-    }
-
-    fun hideSoftKeyboard(activity: Activity) {
-        try {
-            val inputMethodManager = activity.getSystemService(
-                Activity.INPUT_METHOD_SERVICE
-            ) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                activity.currentFocus!!.windowToken, 0
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-
-    fun requestFocus(activity: Activity, editText: EditText) {
-        editText.requestFocus()
-        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    fun disableCopyPasteEditText(editText: EditText) {
-        editText.customSelectionActionModeCallback = object : ActionMode.Callback {
-            override fun onActionItemClicked(p0: ActionMode?, p1: MenuItem?): Boolean {
-                return false
-            }
-            override fun onCreateActionMode(p0: ActionMode?, p1: Menu?): Boolean {
-                return false
-            }
-            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                return false
-            }
-            override fun onDestroyActionMode(p0: ActionMode?) {
-            }
-        }
-    }
-
-    fun underLineTextView(tv: TextView) {
-        if (TextUtils.isEmpty(tv.text)) return
-        val content = SpannableString(tv.text)
-        content.setSpan(UnderlineSpan(), 0, content.length, 0)
-        tv.text = content
-    }
 
     fun pxToDp(context: Context, px: Int): Int {
         val displayMetrics = context.resources
@@ -126,42 +49,14 @@ object Utils {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    fun delayExecute(delayTimeInMillisecond: Int): Observable<Long> {
-        return Observable
-            .create(ObservableOnSubscribe<Long> { e ->
-                e.onNext(0L)
-                e.onComplete()
-            })
-            .delay(delayTimeInMillisecond.toLong(), TimeUnit.MILLISECONDS)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getVersionApp(context: Context): String {
-        var result = ""
-        try {
-            val manager = context.packageManager
-            var info: PackageInfo? = null
-            info = manager.getPackageInfo(
-                context.packageName, 0
-            )
-            result = info!!.versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+    fun delayFunc(delayTimeInMillisecond: Long, complete: ()->Unit) {
+        GlobalScope.launch { // launch a new coroutine
+            // Log.d("TAG", "-- jobUpdate --- ${Thread.currentThread()} has run.")
+            delay(delayTimeInMillisecond)
+            withContext(Dispatchers.Main) {
+                complete()
+            }
         }
-        return result
-    }
-
-    fun getWidthScreen(activity: Activity): Int {
-        val displayMetrics = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels
-    }
-
-    fun getHeightScreen(activity: Activity): Int {
-        val displayMetrics = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.heightPixels
     }
 
     fun dpToPx(dp: Int): Float {
@@ -174,33 +69,6 @@ object Utils {
 
     fun convertDp2Px(dp: Int, context: Context): Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), context.resources.displayMetrics)
-    }
-
-    fun getDeviceName(): String {
-        val manufacturer = Build.MANUFACTURER
-        val model = Build.MODEL
-        return if (model.startsWith(manufacturer)) {
-            capitalize(model)
-        } else {
-            capitalize(manufacturer) + " " + model
-        }
-    }
-
-    fun getVersionName(): String = Build.VERSION.RELEASE
-
-    fun getDeviceToken(): String? {
-        var token: String? = ""
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                token = task.result?.token
-            })
-        return token
     }
 
     fun convertSpToPixels(activity: Activity, sp: Float): Int {
@@ -231,32 +99,6 @@ object Utils {
             (iPart + 1).toFloat()
         else
             iPart.toFloat()
-    }
-
-    fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        var matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(
-            source, 0, 0, source.width, source.height,
-            matrix, true
-        )
-    }
-
-    fun getExactllyImageRotate(photoPath: String, bitmap: Bitmap): Bitmap? {
-        var ei = ExifInterface(photoPath)
-        var orientation = ei.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_UNDEFINED
-        )
-
-        var rotatedBitmap: Bitmap? = null
-        when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> rotatedBitmap = rotateImage(bitmap, 90f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> rotatedBitmap = rotateImage(bitmap, 180f)
-            ExifInterface.ORIENTATION_ROTATE_270 -> rotatedBitmap = rotateImage(bitmap, 270f)
-            else -> rotatedBitmap = bitmap
-        }
-        return rotatedBitmap
     }
 
     fun convertTimestampDateString(timestamp: Long): String {
@@ -358,5 +200,36 @@ object Utils {
             dialog.window?.attributes = layoutParams
         }
         return dialog
+    }
+
+    fun convertToJsonObject(dict: DictionaryType): JsonObject {
+        var jsonObject = JsonObject()
+
+        dict.forEach {
+            // New ways
+            when (it.value) {
+                null -> jsonObject.add(it.key, JsonNull.INSTANCE)
+                is Boolean -> jsonObject.addProperty(it.key, it.value as Boolean)
+                is Number -> jsonObject.addProperty(it.key, it.value as Number)
+                else -> jsonObject.addProperty(it.key, it.value.toString())
+            }
+        }
+        return jsonObject
+    }
+
+    fun convertToUrlEncode(map: DictionaryType): String {
+        var sb = StringBuilder()
+        map.entries.forEach {
+            if (it.value == null) {
+                sb.append(it.key).append('=').append('&')
+            } else {
+                sb.append(it.key)
+                    .append('=')
+                    .append(URLEncoder.encode(it.value.toString(), "UTF_8"))
+                    .append('&')
+            }
+        }
+        sb.delete(sb.length - 1, sb.length)
+        return sb.toString()
     }
 }

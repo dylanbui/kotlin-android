@@ -14,7 +14,10 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.demofragment.SecondViewController
+import com.dylanbui.routerapp.typicode.ApplicationRoute
 import com.dylanbui.routerapp.utils.DbNavigation
+import com.dylanbui.routerapp.utils.Utils
+import com.dylanbui.routerapp.utils.dLog
 import com.dylanbui.routerapp.utils.toast
 
 //internal class AnimatorListenerAdapter(
@@ -47,6 +50,8 @@ class SplashViewController: Controller(), Animator.AnimatorListener
     }
 
     private fun setTitle(): String = "Title first"
+
+    private var updateDone: Boolean = false
 
     private fun onViewBound(view: View)
     {
@@ -87,9 +92,22 @@ class SplashViewController: Controller(), Animator.AnimatorListener
         // -- Begin play LottieAnimationView --
         animationView.playAnimation()
 
+//        dLog("Chuyen vao thread")
+//        Utils.delayFunc(1500) {
+//            dLog("-- jobUpdate --- ${Thread.currentThread()} has run.")
+//        }
+
+//        prensenter.executeTwoTasksParallel {
+//            Log.d("TAG", "Chay dong bo 1 luc 2 Task")
+//        }
+
+//        prensenter.executeTwoTasksSequentially {
+//            Log.d("TAG", "Chay tuan tu tung task trong 2 Task")
+//        }
 
         prensenter.getAllDataForApp {
             Log.d("TAG", "Da chay choi xong, kiem chung thoi")
+            this.updateDone = true
         }
     }
 
@@ -103,7 +121,9 @@ class SplashViewController: Controller(), Animator.AnimatorListener
 
     override fun onAnimationEnd(animation: Animator?) {
         Log.d("TAG", "onAnimationEnd")
-        activity?.toast("onAnimationEnd")
+        // activity?.toast("onAnimationEnd")
+
+        nav?.navigate(ApplicationRoute.SplashPageComplete())
     }
 
     override fun onAnimationCancel(animation: Animator?) {

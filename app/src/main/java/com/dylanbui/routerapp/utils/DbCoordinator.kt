@@ -13,6 +13,13 @@ fun Router.defaultPushController(controller: Controller) {
             .popChangeHandler(HorizontalChangeHandler()))
 }
 
+fun Router.defaultSetRootController(controller: Controller) {
+    setRoot(
+        RouterTransaction.with(controller)
+        .pushChangeHandler(HorizontalChangeHandler())
+        .popChangeHandler(HorizontalChangeHandler()))
+}
+
 interface DbEnumRoute {}
 
 interface DbNavigation {

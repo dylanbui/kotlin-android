@@ -198,6 +198,7 @@ private interface TypicodeApiService {
     fun makeUploadFileRequest(@Url url: String?,
                               @PartMap() partMap: HashMap<String, JsonElement>?,
                               @Part file: MultipartBody.Part): Call<JsonElement>
+
 }
 
 
@@ -270,6 +271,12 @@ object TypicodeApi {
         sb.delete(sb.length - 1, sb.length)
         return sb.toString()
     }
+
+    fun getWithSuspend(path: String) {
+        // Default set Method GET
+        // var call: Call<JsonElement> = makeApiService.makeGetRequest(path)
+    }
+
 
 
     fun get(path: String, callback: TypicodeApiCallback) {

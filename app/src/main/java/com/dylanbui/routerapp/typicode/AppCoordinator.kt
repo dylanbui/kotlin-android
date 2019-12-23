@@ -3,13 +3,12 @@ package com.dylanbui.routerapp.typicode
 import android.content.Context
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.dylanbui.routerapp.StartApplication
 import com.dylanbui.routerapp.typicode.post.PostDetailViewController
 import com.dylanbui.routerapp.typicode.post.PostListViewController
 import com.dylanbui.routerapp.typicode.splash_intro.SplashViewController
-import com.dylanbui.routerapp.utils.BaseDbCoordinator
-import com.dylanbui.routerapp.utils.DbEnumRoute
-import com.dylanbui.routerapp.utils.DbNavigation
-import com.dylanbui.routerapp.utils.defaultPushController
+import com.dylanbui.routerapp.typicode.user.login.LoginViewController
+import com.dylanbui.routerapp.utils.*
 
 
 //enum class ApplicationRoute : DbEnumRoute {
@@ -21,6 +20,7 @@ import com.dylanbui.routerapp.utils.defaultPushController
 
 // Define enum nhu la 1 data class
 sealed class ApplicationRoute: DbEnumRoute {
+    class SplashPageComplete() : ApplicationRoute()
     class GotoPostDetail(val post: TyPost) : ApplicationRoute()
     class GotoPhUserDetail(val url: String, val caption: String) : ApplicationRoute()
     class GotoAnyWhere() : ApplicationRoute()
@@ -41,6 +41,17 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
 //            .popChangeHandler(FadeChangeHandler()))
     }
 
+    private fun splashPageComplete() {
+
+        var user = StartApplication.currentUser
+        if (user.isLogin()) {
+            // Da login roi, chuyen qua man hinh ds
+        } else {
+            // Chua login, chuyen qua man hinh login
+            router.defaultSetRootController(LoginViewController())
+        }
+    }
+
     override fun navigate(toRoute: DbEnumRoute, context: Context?, parameters: Any?) {
 
 //        var route = (toRoute as? ControllerRoute).guard {
@@ -49,6 +60,10 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
 //        }
 
         when (toRoute) {
+
+            is ApplicationRoute.SplashPageComplete -> {
+                this.splashPageComplete()
+            }
 
             is ApplicationRoute.GotoPostDetail -> {
                 var vcl = PostDetailViewController()
