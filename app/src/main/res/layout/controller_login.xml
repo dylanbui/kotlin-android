@@ -1,30 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This is template display RecyclerView -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:id="@+id/controllerContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/txtUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_15"
-        android:inputType="textPersonName"
-        android:hint="Username" />
+    <!-- Include toolbar, remove this line when hide -->
+    <include
+        layout="@layout/toolbar_native" />
 
-    <EditText
-        android:id="@+id/txtPassword"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/controllerContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_15"
-        android:inputType="textPassword"
-        android:hint="Password" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/txtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:textSize="@dimen/text_size_15" />
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textSize="@dimen/text_size_15" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login" />
+
+        </LinearLayout>
+
+        <!-- Include progress page view -->
+<!--        <include layout="@layout/include_progress_view" />-->
+
+    </RelativeLayout>
+
 
 </LinearLayout>
+
+
+
+
+
+
