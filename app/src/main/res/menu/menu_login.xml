@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_cut"
+        android:title="Cut"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@mipmap/ic_delete" />
+    <item
+        android:id="@+id/action_copy"
+        android:title="Copy"
+        app:showAsAction="always|withText"
+        android:icon="@mipmap/ic_delete" />
+
+    <item
+        android:id="@+id/action_add"
+        android:title="add_device"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_update_room"
+        android:title="update_room"
+        app:showAsAction="never" />
+
+</menu>

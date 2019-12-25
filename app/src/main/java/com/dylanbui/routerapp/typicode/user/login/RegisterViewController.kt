@@ -5,28 +5,30 @@ import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
-import com.dylanbui.routerapp.utils.*
+import com.dylanbui.routerapp.utils.EditTextUtils
+import com.dylanbui.routerapp.utils.dLog
+import com.dylanbui.routerapp.utils.defaultPushController
+import com.dylanbui.routerapp.utils.toast
 
 
-class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>(), LoginActionView {
 
+class RegisterViewController : BaseMvpController<RegisterActionView, RegisterPresenter>(), RegisterActionView {
 
     lateinit var txtUsername: EditText
     lateinit var txtPassword: EditText
 
-    override fun setTitle(): String? = "Login"
+    override fun setTitle(): String? = "Register Account"
 
-    override fun createPresenter(): LoginPresenter = LoginPresenter()
+    override fun createPresenter(): RegisterPresenter = RegisterPresenter()
 
     override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.controller_login, container, false)
+        return inflater.inflate(R.layout.controller_register, container, false)
     }
 
     override fun onViewBound(view: View) {
@@ -34,31 +36,52 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
         txtPassword = view.findViewById(R.id.txtPassword)
 
         // -- At here presenter == null --
-        var btnLogin = view.findViewById<Button>(R.id.btnLogin)
-        btnLogin.setOnClickListener {
-            router.defaultPushController(RegisterViewController())
-            //this.doLogin()
+        var btnRegister = view.findViewById<Button>(R.id.btnRegister)
+        btnRegister.setOnClickListener {
+            // this.doLogin()
+            router.defaultPushController(ForgotPwViewController())
+        }
+
+        var btnDialog = view.findViewById<Button>(R.id.btnDialog)
+        btnDialog.setOnClickListener {
+            router.pushController(
+                RouterTransaction.with(DemoDialogView())
+                    .pushChangeHandler(FadeChangeHandler(false))
+                    .popChangeHandler(FadeChangeHandler()))
+        }
+
+        var btnModal = view.findViewById<Button>(R.id.btnModal)
+        btnModal.setOnClickListener {
+
         }
 
         // setHasOptionsMenu(true)
 
+//        toolbar_login = view.findViewById(R.id.toolbar)
+//        // toolbar_login?.visibility = View.GONE // Hide toolbar
+//        toolbar_login?.title = "Register Account"
+//        this.enableUpArrow()
+
 //        toolbar_login?.setNavigationIcon(R.drawable.ic_arrow_back)
-        // need to set the icon here to have a navigation icon. You can simple create an vector image by "Vector Asset" and using here
+//        // need to set the icon here to have a navigation icon. You can simple create an vector image by "Vector Asset" and using here
 //        toolbar_login?.setNavigationOnClickListener {
 //            // do something when click navigation
 //        }
 
+        toolbar?.menu?.clear() // Remove all item in menu
         var menu = toolbar?.menu
         menu?.let {
             it.add(Menu.NONE, 11, 0, "View RSS")
                 .setIcon(R.mipmap.ic_delete)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER) // .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS) // .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 
             it.add(Menu.NONE, 22, 1, "Read RSS")
                 .setIcon(R.mipmap.ic_error)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER) // .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS) // .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         }
 
+        var menuItem = menu?.findItem(11)
+        menuItem?.isVisible = false // Hide menu item
 
         // toolbar_login?.inflateMenu(R.menu.menu_login)
         toolbar?.setOnMenuItemClickListener {
@@ -69,24 +92,6 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
                 }
                 22 -> {
                     activity?.toast("Read RSS")
-                    true
-                }
-                R.id.action_cut -> {
-                    activity?.toast("action_cut")
-                    true
-                }
-                R.id.action_copy -> {
-                    activity?.toast("action_copy")
-                    true
-                }
-                R.id.action_add -> {
-                    dLog("R.id.action_add")
-                    // do something
-                    true
-                }
-                R.id.action_update_room -> {
-                    dLog("R.id.action_update_room")
-                    // do something
                     true
                 }
                 else -> {
@@ -110,7 +115,7 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
         activity?.let {
             val controllerContainer = view.findViewById<ViewGroup>(R.id.controllerContainer)
             EditTextUtils.setupEditTextUI(controllerContainer, it)
-            EditTextUtils.requestFocus(txtUsername, it)
+            // EditTextUtils.requestFocus(txtUsername, it)
         }
 
     }
@@ -125,16 +130,17 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
             // showWarningMessage(getStringResource(R.string.invalid_password), R.string.close, null)
             return
         }
-        presenter.doLogin(txtUsername.text.toString(), txtPassword.text.toString())
+        // presenter.doLogin(txtUsername.text.toString(), txtPassword.text.toString())
     }
 
     /**
-     * LoginActionView interface
+     * RegisterActionView interface
      */
 
-    override fun loginComplete() {
+    override fun registerComplete() {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 
     override fun showLoginError(error: AppNetworkServiceError) {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

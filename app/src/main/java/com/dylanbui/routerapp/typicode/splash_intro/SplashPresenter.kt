@@ -111,7 +111,7 @@ class SplashPresenter : BaseMvpPresenter<SplashActionView>(), CoroutineScope
     }
 
     // launch + withContext (execute two tasks sequentially)
-    // Thu thi tuan tu 2 task
+    // Thuc thi tuan tu 2 task
     fun executeTwoTasksSequentially(complete: () -> Unit) {
 
         var jobUpdate = launch {

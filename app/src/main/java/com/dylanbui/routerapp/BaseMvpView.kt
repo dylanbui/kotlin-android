@@ -33,7 +33,7 @@ class ForceLogoutEvent(var message:String)
 
 interface BaseMvpView : MvpView
 {
-    fun getStringResource(resourceString: Int): String
+    fun getStringResource(resourceId: Int): String
     fun showLoading()
     fun hideLoading()
 }
