@@ -4,18 +4,16 @@ import android.text.TextUtils
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import com.dylanbui.android_library.utils.EditTextUtils
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
-import com.dylanbui.routerapp.utils.EditTextUtils
-import com.dylanbui.routerapp.utils.dLog
+import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.utils.defaultPushController
-import com.dylanbui.routerapp.utils.toast
-
+import com.dylanbui.android_library.utils.toast
+import com.dylanbui.routerapp.utils.defaultSetDialogController
 
 
 class RegisterViewController : BaseMvpController<RegisterActionView, RegisterPresenter>(), RegisterActionView {
@@ -44,10 +42,11 @@ class RegisterViewController : BaseMvpController<RegisterActionView, RegisterPre
 
         var btnDialog = view.findViewById<Button>(R.id.btnDialog)
         btnDialog.setOnClickListener {
-            router.pushController(
-                RouterTransaction.with(DemoDialogView())
-                    .pushChangeHandler(FadeChangeHandler(false))
-                    .popChangeHandler(FadeChangeHandler()))
+            router.defaultSetDialogController(DemoDialogView())
+//            router.pushController(
+//                RouterTransaction.with(DemoDialogView())
+//                    .pushChangeHandler(FadeChangeHandler(false))
+//                    .popChangeHandler(FadeChangeHandler()))
         }
 
         var btnModal = view.findViewById<Button>(R.id.btnModal)

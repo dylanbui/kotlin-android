@@ -1,22 +1,19 @@
 package com.dylanbui.routerapp
 
 import android.Manifest
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
+import com.dylanbui.android_library.utils.ManagePermissions
+import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.typicode.AppCoordinator
-import com.dylanbui.routerapp.typicode.post.PostListViewController
-import com.dylanbui.routerapp.utils.ManagePermissions
-import com.dylanbui.routerapp.utils.toast
+
 
 
 //import com.google.android.material.animation.AnimationUtils

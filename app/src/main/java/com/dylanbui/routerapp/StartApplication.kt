@@ -2,9 +2,8 @@ package com.dylanbui.routerapp
 
 import android.app.Application
 import android.content.Context
+import com.dylanbui.android_library.utils.DeviceUtils
 import com.dylanbui.routerapp.networking.AppNetwork
-import com.dylanbui.routerapp.utils.DeviceUtils
-import com.dylanbui.routerapp.utils.Utils
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.squareup.picasso.Picasso

@@ -1,10 +1,11 @@
-package com.dylanbui.routerapp.utils
+package com.dylanbui.android_library.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Patterns
@@ -17,8 +18,8 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.networking.DictionaryType
+import com.dylanbui.android_library.DictionaryType
+import com.dylanbui.android_library.R
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
@@ -31,6 +32,13 @@ import kotlin.math.roundToInt
 // @Suppress
 @SuppressLint("all")
 object Utils {
+
+    fun getCompressFolderPath(context: Context): String {
+        return (Environment.getExternalStorageDirectory().toString()
+                + "/Android/data/"
+                + context.applicationContext.packageName
+                + "/Files/Compressed")
+    }
 
     fun View.OnClickListener.listenToViews(vararg views: View) =
         views.forEach { it.setOnClickListener(this) }

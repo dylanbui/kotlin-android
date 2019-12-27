@@ -8,7 +8,7 @@ import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
 import com.dylanbui.routerapp.typicode.TyPost
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 
 class PostDetailViewController: BaseMvpController<PostDetailActionView, PostDetailPresenter>(), PostDetailActionView {
 

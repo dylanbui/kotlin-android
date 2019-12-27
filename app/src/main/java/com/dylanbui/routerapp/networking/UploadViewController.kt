@@ -1,10 +1,7 @@
 package com.dylanbui.routerapp.networking
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -12,12 +9,12 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
+import com.dylanbui.android_library.utils.Utils
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.utils.Utils
-import com.dylanbui.routerapp.utils.fromJson
-import com.dylanbui.routerapp.utils.getPathString
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.fromJson
+import com.dylanbui.android_library.utils.getPathString
+import com.dylanbui.android_library.utils.toast
 import java.io.File
 
 

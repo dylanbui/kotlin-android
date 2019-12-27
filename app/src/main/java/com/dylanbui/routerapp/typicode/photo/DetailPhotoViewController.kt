@@ -10,7 +10,7 @@ import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.typicode.TyPhoto
 import com.dylanbui.routerapp.typicode.TyPhotoApi
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 import com.squareup.picasso.Picasso
 
 class DetailPhotoViewController : Controller()

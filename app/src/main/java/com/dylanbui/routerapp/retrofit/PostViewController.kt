@@ -10,7 +10,7 @@ import com.bluelinelabs.conductor.Controller
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
-import com.dylanbui.routerapp.utils.fromJson
+import com.dylanbui.android_library.utils.fromJson
 import com.dylanbui.routerapp.networking.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
 
-        <com.dylanbui.android_library.DbAutoCompleteTextView
+        <com.dylanbui.android_library.google_service.places_auto_complete.DbAutoCompleteTextView
             android:id="@+id/autoCompleteEditText"
             android:inputType="textCapSentences"
             android:layout_width="match_parent"

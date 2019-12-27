@@ -5,16 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bluelinelabs.conductor.Controller
-import com.dylanbui.android_library.DbAutoCompleteTextView
-import com.dylanbui.android_library.placesautocomplete.*
+import com.dylanbui.android_library.google_service.DbGoogleServices
+import com.dylanbui.android_library.google_service.GgAddress
+import com.dylanbui.android_library.google_service.GgPlace
+import com.dylanbui.android_library.google_service.GgPlaceDetail
+import com.dylanbui.android_library.google_service.places_auto_complete.DbAutoCompleteTextView
+import com.dylanbui.android_library.google_service.places_auto_complete.PlacesAutoCompleteAdapter
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 
 class PlaceAutoCompleteViewController: Controller() {
 
-    // var placesApi: PlaceAPI? = null
-
-    lateinit var placesApi: PlaceAPI
+    lateinit var placesApi: DbGoogleServices
 
     var street = ""
     var city = ""
@@ -31,7 +33,7 @@ class PlaceAutoCompleteViewController: Controller() {
 
     fun onViewBound(view: View) {
 
-        placesApi = PlaceAPI.Builder()
+        placesApi = DbGoogleServices.Builder()
             .apiKey("AIzaSyDDOSDICyPGej1Iku5Z7uj0V_LHFQcmFDk")
             .build(activity?.baseContext!!)
 
@@ -40,32 +42,26 @@ class PlaceAutoCompleteViewController: Controller() {
         autoCompleteEditText.setLoadingIndicator(view.findViewById<ProgressBar>(R.id.pb_loading_indicator))
         autoCompleteEditText.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
+                val place = parent.getItemAtPosition(position) as GgPlace
+                activity?.toast(place.placeId)
 
-                val place = parent.getItemAtPosition(position) as Place
-                activity?.toast(place.id)
-
-//                autoCompleteEditText.setText(place.description)
-//                getPlaceDetails(place.id)
+                autoCompleteEditText.setText(place.descriptionPlace)
+                getPlaceDetails(place.placeId)
             }
 
 
     }
 
     private fun getPlaceDetails(placeId: String) {
-        placesApi.fetchPlaceDetails(placeId, object : OnPlacesDetailsListener {
-            override fun onError(errorMessage: String) {
-                activity?.toast(errorMessage)
-            }
+        placesApi.requestPlaceDetail(placeId, completion = { placeDetail ->
 
-            override fun onPlaceDetailsFetched(placeDetails: PlaceDetails) {
-                setupUI(placeDetails)
+            placeDetail?.let {
+                setupUI(it)
             }
         })
     }
 
-    private fun setupUI(placeDetails: PlaceDetails) {
-        val address = placeDetails.address
-        parseAddress(address)
+    private fun setupUI(placeDetail: GgPlaceDetail) {
 
         var streetTextView: TextView = view!!.findViewById(R.id.streetTextView)
         var cityTextView: TextView = view!!.findViewById(R.id.cityTextView)
@@ -76,24 +72,16 @@ class PlaceAutoCompleteViewController: Controller() {
         var longitudeTextView: TextView = view!!.findViewById(R.id.longitudeTextView)
 
         activity?.runOnUiThread {
-
-            streetTextView.text = street
-            cityTextView.text = city
+            streetTextView.text = placeDetail.formattedAddress
+            cityTextView.text = placeDetail.name
             stateTextView.text = state
             countryTextView.text = country
-            // zipCodeTextView.text = zipCode
-            latitudeTextView.text = placeDetails.lat.toString()
-            longitudeTextView.text = placeDetails.lng.toString()
-            // placeIdTextView.text = placeDetails.placeId
-            // urlTextView.text = placeDetails.url
-            // utcOffsetTextView.text = placeDetails.utcOffset.toString()
-            // vicinityTextView.text = placeDetails.vicinity
-            // compoundCodeTextView.text = placeDetails.compoundPlusCode
-            // globalCodeTextView.text = placeDetails.globalPlusCode
+            latitudeTextView.text = placeDetail.location.latitude.toString()
+            longitudeTextView.text = placeDetail.location.longitude.toString()
         }
     }
 
-    private fun parseAddress(address: ArrayList<Address>) {
+    private fun parseAddress(address: ArrayList<GgAddress>) {
         (0 until address.size).forEach { i ->
             when {
                 address[i].type.contains("street_number") -> street += address[i].shortName + " "

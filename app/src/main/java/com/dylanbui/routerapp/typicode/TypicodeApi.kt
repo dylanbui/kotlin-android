@@ -2,8 +2,8 @@ package com.dylanbui.routerapp.typicode
 
 import android.util.Log
 import com.dylanbui.routerapp.networking.*
-import com.dylanbui.routerapp.utils.fromJson
-import com.dylanbui.routerapp.utils.guardLet
+import com.dylanbui.android_library.utils.fromJson
+import com.dylanbui.android_library.utils.guardLet
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject

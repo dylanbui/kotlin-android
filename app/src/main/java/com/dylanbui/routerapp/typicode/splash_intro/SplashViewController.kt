@@ -5,20 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.demofragment.SecondViewController
 import com.dylanbui.routerapp.typicode.ApplicationRoute
 import com.dylanbui.routerapp.utils.DbNavigation
-import com.dylanbui.routerapp.utils.Utils
-import com.dylanbui.routerapp.utils.dLog
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.dLog
+import com.dylanbui.android_library.utils.toast
 
 //internal class AnimatorListenerAdapter(
 //    val onStart: ((Animator) -> Unit)? = null,

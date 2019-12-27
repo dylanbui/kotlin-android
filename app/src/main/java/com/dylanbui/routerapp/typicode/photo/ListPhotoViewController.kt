@@ -16,7 +16,7 @@ import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.typicode.TyPhoto
 import com.dylanbui.routerapp.typicode.TyPhotoApi
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 
 
 class ListPhotoViewController : Controller(),

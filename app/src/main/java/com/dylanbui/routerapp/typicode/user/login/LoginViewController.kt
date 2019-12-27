@@ -12,7 +12,8 @@ import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
-import com.dylanbui.routerapp.utils.*
+import com.dylanbui.android_library.utils.*
+import com.dylanbui.routerapp.utils.defaultPushController
 
 
 class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>(), LoginActionView {

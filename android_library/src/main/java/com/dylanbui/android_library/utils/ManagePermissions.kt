@@ -1,4 +1,4 @@
-package com.dylanbui.routerapp.utils
+package com.dylanbui.android_library.utils
 
 import android.app.Activity
 import android.content.pm.PackageManager

@@ -18,7 +18,7 @@ import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
 import com.dylanbui.routerapp.typicode.*
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 import java.text.FieldPosition
 
 class PostListViewController : BaseMvpController<PostListActionView, PostListPresenter>(), PostListActionView {

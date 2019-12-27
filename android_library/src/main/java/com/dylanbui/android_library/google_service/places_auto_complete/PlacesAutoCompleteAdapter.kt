@@ -1,20 +1,26 @@
-package com.dylanbui.android_library.placesautocomplete
+package com.dylanbui.android_library.google_service.places_auto_complete
 
 import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.dylanbui.android_library.R
+import com.dylanbui.android_library.google_service.DbGoogleServices
+import com.dylanbui.android_library.google_service.GgPlace
+import com.google.gson.JsonObject
+
+// https://github.com/mukeshsolanki/Google-Places-AutoComplete-EditText
 
 interface PlacesAutoComplete {
-    fun placesAutoCompleteRowFormat(position: Int, place: Place, convertView: View?): View
+    fun placesAutoCompleteRowFormat(position: Int, place: GgPlace, convertView: View?): View
 }
 
-class PlacesAutoCompleteAdapter(mContext: Context, val placesApi: PlaceAPI) :
-    ArrayAdapter<Place>(mContext, R.layout.autocomplete_list_item), Filterable {
+class PlacesAutoCompleteAdapter(mContext: Context, val placesApi: DbGoogleServices) :
+    ArrayAdapter<GgPlace>(mContext, R.layout.autocomplete_list_item), Filterable {
 
-    var resultList: ArrayList<Place>? = ArrayList()
+    var resultList: ArrayList<GgPlace>? = ArrayList()
     var formatRow: PlacesAutoComplete? = null
 
     override fun getCount(): Int {
@@ -24,7 +30,7 @@ class PlacesAutoCompleteAdapter(mContext: Context, val placesApi: PlaceAPI) :
         }
     }
 
-    override fun getItem(position: Int): Place? {
+    override fun getItem(position: Int): GgPlace? {
         return when {
             resultList.isNullOrEmpty() -> null
             else -> resultList!![position]
@@ -56,10 +62,10 @@ class PlacesAutoCompleteAdapter(mContext: Context, val placesApi: PlaceAPI) :
         return view!!
     }
 
-    private fun bindView(viewHolder: ViewHolder, place: Place, position: Int) {
+    private fun bindView(viewHolder: ViewHolder, place: GgPlace, position: Int) {
         if (!resultList.isNullOrEmpty()) {
             if (position != resultList!!.size - 1) {
-                viewHolder.description?.text = place.description
+                viewHolder.description?.text = place.descriptionPlace
                 viewHolder.footerImageView?.visibility = View.GONE
                 viewHolder.description?.visibility = View.VISIBLE
             } else {
@@ -83,8 +89,12 @@ class PlacesAutoCompleteAdapter(mContext: Context, val placesApi: PlaceAPI) :
                 val filterResults = FilterResults()
                 constraint?.let {
                     if (it.length > 3) {
-                        resultList = placesApi.autocomplete(it.toString())
-                        resultList?.add(Place("-1", "footer"))
+                        placesApi.requestPlaces(it.toString(), asyncTask = false, complete = { arrPlace ->
+                            resultList = arrPlace
+                        })
+                        // resultList = placesApi.autocomplete(it.toString())
+                        // resultList?.add(Place("-1", "footer"))
+                        resultList?.add(GgPlace(JsonObject()))
                         filterResults.values = resultList
                         filterResults.count = resultList!!.size
                     }

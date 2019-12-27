@@ -1,4 +1,4 @@
-package com.dylanbui.routerapp.utils
+package com.dylanbui.android_library.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -67,7 +67,7 @@ object DeviceUtils {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w(Constants.TAG, "getInstanceId failed", task.exception)
+                    Log.w("TAG", "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
 

@@ -12,7 +12,7 @@ import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.typicode.TyUser
 import com.dylanbui.routerapp.typicode.TyUserApi
-import com.dylanbui.routerapp.utils.toast
+import com.dylanbui.android_library.utils.toast
 
 class ListUserViewController : Controller(),
     UserListAdapter.UserRowListener

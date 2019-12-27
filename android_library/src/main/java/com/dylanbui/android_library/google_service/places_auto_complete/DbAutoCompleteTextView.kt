@@ -1,4 +1,4 @@
-package com.dylanbui.android_library
+package com.dylanbui.android_library.google_service.places_auto_complete
 
 import android.content.Context
 import android.os.Handler
@@ -7,8 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
-
-// http://makovkastar.github.io/blog/2014/04/12/android-autocompletetextview-with-suggestions-from-a-web-service/
 
 class DbAutoCompleteTextView(context: Context?, attrs: AttributeSet?) : AutoCompleteTextView(context, attrs) {
 

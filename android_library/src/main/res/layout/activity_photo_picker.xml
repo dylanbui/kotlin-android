@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+    <RelativeLayout
+            android:layout_above="@+id/vBottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <RelativeLayout
+                android:id="@+id/listing_detail_header"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:background="@color/colorPrimary">
+
+            <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/listing_detail_back"
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/icon_back"/>
+
+            <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <vn.propzy.sam.library.commonview.CTextView
+                        android:id="@+id/listing_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose_image_title"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:customFont="@string/font_medium"/>
+
+                <vn.propzy.sam.library.commonview.CTextView
+                        android:id="@+id/tvNumberImageChoosed"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:customFont="@string/font_medium"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+                android:background="@color/white"
+                android:id="@+id/rvImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/listing_detail_header"
+                android:orientation="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <vn.propzy.sam.library.commonview.CButton
+                android:id="@+id/btnDone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/selected_button_login"
+                android:text="Tiếp tục"
+                android:textColor="@color/white"/>
+    </RelativeLayout>
+    <View android:id="@+id/vBottom"
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:layout_alignParentBottom="true"
+          android:visibility="gone"
+          android:background="@color/black"/>
+</RelativeLayout>

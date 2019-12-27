@@ -1,7 +1,7 @@
 package com.dylanbui.routerapp.networking
 
 import android.os.AsyncTask
-import com.dylanbui.routerapp.utils.fromJson
+import com.dylanbui.android_library.utils.fromJson
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import java.io.*
