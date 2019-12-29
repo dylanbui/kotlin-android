@@ -13,7 +13,7 @@ import com.bluelinelabs.conductor.Router
 import com.dylanbui.android_library.utils.ManagePermissions
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.typicode.AppCoordinator
-
+import com.tbruyelle.rxpermissions2.RxPermissions
 
 
 //import com.google.android.material.animation.AnimationUtils
@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity()
 
         appCoordinator = AppCoordinator(router)
         appCoordinator?.start()
+
+        val rxPermissions = RxPermissions(this)
 
 
 //        if (!router.hasRootController()) {

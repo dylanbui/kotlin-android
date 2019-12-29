@@ -4,15 +4,12 @@ import android.text.TextUtils
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.dylanbui.android_library.utils.EditTextUtils
+import com.dylanbui.android_library.utils.dLog
+import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.controller.EndlessRecyclerViewScrollListener
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
-import com.dylanbui.android_library.utils.*
 import com.dylanbui.routerapp.utils.defaultPushController
 
 

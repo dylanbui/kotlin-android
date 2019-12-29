@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dylanbui.android_library.R
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
+import com.tbruyelle.rxpermissions2.RxPermissions
 
 class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerPresenter>(), DbPhotoPickerViewAction,
     DbPhotoPickerAdapter.DbChoosePhotoListener {
@@ -42,6 +43,7 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     }
 
     override fun scanImage() {
+        var rxPermissions = RxPermissions(this)
 
     }
 

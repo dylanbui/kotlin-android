@@ -6,7 +6,24 @@ ext {
     conductorVersion = "3.0.0-rc1"
     mosbyVersion = "3.1.0"
     //butterKnifeVersion = "8.8.1" // "10.2.0" //
-    butterKnifeVersion = "10.1.0" // "10.2.0" //
+
+    butterKnifeVersion = "10.1.0"
+    minSdkVersion=16
+    targetSdkVersion=21
+    buildToolsVersion='22.0.1'
+    compileSdkVersion=21
+
+    //Android Dependencies
+    supportV4 = 'com.android.support:support-v4:' + supportLibVersion
+    supportAnnotations = 'com.android.support:support-annotations:' + supportLibVersion
+    recyclerView = 'com.android.support:recyclerview-v7:' + supportLibVersion
+    cardView = 'com.android.support:cardview-v7:' + supportLibVersion
+    palette = 'com.android.support:palette-v7:' + supportLibVersion
+    appCompat = 'com.android.support:appcompat-v7:' + supportLibVersion
+    multidex = 'com.android.support:multidex:1.0.1'
+    appCompat = 'com.android.support:appcompat-v7:' + supportLibVersion
+    supportDesign = 'com.android.support:design:' + supportLibVersion
+    playServicesAnalytics = 'com.google.android.gms:play-services-analytics:' + googlePlayServicesVersion
 }
 
 android {

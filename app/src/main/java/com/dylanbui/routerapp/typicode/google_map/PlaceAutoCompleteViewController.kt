@@ -11,8 +11,14 @@ import com.dylanbui.android_library.google_service.GgPlace
 import com.dylanbui.android_library.google_service.GgPlaceDetail
 import com.dylanbui.android_library.google_service.places_auto_complete.DbAutoCompleteTextView
 import com.dylanbui.android_library.google_service.places_auto_complete.PlacesAutoCompleteAdapter
-import com.dylanbui.routerapp.R
+
 import com.dylanbui.android_library.utils.toast
+import com.dylanbui.routerapp.R
+import com.tbruyelle.rxpermissions2.RxPermissions
+
+
+
+
 
 class PlaceAutoCompleteViewController: Controller() {
 
@@ -48,6 +54,10 @@ class PlaceAutoCompleteViewController: Controller() {
                 autoCompleteEditText.setText(place.descriptionPlace)
                 getPlaceDetails(place.placeId)
             }
+
+
+        // var rxPermissions = RxPermissions(activity)
+        //val rxPermissions = RxPermissions(this)
 
 
     }
