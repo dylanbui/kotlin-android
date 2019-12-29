@@ -1,0 +1,80 @@
+ext {
+    //Version
+    supportLibrary = '22.2.1'
+
+    //Support Libraries dependencies
+    supportDependencies = [
+            //
+            kotlin           :         "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
+            design           :         "com.android.support:design:27.1.0",
+
+            appCompat        :         "androidx.appcompat:appcompat:1.1.0",
+            coreKtx          :         "androidx.core:core-ktx:1.1.0",
+            constraintLayout:         "com.android.support.constraint:constraint-layout:1.1.3",
+
+
+
+            firebaseCore     :         "com.google.firebase:firebase-core:16.0.7",
+            coroutines         :         "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3",
+
+
+            gson     :         "com.google.code.gson:gson:2.8.5",
+            glide         :         "com.github.bumptech.glide:glide:3.8.0",
+
+            rxpermissions     :         "com.github.tbruyelle:rxpermissions:0.10.2",
+            lottie         :         "com.airbnb.android:lottie:2.2.5",
+
+            retrofit     :         "com.squareup.retrofit2:retrofit:2.6.2",
+            retrofitGson         :         "com.squareup.retrofit2:converter-gson:2.6.2",
+            retrofitLog     :         "com.squareup.okhttp3:logging-interceptor:4.2.1",
+            picasso         :         "com.squareup.picasso:picasso:2.71828",
+
+
+            eventbus     :         "org.greenrobot:eventbus:3.1.1",
+            rxkotlin         :         "io.reactivex.rxjava2:rxkotlin:2.2.0",
+            rxandroid     :         "io.reactivex.rxjava2:rxandroid:2.0.1",
+
+            conductor         :         "com.bluelinelabs:conductor:3.0.0-rc1",
+
+            conductorMvp         :         "com.hannesdorfmann.mosby3:mvp-conductor:3.1.0",
+    ]
+
+
+
+    /*
+
+        conductorVersion = "3.0.0-rc1"
+    mosbyVersion = "3.1.0"
+
+// rx permission, khong can dung trong thang app
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    // lottie
+    implementation 'com.airbnb.android:lottie:2.2.5'
+
+    // android fast networking
+    // implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    annotationProcessor 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // Reactive
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Conductor
+    implementation "com.bluelinelabs:conductor:$conductorVersion"
+
+    // MVP Conductor Plugin
+    implementation "com.hannesdorfmann.mosby3:mvp-conductor:$mosbyVersion"
+
+
+
+    */
+
+}
