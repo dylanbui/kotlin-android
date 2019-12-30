@@ -4,10 +4,14 @@ ext {
 
     //Support Libraries dependencies
     supportDependencies = [
-            //
-            kotlin           :         "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
-            design           :         "com.android.support:design:27.1.0",
+            // Test
+            testJunit           :         "junit:junit:4.12",
+            testExtJunit           :         "androidx.test.ext:junit:1.1.1",
+            testEspressoCore        :         "androidx.test.espresso:espresso-core:3.2.0",
 
+            // Kotlin + Android UI
+            kotlinStdlibJdk7           :         "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
+            design           :         "com.android.support:design:27.1.0",
             appCompat        :         "androidx.appcompat:appcompat:1.1.0",
             coreKtx          :         "androidx.core:core-ktx:1.1.0",
             constraintLayout:         "com.android.support.constraint:constraint-layout:1.1.3",
