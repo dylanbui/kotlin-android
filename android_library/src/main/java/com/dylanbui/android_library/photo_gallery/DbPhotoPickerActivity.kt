@@ -1,5 +1,7 @@
 package com.dylanbui.android_library.photo_gallery
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +22,7 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     private lateinit var adapter: DbPhotoPickerAdapter
 
     private lateinit var tvNumberImageChoosed: TextView
+    private lateinit var imgBack: ImageView
     private lateinit var btnDone: Button
     private lateinit var rvImage: RecyclerView
 
@@ -30,25 +33,52 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
         setContentView(R.layout.activity_photo_picker)
 
         tvNumberImageChoosed = findViewById(R.id.tvNumberImageChoosed)
+        imgBack = findViewById(R.id.imgBack)
         btnDone = findViewById(R.id.btnDone)
         rvImage = findViewById(R.id.rvImage)
 
         // Chay se co loi ve adapter chua duoc tao
+        this.initView()
     }
 
+    private fun initView() {
+        presenter.getDataIntent(intent.extras)
+        this.scanImage()
+        presenter.updateNumberPhotoChoosedInHeader()
+        imgBack.setOnClickListener {
+             onBackPressed()
+        }
 
+//        if (!Util.isNavigationButtonVisible()) {
+//            setResizeNavigationBar(vBottom)
+//            vBottom.visibility = View.VISIBLE
+//        }
+    }
 
     override fun showButtonDone(isShow: Boolean) {
         btnDone.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
     override fun scanImage() {
-        var rxPermissions = RxPermissions(this)
+        RxPermissions(this)
+            .request(
+                Manifest.permission.CAMERA
+                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                , Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            .subscribe({ grand ->
+                if (grand) {
+                    getPresenter().queryImage(this)
+                } else getPresenter().finishChoosePhoto()
+            })
 
     }
 
-    override fun finishChooseImage(result: String) {
-
+    override fun finishChoosePhoto(result: String) {
+        val returnIntent = Intent()
+        returnIntent.putExtra("result", result)
+        setResult(Activity.RESULT_OK, returnIntent)
+        onBackPressed()
     }
 
     override fun setDataAdapter(myImages: MutableList<DbPhoto>, numImageCanChoose: Int) {
@@ -64,12 +94,14 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
         adapter?.notifyDataSetChanged()
     }
 
+    // update lại số tự thự chọn ảnh trên từng item
     override fun updateNumberOfPositionCheckedItem(position: Int, newIndex: Int) {
-
+        val viewHolder = rvImage.findViewHolderForAdapterPosition(position) as DbPhotoPickerAdapter.ImageViewHolder
+        viewHolder.tvNumber.text = "$newIndex"
     }
 
     // update lại số ảnh đã chọn trên thanh header
-    override fun updateNumberImageChoosedInHeader(numImageChoosed: Int) {
+    override fun updateNumberPhotoChoosedInHeader(numImageChoosed: Int) {
         tvNumberImageChoosed.text = if (numImageChoosed > 0) "($numImageChoosed)" else ""
         btnDone.visibility = if (numImageChoosed > 0) View.VISIBLE else View.GONE
     }
@@ -81,7 +113,17 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     }
 
     override fun onOpenCamera() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        RxPermissions(this)
+            .request(
+                Manifest.permission.CAMERA
+                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                , Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            .subscribe({ grand ->
+                if (grand) {
+                    getPresenter().openCamera(this)
+                }
+            })
     }
 
     override fun onChecked(

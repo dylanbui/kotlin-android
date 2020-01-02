@@ -62,6 +62,52 @@ allprojects {
 }
 
 dependencies {
+
+    testImplementation supportDependencies.testJunit
+    androidTestImplementation supportDependencies.testExtJunit
+    androidTestImplementation supportDependencies.testEspressoCore
+
+    implementation supportDependencies.design
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.kotlinStdlibJdk7
+
+
+    implementation supportDependencies.coreKtx
+    implementation supportDependencies.constraintLayout
+
+    // firebase
+    implementation supportDependencies.firebaseCore
+
+    // coroutines
+    implementation supportDependencies.coroutines
+    // gson
+    implementation supportDependencies.gson
+    // glide
+    implementation supportDependencies.glide
+
+    // Reactive
+    implementation supportDependencies.rxkotlin
+    implementation supportDependencies.rxandroid
+    // rx permission, khong can dung trong thang app
+    implementation supportDependencies.rxpermissions
+
+
+    // lottie
+    // implementation supportDependencies.lottie
+    // retrofit
+    implementation supportDependencies.retrofit
+    annotationProcessor supportDependencies.retrofit
+    implementation supportDependencies.retrofitGson
+    implementation supportDependencies.retrofitLog
+    implementation supportDependencies.picasso
+    // eventbus
+    implementation supportDependencies.eventbus
+
+    // Conductor
+    implementation supportDependencies.conductor
+    // MVP Conductor Plugin
+    implementation supportDependencies.conductorMvp
+
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -70,57 +116,57 @@ dependencies {
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    // Moi nhat
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-
-    // Cu, dung thang cu do androidx ho tro cac ui control khac
-//    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:27.1.0'
-
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-
-    // firebase
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-
-    // coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
-
-    // gson
-    implementation 'com.google.code.gson:gson:2.8.5'
-
-    // glide
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
-
-    // rx permission
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-
-    // lottie
-    implementation 'com.airbnb.android:lottie:2.2.5'
-
-    // android fast networking
-    // implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    annotationProcessor 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    // eventbus
-    implementation 'org.greenrobot:eventbus:3.1.1'
-
-    // Conductor
-    implementation "com.bluelinelabs:conductor:$conductorVersion"
-
-    // MVP Conductor Plugin
-    implementation "com.hannesdorfmann.mosby3:mvp-conductor:$mosbyVersion"
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//
+//    // Moi nhat
+//    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    implementation 'androidx.core:core-ktx:1.1.0'
+//
+//    // Cu, dung thang cu do androidx ho tro cac ui control khac
+////    implementation 'com.android.support:appcompat-v7:28.0.0'
+//    implementation 'com.android.support:design:27.1.0'
+//
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+//
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//
+//    // firebase
+//    implementation 'com.google.firebase:firebase-core:16.0.7'
+//
+//    // coroutines
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
+//
+//    // gson
+//    implementation 'com.google.code.gson:gson:2.8.5'
+//
+//    // glide
+//    implementation 'com.github.bumptech.glide:glide:3.8.0'
+//
+//    // rx permission
+//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+//
+//    // lottie
+//    implementation 'com.airbnb.android:lottie:2.2.5'
+//
+//    // android fast networking
+//    // implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
+//    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+//    annotationProcessor 'com.squareup.retrofit2:retrofit:2.6.2'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+//    implementation 'com.squareup.picasso:picasso:2.71828'
+//
+//    // eventbus
+//    implementation 'org.greenrobot:eventbus:3.1.1'
+//
+//    // Conductor
+//    implementation "com.bluelinelabs:conductor:$conductorVersion"
+//
+//    // MVP Conductor Plugin
+//    implementation "com.hannesdorfmann.mosby3:mvp-conductor:$mosbyVersion"
 }

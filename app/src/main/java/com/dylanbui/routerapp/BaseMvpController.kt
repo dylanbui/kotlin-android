@@ -27,6 +27,7 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
 {
     open var nav: DbNavigation? = null
 
+    protected var mainActivity: MainActivity? = null
     protected var toolbar: Toolbar? = null
     protected var progressView: ViewGroup? = null // Loading for control
     protected var progressDialog: AlertDialog? = null // Loading for page
@@ -80,9 +81,8 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
 
         super.onAttach(view)
 
-        var mainActivity = activity as? MainActivity
-
-        mainActivity?.let {
+        this.mainActivity = activity as? MainActivity
+        this.mainActivity?.let {
             it.setToolBarTitle(setTitle())
             it.enableUpArrow(router.backstackSize > 1)
         }

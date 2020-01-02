@@ -22,13 +22,13 @@ object DbNetworkClient {
 
         if (complete != null) {
             Thread(Runnable {
-                var responsePair = this._doRequest(url, method, params)
+                var responsePair = this.startRequest(url, method, params)
                 complete(responsePair.first, responsePair.second)
             }).start()
             return Pair(JsonObject(), null)
         }
 
-        return this._doRequest(url, method, params)
+        return this.startRequest(url, method, params)
 
 //        var responseStr = this._doRequest(url, method, params)
 //        if (responseStr == null) {
@@ -44,7 +44,7 @@ object DbNetworkClient {
 //        complete(jsonElement, null)
     }
 
-    private fun _doRequest(strUrl: String, method: String = "GET", params: JsonObject = JsonObject()): Pair<JsonElement, String?> {
+    private fun startRequest(strUrl: String, method: String = "GET", params: JsonObject = JsonObject()): Pair<JsonElement, String?> {
         val url = URL(strUrl)
         var httpClient = url.openConnection() as HttpURLConnection
         if (url.protocol == "https") {

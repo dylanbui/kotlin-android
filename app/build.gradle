@@ -73,8 +73,14 @@ dependencies {
     implementation supportDependencies.gson
     // glide
     implementation supportDependencies.glide
+
+    // Reactive
+    implementation supportDependencies.rxkotlin
+    implementation supportDependencies.rxandroid
     // rx permission, khong can dung trong thang app
     implementation supportDependencies.rxpermissions
+
+
     // lottie
     implementation supportDependencies.lottie
     // retrofit
@@ -85,9 +91,7 @@ dependencies {
     implementation supportDependencies.picasso
     // eventbus
     implementation supportDependencies.eventbus
-    // Reactive
-    implementation supportDependencies.rxkotlin
-    implementation supportDependencies.rxandroid
+
     // Conductor
     implementation supportDependencies.conductor
     // MVP Conductor Plugin

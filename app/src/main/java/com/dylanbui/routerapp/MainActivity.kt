@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity()
 
 
     var appCoordinator: AppCoordinator? = null
+    var rxPermissions: RxPermissions? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -82,8 +83,7 @@ class MainActivity : AppCompatActivity()
         appCoordinator = AppCoordinator(router)
         appCoordinator?.start()
 
-        val rxPermissions = RxPermissions(this)
-
+        this.rxPermissions = RxPermissions(this)
 
 //        if (!router.hasRootController()) {
 //             //router.setRoot(RouterTransaction.with(GreetingViewController()))
@@ -129,7 +129,8 @@ class MainActivity : AppCompatActivity()
     {
         super.onStart()
 
-        managePermissions.checkPermissions()
+
+        // managePermissions.checkPermissions()
     }
 
     override fun onBackPressed()

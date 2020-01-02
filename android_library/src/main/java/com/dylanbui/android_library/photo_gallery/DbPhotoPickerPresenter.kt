@@ -18,16 +18,21 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class DbPhoto(var link: String? = null, var isChoosed: Boolean = false, var indexChoosed: Int = 0)
+data class DbPhoto(var link: String? = null, var isChoosed: Boolean = false, var indexChoosed: Int = 0) {
+
+    override fun toString(): String {
+        return "Demo"
+    }
+}
 
 interface DbPhotoPickerViewAction : MvpView {
     fun showButtonDone(isShow: Boolean)
     fun scanImage()
-    fun finishChooseImage(result: String)
+    fun finishChoosePhoto(result: String)
     fun setDataAdapter(myImages: MutableList<DbPhoto>, numImageCanChoose: Int)
     fun addImageToFirstList(myImage: DbPhoto)
     fun updateNumberOfPositionCheckedItem(position: Int, newIndex: Int)
-    fun updateNumberImageChoosedInHeader(numImageChoosed:Int)
+    fun updateNumberPhotoChoosedInHeader(numImageChoosed:Int)
     fun openCameraIntent(outputFileUri: Uri, resultCode: Int)
 }
 
@@ -63,7 +68,7 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
             if (imagePathsResult.size > 1)
                 for (i in 1 until imagePathsResult.size)
                     result = result + "|" + imagePathsResult[i]
-            it.finishChooseImage(result)
+            it.finishChoosePhoto(result)
         }
     }
 
@@ -90,7 +95,7 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
     }
 
     fun updateNumberPhotoChoosedInHeader() {
-        ifViewAttached { it.updateNumberImageChoosedInHeader(numImageChoosed) }
+        ifViewAttached { it.updateNumberPhotoChoosedInHeader(numImageChoosed) }
     }
 
     fun onItemImageChecked(isChecked: Boolean, position: Int, photo: DbPhoto) {
@@ -102,7 +107,7 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
                 imagePathsResult.remove(photo.link!!)
                 numImageChoosed--
             }
-            it.updateNumberImageChoosedInHeader(numImageChoosed)
+            it.updateNumberPhotoChoosedInHeader(numImageChoosed)
             // nếu chỉ chọn 1 tấm thì sau khi chọn trả về kết quả luôn
             if (numImageCanChoose == 1)
                 finishChoosePhoto()

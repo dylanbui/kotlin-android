@@ -9,6 +9,8 @@ import com.dylanbui.routerapp.typicode.post.PostDetailViewController
 import com.dylanbui.routerapp.typicode.post.PostListViewController
 import com.dylanbui.routerapp.typicode.splash_intro.SplashViewController
 import com.dylanbui.routerapp.typicode.user.login.LoginViewController
+import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
+import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewController
 import com.dylanbui.routerapp.utils.*
 
 
@@ -35,7 +37,8 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         // var vcl = PostListViewController()
         // var vcl = SplashViewController()
         // vcl.nav = this
-        var vcl = PlaceAutoCompleteViewController()
+        // var vcl = PlaceAutoCompleteViewController()
+        var vcl = ViewPhotoViewController()
         router.setRoot(RouterTransaction.with(vcl))
 
 //        router.setRoot(RouterTransaction.with(FirstViewController())
