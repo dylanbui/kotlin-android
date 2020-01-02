@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.MediaStore
+import android.widget.ImageView
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.dylanbui.android_library.utils.readBoolean
+import com.dylanbui.android_library.utils.writeBoolean
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
@@ -18,17 +21,80 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class DbPhoto(var link: String? = null, var isChoosed: Boolean = false, var indexChoosed: Int = 0) {
+//@Parcelize
+//data class Student(
+//    var link: String? = null,
+//    var isChoosed: Boolean = false,
+//    var indexChoosed: Int = 0): Parcelable {
+//
+//    companion object CREATOR : Parcelable.Creator<Student> {
+//        override fun createFromParcel(parcel: Parcel): Student {
+//            return Student(parcel)
+//        }
+//
+//        override fun newArray(size: Int): Array<Student?> {
+//            return arrayOfNulls(size)
+//        }
+//    }
+//
+//}
 
-    override fun toString(): String {
-        return "Demo"
+data class DbPhoto(var link: String? = null,
+             var isChoosed: Boolean = false,
+             var indexChoosed: Int) : Parcelable {
+
+    constructor(strLink: String?) : this(strLink, false, 0)
+
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        (parcel.readBoolean()),
+        parcel.readInt()) {
     }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(link)
+        parcel.writeBoolean(isChoosed)
+        parcel.writeInt(indexChoosed)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<DbPhoto> {
+        override fun createFromParcel(parcel: Parcel): DbPhoto {
+            return DbPhoto(parcel)
+        }
+
+        override fun newArray(size: Int): Array<DbPhoto?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    // --- Support function
+    public fun loadToImageView(imageView: ImageView, activity: Any?) { // Any : Activity, Context
+        // Or Activity
+        (activity as? Activity)?.let {
+            Glide.with(it).load(this.link)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imageView)
+        }
+        // Or Context
+        (activity as? Context)?.let {
+            Glide.with(it).load(this.link)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imageView)
+        }
+    }
+
+
 }
 
 interface DbPhotoPickerViewAction : MvpView {
     fun showButtonDone(isShow: Boolean)
     fun scanImage()
     fun finishChoosePhoto(result: String)
+    // fun completeChoosePhoto(results: ArrayList<DbPhoto>)
     fun setDataAdapter(myImages: MutableList<DbPhoto>, numImageCanChoose: Int)
     fun addImageToFirstList(myImage: DbPhoto)
     fun updateNumberOfPositionCheckedItem(position: Int, newIndex: Int)
@@ -43,6 +109,7 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
     var numImageCanChoose = 1
     var numImageChoosed = 0
     var imagePathsResult = ArrayList<String>()
+    var photoResult = ArrayList<DbPhoto>()
     var myImages = ArrayList<DbPhoto>()
     var avataFile: File? = null
     val TAKE_PHOTO_CODE = 0
@@ -72,6 +139,8 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
         }
     }
 
+
+
     fun queryImage(context: Context) {
         val columns = arrayOf(MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID)
         val orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC"
@@ -88,8 +157,10 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
             val dataColumnIndex = imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)
             arrPath.add(imageCursor.getString(dataColumnIndex))
         }
-        for (i in arrPath.indices)
+        for (i in arrPath.indices) {
             myImages.add(DbPhoto(arrPath[i]))
+            // myImages.add(DbPhoto(arrPath[i]))
+        }
 
         ifViewAttached { v -> v.setDataAdapter(myImages, numImageCanChoose) }
     }
@@ -102,9 +173,11 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
         ifViewAttached {
             if (isChecked) {
                 imagePathsResult.add(photo.link!!)
+                photoResult.add(photo)
                 numImageChoosed++
             } else {
                 imagePathsResult.remove(photo.link!!)
+                photoResult.remove(photo)
                 numImageChoosed--
             }
             it.updateNumberPhotoChoosedInHeader(numImageChoosed)

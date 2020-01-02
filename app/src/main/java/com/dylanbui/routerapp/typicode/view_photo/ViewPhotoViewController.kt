@@ -14,8 +14,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.photo_gallery.DbPhotoPickerActivity
 import com.dylanbui.android_library.photo_gallery.DbPhotoPickerAdapter
+import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.getPathString
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
@@ -127,13 +129,12 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 //        galleryIntent.type = "image/*"
 //        startActivityForResult(galleryIntent, ViewPhotoViewController.IMAGE_PICK_CODE)
 
+//        val intent = Intent(activity, DbPhotoPickerActivity::class.java)
+//        startActivityForResult(intent, ViewPhotoViewController.IMAGE_PICK_CODE)
+
         val intent = Intent(activity, DbPhotoPickerActivity::class.java)
+        intent.putExtra("numImageCanChoose", 10)
         startActivityForResult(intent, ViewPhotoViewController.IMAGE_PICK_CODE)
-
-//        val intent = Intent(this, ChooseImageActivity::class.java)
-//        intent.putExtra("numImageCanChoose", getPresenter().LIMIT_IMAGES - getPresenter().myImages.size)
-//        startActivityForResult(intent, REQUEST_CODE_CHOOSE_IMAGE)
-
 
     }
 
@@ -148,8 +149,18 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                 // imgView.setImageURI(changeAvatarPath)
 //                Glide.with(this).load(getPresenter().changeAvatarPath).skipMemoryCache(true)
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(image)
-
                 activity?.toast(changeAvatarPath)
+
+                var arrPhoto: ArrayList<DbPhoto> = data.getParcelableArrayListExtra("results")
+                dLog("arrPhoto.count() = ${arrPhoto.count()}")
+                for (i in 0 until arrPhoto.count()) {
+                    dLog("link = ${arrPhoto[i].link}")
+                }
+
+                var photo: DbPhoto = arrPhoto[0]
+                photo.loadToImageView(imgView, activity)
+
+
             }
         }
 

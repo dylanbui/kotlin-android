@@ -49,6 +49,10 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
              onBackPressed()
         }
 
+        btnDone.setOnClickListener {
+            presenter.finishChoosePhoto()
+        }
+
 //        if (!Util.isNavigationButtonVisible()) {
 //            setResizeNavigationBar(vBottom)
 //            vBottom.visibility = View.VISIBLE
@@ -77,6 +81,7 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     override fun finishChoosePhoto(result: String) {
         val returnIntent = Intent()
         returnIntent.putExtra("result", result)
+        returnIntent.putParcelableArrayListExtra("results", presenter.photoResult)
         setResult(Activity.RESULT_OK, returnIntent)
         onBackPressed()
     }

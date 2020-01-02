@@ -2,6 +2,7 @@ package com.dylanbui.android_library.utils
 
 import android.content.Context
 import android.net.Uri
+import android.os.Parcel
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -93,4 +94,21 @@ fun Context.toast(message: String) {
 
 fun dLog(str: String) {
     Log.d("TAG", str)
+}
+
+
+fun Parcel.writeBoolean(flag: Boolean) {
+    when(flag) {
+        true -> writeInt(1)
+        false -> writeInt(0)
+        else -> writeInt(0)
+    }
+}
+
+fun Parcel.readBoolean(): Boolean {
+    return when(readInt()) {
+        1 -> true
+        0 -> false
+        else -> false
+    }
 }
