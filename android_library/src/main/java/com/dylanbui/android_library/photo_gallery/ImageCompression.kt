@@ -11,6 +11,14 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
+class CompressImageCompletedEvent(imagePath: String) {
+    var imagePath = ""
+
+    init {
+        this.imagePath = imagePath
+    }
+}
+
 class ImageCompression(private val context: Context, size: Float) : AsyncTask<String, Void, String>() {
     private var maxHeight = 600.0f
     private var maxWidth = 600.0f

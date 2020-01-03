@@ -26,6 +26,8 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     private lateinit var btnDone: Button
     private lateinit var rvImage: RecyclerView
 
+    private val TAKE_PHOTO_CODE = 0
+
     override fun createPresenter(): DbPhotoPickerPresenter = DbPhotoPickerPresenter()
 
     open override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,10 +113,10 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
         btnDone.visibility = if (numImageChoosed > 0) View.VISIBLE else View.GONE
     }
 
-    override fun openCameraIntent(outputFileUri: Uri, resultCode: Int) {
+    override fun openCameraIntent(outputFileUri: Uri) {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-        startActivityForResult(cameraIntent, resultCode)
+        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE)
     }
 
     override fun onOpenCamera() {
@@ -138,6 +140,13 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
         imageViewHolder: DbPhotoPickerAdapter.ImageViewHolder
     ) {
         presenter.onItemImageChecked(isChecked, position, myImage)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == TAKE_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
+            presenter.onCapturePhotoResult(this, requestCode, resultCode, data)
+        }
     }
 
 }
