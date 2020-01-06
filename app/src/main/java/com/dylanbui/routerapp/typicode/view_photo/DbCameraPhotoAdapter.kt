@@ -31,6 +31,23 @@ class DbCameraPhotoAdapter : RecyclerView.Adapter<DbCameraPhotoAdapter.ImageAlle
     fun addImage(image: DbPhoto) {
         listPhotos.add(image)
         notifyItemInserted(listPhotos.size - 1)
+        // notifyDataSetChanged()
+    }
+
+    fun removeItem(position: Int) {
+        listPhotos.removeAt(position)
+        notifyItemRemoved(position)
+        // notifyDataSetChanged()
+
+        // Kotlin
+        val number: Int? = 10
+        if (number != null) {
+            val actualNumber: Int = number
+        }
+
+        var t = ArrayList<Int>()
+        t.add(1245)
+        t.remove(3)
     }
 
     // override fun getItemCount() = if (listPhotos != null) listPhotos.size else 0
@@ -49,10 +66,11 @@ class DbCameraPhotoAdapter : RecyclerView.Adapter<DbCameraPhotoAdapter.ImageAlle
             imgError.visibility = View.GONE // if (surveyImage.uploadError) View.VISIBLE else View.GONE
 
             imgDelete.setOnClickListener {
-                if (position < listPhotos.size) {
-                    listPhotos.removeAt(position)
-                    notifyItemRemoved(position)
-                }
+                removeItem(position)
+//                if (position < listPhotos.size) {
+//                    listPhotos.removeAt(position)
+//                    notifyItemRemoved(position)
+//                }
             }
 
             // -- Uu tien load tu duong dan Path --

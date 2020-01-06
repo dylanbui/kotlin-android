@@ -4,30 +4,34 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.dylanbui.android_library.DbMessageEvent
+import com.dylanbui.android_library.doPostNotification
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.photo_gallery.DbPhotoPickerActivity
-import com.dylanbui.android_library.photo_gallery.DbPhotoPickerAdapter
 import com.dylanbui.android_library.utils.dLog
-import com.dylanbui.android_library.utils.getPathString
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
-import com.dylanbui.routerapp.networking.UploadViewController
-import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoPresenter
-import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
-import com.google.gson.Gson
+import com.dylanbui.routerapp.typicode.ApplicationRoute
+import com.dylanbui.routerapp.typicode.post.PostDetailViewController
+import com.dylanbui.routerapp.utils.defaultPushController
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
-import com.tbruyelle.rxpermissions2.RxPermissions
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
+
+
+// Define enum nhu la 1 data class
+sealed class DbPhotoEvent: DbMessageEvent {
+    class capturePhotoComplete(val path: String) : DbPhotoEvent()
+    class capturePhotoError(val errorCode: Int) : DbPhotoEvent()
+}
 
 class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhotoPresenter>(),
     ViewPhotoViewAction {
@@ -134,6 +138,14 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
     override fun onAttach(view: View) {
         super.onAttach(view)
+        // -- Register Event Bus
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetach(view: View) {
+        super.onDetach(view)
+        // -- Unregister Event Bus
+        EventBus.getDefault().unregister(this)
     }
 
     private fun choosePhotoPicker() {
@@ -173,7 +185,8 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                 var photo: DbPhoto = arrPhoto[0]
                 photo.loadToImageView(imgView, activity)
 
-
+                // EventBus.getDefault().post(DbPhotoEvent.capturePhotoComplete(photo.path!!))
+                doPostNotification(DbPhotoEvent.capturePhotoError(arrPhoto.size))
             }
         }
 
@@ -190,6 +203,9 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                     var photo: DbPhoto = arrPhoto[0]
                     activity?.toast(photo.path ?: "")
                     photo.loadToImageView(imgView, activity)
+
+                    // EventBus.getDefault().post(DbPhotoEvent.capturePhotoComplete(photo.path!!))
+                    doPostNotification(DbPhotoEvent.capturePhotoComplete(photo.path!!))
 
 //                    val json = data.getStringExtra("listImage")
 //                    dLog(json)
@@ -220,5 +236,21 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 //        }
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    // fun onMessageEvent(mes: DbPhotoEvent) {
+    fun onMessageEvent(mes: DbMessageEvent) {
+        when (mes) {
+            is DbPhotoEvent.capturePhotoComplete -> {
+                activity?.toast("capturePhotoComplete: " + mes.path)
+            }
+            is DbPhotoEvent.capturePhotoError -> {
+                activity?.toast("capturePhotoError: " + mes.errorCode)
+            }
+        }
+
+
+    }
+
 }
 

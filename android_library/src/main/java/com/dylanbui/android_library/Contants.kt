@@ -1,6 +1,26 @@
 package com.dylanbui.android_library
 
+import org.greenrobot.eventbus.EventBus
+
 typealias DictionaryType = HashMap<String, Any?>
+
+interface DbMessageEvent {}
+
+// Define enum nhu la 1 data class
+sealed class DbDemoMessageEvent: DbMessageEvent {
+    class SplashPageComplete() : DbDemoMessageEvent()
+    class GotoPostDetail(val post: Int) : DbDemoMessageEvent()
+    class GotoPhUserDetail(val url: String, val caption: String) : DbDemoMessageEvent()
+    class GotoAnyWhere() : DbDemoMessageEvent()
+}
+
+fun doPostNotification(message: DbMessageEvent) {
+    EventBus.getDefault().post(message)
+}
+
+//class DbMessageNotify(message: DbMessageEvent) {
+//    var message = message
+//}
 
 //class Constants {
 //
