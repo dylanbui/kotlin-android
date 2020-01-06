@@ -34,4 +34,30 @@ object ImageViewUtils {
         return rotatedBitmap
     }
 
+    fun getImageOrientation(imagePath: String): Int {
+        var rotate = 0
+        try {
+            val exif = ExifInterface(imagePath)
+            val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1)
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotate = 180
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotate = 90
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return rotate
+    }
+
+    fun changeExifData(imagePath: String, orientation: Int): Int {
+        val exif = ExifInterface(imagePath)
+        val exifOrientation = exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+        if (exifOrientation != ExifInterface.ORIENTATION_UNDEFINED.toString()) {
+            return orientation
+        }
+        return ExifInterface.ORIENTATION_NORMAL
+    }
+
 }

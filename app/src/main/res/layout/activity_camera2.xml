@@ -8,28 +8,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/viewControl"
         android:background="@color/black">
 
-        <TextureView
+        <com.dylanbui.android_library.photo_gallery.DbAutoFitTextureView
             android:id="@+id/textureView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
     </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/viewControl"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/black">
+        android:layout_alignParentStart="true"
+        android:background="@color/blue_text_color">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listImage"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_above="@+id/layoutControl"/>
+
         <RelativeLayout
             android:id="@+id/layoutControl"
             android:layout_width="match_parent"
@@ -59,5 +61,7 @@
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/bg_delete_photo_selector"/>
         </RelativeLayout>
+
     </RelativeLayout>
+
 </RelativeLayout>

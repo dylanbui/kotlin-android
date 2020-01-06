@@ -363,10 +363,23 @@ public class EZCam {
     }
 
     /**
-     * take a picture
+     * DucBui: custom take a picture with orientation
      */
     public void takePicture(int orientation) {
         captureRequestBuilderImageReader.set(CaptureRequest.JPEG_ORIENTATION, orientation);
+        try {
+            cameraCaptureSession.capture(captureRequestBuilderImageReader.build(), null, backgroundHandler);
+        } catch (CameraAccessException e) {
+            notifyError(e.getMessage());
+        }
+    }
+
+    /**
+     * take a picture
+     */
+    public void takePicture() {
+        // this.takePicture(cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION));
+        captureRequestBuilderImageReader.set(CaptureRequest.JPEG_ORIENTATION, cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION));
         try {
             cameraCaptureSession.capture(captureRequestBuilderImageReader.build(), null, backgroundHandler);
         } catch (CameraAccessException e) {

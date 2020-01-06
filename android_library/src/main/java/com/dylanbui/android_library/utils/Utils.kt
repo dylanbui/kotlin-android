@@ -26,6 +26,7 @@ import kotlinx.coroutines.*
 import java.net.URLEncoder
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.math.round
 import kotlin.math.roundToInt
 
 // @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
@@ -67,8 +68,8 @@ object Utils {
         }
     }
 
-    fun dpToPx(dp: Int): Float {
-        return (dp * Resources.getSystem().displayMetrics.density)
+    fun dpToPx(dp: Int): Int {
+        return Math.round(dp * Resources.getSystem().displayMetrics.density)
     }
 
     fun pxToDp(px: Int): Float {

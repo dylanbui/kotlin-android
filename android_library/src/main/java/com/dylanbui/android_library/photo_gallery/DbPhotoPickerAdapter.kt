@@ -1,7 +1,6 @@
 package com.dylanbui.android_library.photo_gallery
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dylanbui.android_library.R
-import kotlinx.android.synthetic.main.adapter_photo_picker_image_item.view.*
+
 
 
 class DbPhotoPickerAdapter(private val myImages: MutableList<DbPhoto>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -74,7 +73,7 @@ class DbPhotoPickerAdapter(private val myImages: MutableList<DbPhoto>?) : Recycl
                 binding = true
                 imageViewHolder.checkBox!!.isChecked = myImages!![position - 1].isChoosed
                 binding = false
-                Glide.with(imageViewHolder.image!!.context).load(myImages[position - 1].link)
+                Glide.with(imageViewHolder.image!!.context).load(myImages[position - 1].path)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .centerCrop().into(imageViewHolder.image)

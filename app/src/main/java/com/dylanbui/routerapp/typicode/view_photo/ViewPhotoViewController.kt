@@ -25,6 +25,7 @@ import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.networking.UploadViewController
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoPresenter
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
+import com.google.gson.Gson
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 
@@ -36,11 +37,14 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
         private const val IMAGE_PICK_CODE = 1000
         //Permission code
         private const val PERMISSION_CODE = 1001
+        // Camera code
+        private const val CAMERA_CODE = 1002
     }
 
     lateinit var btnPermission: Button
     lateinit var btnUpload: Button
     lateinit var btnPickImage: Button
+    lateinit var btnCamera: Button
     lateinit var imgView: ImageView
 
     var mediaPath: String? = null
@@ -63,11 +67,21 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
         }
 
+        btnCamera = view.findViewById(R.id.btnCamera)
+        btnCamera.setOnClickListener { _ ->
+            var i = Intent(activity, DbCameraActivity::class.java)
+            i.putExtra("minTotalItem", 2)
+            i.putExtra("maxTotalItem",6)
+            // i.putExtra("pathName", "ducbui") // Duong dan
+            i.putExtra("folderName", "listing222") // Ten folder
+            i.putExtra("filePrefix", "dylan___") // Ten folder
+            startActivityForResult(i, CAMERA_CODE)
+        }
+
         btnPermission = view.findViewById(R.id.btnPermission)
         btnPermission.setOnClickListener { _ ->
             this.mainActivity?.rxPermissions?.request(
                 Manifest.permission.CAMERA
-
                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
                 , Manifest.permission.READ_EXTERNAL_STORAGE
             )?.subscribe({ grand ->
@@ -87,7 +101,6 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
             this.mainActivity?.rxPermissions?.request(
                 Manifest.permission.CAMERA
-
                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
                 , Manifest.permission.READ_EXTERNAL_STORAGE
             )?.subscribe({ grand ->
@@ -142,7 +155,7 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == ViewPhotoViewController.IMAGE_PICK_CODE) run {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) run {
             if (data != null) {
                 var changeAvatarPath: String = data.getStringExtra("result")
 
@@ -154,7 +167,7 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                 var arrPhoto: ArrayList<DbPhoto> = data.getParcelableArrayListExtra("results")
                 dLog("arrPhoto.count() = ${arrPhoto.count()}")
                 for (i in 0 until arrPhoto.count()) {
-                    dLog("link = ${arrPhoto[i].link}")
+                    dLog("link = ${arrPhoto[i].path}")
                 }
 
                 var photo: DbPhoto = arrPhoto[0]
@@ -163,6 +176,42 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
             }
         }
+
+        if (resultCode == MvpActivity.RESULT_OK && requestCode == CAMERA_CODE) run {
+            if (data != null) {
+                try {
+
+                    var arrPhoto: ArrayList<DbPhoto> = data.getParcelableArrayListExtra("results")
+                    dLog("arrPhoto.count() = ${arrPhoto.count()}")
+                    for (i in 0 until arrPhoto.size) {
+                        dLog("link = ${arrPhoto[i].path}")
+                    }
+
+                    var photo: DbPhoto = arrPhoto[0]
+                    activity?.toast(photo.path ?: "")
+                    photo.loadToImageView(imgView, activity)
+
+//                    val json = data.getStringExtra("listImage")
+//                    dLog(json)
+//                    val listImage: MutableList<SurveyImage> =
+//                        Gson().fromJson(
+//                            data?.getStringExtra("listImage"),
+//                            Array<SurveyImage>::class.java
+//                        )
+//                            .toMutableList()
+//                    imageAlleys.addAll(listImage)
+//
+//                    updateLocationAllImage()
+//
+//                    ifViewAttached { v -> v.addDataAdapterAlleyImage(listImage) }
+
+                } catch (e: Exception) {
+
+                }
+
+            }
+        }
+
 
 //        if (resultCode == Activity.RESULT_OK && requestCode == ViewPhotoViewController.IMAGE_PICK_CODE){
 //            chooseFile = data?.data
