@@ -8,6 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
+    <TextView
+        android:id="@+id/txtPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_15" />
+
     <ImageView
         android:id="@+id/preview"
         android:layout_width="match_parent"

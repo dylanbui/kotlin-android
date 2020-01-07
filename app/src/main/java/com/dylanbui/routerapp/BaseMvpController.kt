@@ -16,6 +16,7 @@ import com.dylanbui.routerapp.utils.DbNavigation
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.hannesdorfmann.mosby3.mvp.conductor.MvpController
+import org.greenrobot.eventbus.EventBus
 
 interface ActionBarProvider {
     fun supportActionBar(): ActionBar?
@@ -58,6 +59,7 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
     {
+        // -- inflateView for this Controller --
         val view: View = inflateView(inflater, container)
         progressView = view.findViewById(R.id.progressView)
         activity?.let {
@@ -66,6 +68,9 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
         toolbar = view.findViewById(R.id.toolbar)
         toolbar?.title = setTitle()
         this.enableBackButton()
+        // -- Register Event Bus , At OnCreateView
+        EventBus.getDefault().register(this)
+        // -- Blind View for this Controller --
         onViewBound(view)
         return view
     }
@@ -92,6 +97,12 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
     override fun onDestroyView(view: View)
     {
         super.onDestroyView(view)
+    }
+
+    override fun onDestroy() {
+        // -- Unregister Event Bus
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     // -- Interface BaseMvpView --

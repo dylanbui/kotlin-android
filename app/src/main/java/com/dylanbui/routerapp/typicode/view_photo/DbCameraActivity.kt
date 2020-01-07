@@ -67,11 +67,9 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
         textureView = findViewById<DbAutoFitTextureView>(R.id.textureView)
         dateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
         ezCam = EZCam(this)
-        ezCam?.let {
-            it.setCameraCallback(this)
-            val id = it.camerasList.get(CameraCharacteristics.LENS_FACING_BACK)
-            it.selectCamera(id)
-        }
+        ezCam.setCameraCallback(this)
+        val id = ezCam.camerasList.get(CameraCharacteristics.LENS_FACING_BACK)
+        ezCam.selectCamera(id)
 
         listImage = findViewById<RecyclerView>(R.id.listImage)
         listImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -121,18 +119,18 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
             )
             .subscribe({ grand ->
                 if (grand) {
-                    ezCam?.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
+                    ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
                 }
             })
 
     }
 
     override fun onCameraReady() {
-        ezCam?.setCaptureSetting(
+        ezCam.setCaptureSetting(
             CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE,
             CameraMetadata.COLOR_CORRECTION_ABERRATION_MODE_HIGH_QUALITY
         )
-        ezCam?.startPreview()
+        ezCam.startPreview()
 
         this.allowCameraControl(true)
     }
@@ -194,7 +192,7 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
         // -- Truong hop chi tra ve 1 tam anh --
         if (maxTotalItem == 1) {
-            ezCam?.stopPreview()
+            ezCam.stopPreview()
             this.returnIntentResult()
             return
         }
@@ -220,7 +218,7 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
     }
 
     override fun onDestroy() {
-        ezCam?.close()
+        ezCam.close()
         super.onDestroy()
     }
 
@@ -232,7 +230,7 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
     // private var mHandler = Handler(Looper.getMainLooper())
     private fun addImageToList(image: DbPhoto) {
-        mAdapter?.addImage(image)
+        mAdapter.addImage(image)
 //        mHandler.post {
 //            if (mAdapter?.surveyImages!!.size == 0) {
 //                image.latitude = LocationService.mLastLocation?.latitude

@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import com.dylanbui.android_library.DbMessageEvent
+
 import com.dylanbui.android_library.doPostNotification
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.photo_gallery.DbPhotoPickerActivity
@@ -50,6 +52,7 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
     lateinit var btnPickImage: Button
     lateinit var btnCamera: Button
     lateinit var imgView: ImageView
+    lateinit var txtPreview: TextView
 
     var mediaPath: String? = null
     var chooseFile: Uri? = null
@@ -64,6 +67,9 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
     }
 
     override fun onViewBound(view: View) {
+        txtPreview = view.findViewById(R.id.txtPreview) as TextView
+        txtPreview.text = "None"
+
         imgView = view.findViewById(R.id.preview) as ImageView
 
         btnUpload = view.findViewById(R.id.btnUpload)
@@ -138,14 +144,11 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        // -- Register Event Bus
-        EventBus.getDefault().register(this)
     }
 
     override fun onDetach(view: View) {
         super.onDetach(view)
-        // -- Unregister Event Bus
-        EventBus.getDefault().unregister(this)
+
     }
 
     private fun choosePhotoPicker() {
@@ -185,8 +188,8 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                 var photo: DbPhoto = arrPhoto[0]
                 photo.loadToImageView(imgView, activity)
 
-                // EventBus.getDefault().post(DbPhotoEvent.capturePhotoComplete(photo.path!!))
-                doPostNotification(DbPhotoEvent.capturePhotoError(arrPhoto.size))
+                EventBus.getDefault().post(DbPhotoEvent.capturePhotoComplete(photo.path!!))
+                // doPostNotification(DbPhotoEvent.capturePhotoError(arrPhoto.size))
             }
         }
 
@@ -201,26 +204,10 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
                     }
 
                     var photo: DbPhoto = arrPhoto[0]
-                    activity?.toast(photo.path ?: "")
+                    // activity?.toast(photo.path ?: "")
                     photo.loadToImageView(imgView, activity)
 
-                    // EventBus.getDefault().post(DbPhotoEvent.capturePhotoComplete(photo.path!!))
                     doPostNotification(DbPhotoEvent.capturePhotoComplete(photo.path!!))
-
-//                    val json = data.getStringExtra("listImage")
-//                    dLog(json)
-//                    val listImage: MutableList<SurveyImage> =
-//                        Gson().fromJson(
-//                            data?.getStringExtra("listImage"),
-//                            Array<SurveyImage>::class.java
-//                        )
-//                            .toMutableList()
-//                    imageAlleys.addAll(listImage)
-//
-//                    updateLocationAllImage()
-//
-//                    ifViewAttached { v -> v.addDataAdapterAlleyImage(listImage) }
-
                 } catch (e: Exception) {
 
                 }
@@ -237,19 +224,20 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    // fun onMessageEvent(mes: DbPhotoEvent) {
-    fun onMessageEvent(mes: DbMessageEvent) {
+    //fun onMessageEvent(mes: DbMessageEvent) {
+    fun onMessageEvent(mes: DbPhotoEvent) {
         when (mes) {
             is DbPhotoEvent.capturePhotoComplete -> {
+                txtPreview.text = "capturePhotoComplete: " + mes.path
                 activity?.toast("capturePhotoComplete: " + mes.path)
             }
             is DbPhotoEvent.capturePhotoError -> {
+                txtPreview.text = "capturePhotoError: " + mes.errorCode
                 activity?.toast("capturePhotoError: " + mes.errorCode)
             }
         }
-
-
     }
 
 }

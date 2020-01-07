@@ -112,11 +112,11 @@ class DbPhotoPickerPresenter: MvpBasePresenter<DbPhotoPickerViewAction>() {
     fun onItemImageChecked(isChecked: Boolean, position: Int, photo: DbPhoto) {
         ifViewAttached {
             if (isChecked) {
-                imagePathsResult.add(photo.link!!)
+                imagePathsResult.add(photo.path ?: "none")
                 photoResult.add(photo)
                 numImageChoosed++
             } else {
-                imagePathsResult.remove(photo.link!!)
+                imagePathsResult.remove(photo.path ?: "none")
                 photoResult.remove(photo)
                 numImageChoosed--
             }

@@ -20,8 +20,6 @@ import android.media.ImageReader;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-//import android.support.annotation.NonNull;
-//import android.support.v4.app.ActivityCompat;
 import android.util.Size;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -37,7 +35,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+
+//import android.support.annotation.NonNull;
+//import android.support.v4.app.ActivityCompat;
+
+// Day la phien ban goc, chua qua chinh sua. Phien ban Survey da chinh sua output photo size
 
 /**
  * Class that simplifies the use of Camera 2 api
@@ -61,13 +64,43 @@ public class EZCam {
     private CaptureRequest.Builder captureRequestBuilder;
     private CaptureRequest.Builder captureRequestBuilderImageReader;
     private ImageReader imageReader;
-    public int mRotation = 6;
+
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
+    private ImageReader.OnImageAvailableListener onImageAvailable = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            if (cameraCallback != null) {
+                cameraCallback.onPicture(imageReader.acquireLatestImage());
+            }
+        }
+    };
 
     public EZCam(Context context) {
         this.context = context;
         this.cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+    }
+
+    /**
+     * Save image to storage
+     *
+     * @param image Image object got from onPicture() callback of EZCamCallback
+     * @param file  File where image is going to be written
+     * @return File object pointing to the file uri, null if file already exist
+     */
+    public static File saveImage(Image image, File file) throws IOException {
+        if (file.exists()) {
+            image.close();
+            return null;
+        }
+        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
+        FileOutputStream output = new FileOutputStream(file);
+        output.write(bytes);
+        image.close();
+        output.close();
+        return file;
     }
 
     /**
@@ -84,7 +117,6 @@ public class EZCam {
      *
      * @return SparseArray of available cameras ids
      */
-
     public SparseArray<String> getCamerasList() {
         camerasList = new SparseArray<>();
         try {
@@ -139,13 +171,8 @@ public class EZCam {
             cameraCharacteristics = cameraManager.getCameraCharacteristics(currentCamera);
             StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             if (map != null) {
-
-                previewSize = getSizeCamera(map);
-                if (previewSize.getWidth() > previewSize.getHeight()) {
-                    imageReader = ImageReader.newInstance(previewSize.getWidth(), previewSize.getHeight(), ImageFormat.JPEG, 1);
-                } else {
-                    imageReader = ImageReader.newInstance(2048, 1152, ImageFormat.JPEG, 1);
-                }
+                previewSize = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
+                imageReader = ImageReader.newInstance(previewSize.getWidth(), previewSize.getHeight(), ImageFormat.JPEG, 1);
                 imageReader.setOnImageAvailableListener(onImageAvailable, backgroundHandler);
             } else {
                 notifyError("Could not get configuration map.");
@@ -209,18 +236,6 @@ public class EZCam {
         } catch (CameraAccessException e) {
             notifyError(e.getMessage());
         }
-    }
-
-    private Size getSizeCamera(StreamConfigurationMap map) {
-        List<Size> sizes = Arrays.asList(map.getOutputSizes(ImageFormat.JPEG));
-        for (int i = 0; i < sizes.size(); i++) {
-            Size size = sizes.get(i);
-            if (size.getWidth() == 2048) {
-                return size;
-
-            }
-        }
-        return sizes.get(0);
     }
 
     private void setupPreview_(int templateType, TextureView textureView) {
@@ -303,9 +318,29 @@ public class EZCam {
 
     private void setAspectRatioTextureView(TextureView textureView, int surfaceWidth, int surfaceHeight) {
         int rotation = ((Activity) context).getWindowManager().getDefaultDisplay().getRotation();
-        int newWidth;
-        newWidth = surfaceHeight;
-        int newHeight = (surfaceHeight * previewSize.getWidth() / previewSize.getHeight());
+        int newWidth = surfaceWidth, newHeight = surfaceHeight;
+
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                newWidth = surfaceWidth;
+                newHeight = (surfaceWidth * previewSize.getWidth() / previewSize.getHeight());
+                break;
+
+            case Surface.ROTATION_180:
+                newWidth = surfaceWidth;
+                newHeight = (surfaceWidth * previewSize.getWidth() / previewSize.getHeight());
+                break;
+
+            case Surface.ROTATION_90:
+                newWidth = surfaceHeight;
+                newHeight = (surfaceHeight * previewSize.getWidth() / previewSize.getHeight());
+                break;
+
+            case Surface.ROTATION_270:
+                newWidth = surfaceHeight;
+                newHeight = (surfaceHeight * previewSize.getWidth() / previewSize.getHeight());
+                break;
+        }
 
         textureView.setLayoutParams(new FrameLayout.LayoutParams(newWidth, newHeight, Gravity.CENTER));
         rotatePreview(textureView, rotation, newWidth, newHeight);
@@ -363,22 +398,9 @@ public class EZCam {
     }
 
     /**
-     * DucBui: custom take a picture with orientation
-     */
-    public void takePicture(int orientation) {
-        captureRequestBuilderImageReader.set(CaptureRequest.JPEG_ORIENTATION, orientation);
-        try {
-            cameraCaptureSession.capture(captureRequestBuilderImageReader.build(), null, backgroundHandler);
-        } catch (CameraAccessException e) {
-            notifyError(e.getMessage());
-        }
-    }
-
-    /**
      * take a picture
      */
     public void takePicture() {
-        // this.takePicture(cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION));
         captureRequestBuilderImageReader.set(CaptureRequest.JPEG_ORIENTATION, cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION));
         try {
             cameraCaptureSession.capture(captureRequestBuilderImageReader.build(), null, backgroundHandler);
@@ -387,41 +409,10 @@ public class EZCam {
         }
     }
 
-    private ImageReader.OnImageAvailableListener onImageAvailable = new ImageReader.OnImageAvailableListener() {
-        @Override
-        public void onImageAvailable(ImageReader reader) {
-            if (cameraCallback != null) {
-                cameraCallback.onPicture(imageReader.acquireLatestImage());
-            }
-        }
-    };
-
     private void notifyError(String message) {
         if (cameraCallback != null) {
             cameraCallback.onError(message);
         }
-    }
-
-    /**
-     * Save image to storage
-     *
-     * @param image Image object got from onPicture() callback of EZCamCallback
-     * @param file  File where image is going to be written
-     * @return File object pointing to the file uri, null if file already exist
-     */
-    public static File saveImage(Image image, File file) throws IOException {
-        if (file.exists()) {
-            image.close();
-            return null;
-        }
-        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        byte[] bytes = new byte[buffer.remaining()];
-        buffer.get(bytes);
-        FileOutputStream output = new FileOutputStream(file);
-        output.write(bytes);
-        image.close();
-        output.close();
-        return file;
     }
 
     private void startBackgroundThread() {
