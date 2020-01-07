@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dylanbui.android_library.camera.ezcam.EZCam
 import com.dylanbui.android_library.camera.ezcam.EZCamCallback
-import com.dylanbui.android_library.photo_gallery.DbAutoFitTextureView
+import com.dylanbui.android_library.camera.DbAutoFitTextureView
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
