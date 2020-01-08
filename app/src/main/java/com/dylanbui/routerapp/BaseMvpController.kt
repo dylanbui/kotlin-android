@@ -11,12 +11,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
+import com.dylanbui.android_library.DbMessageEvent
 import com.dylanbui.android_library.utils.Utils
 import com.dylanbui.routerapp.utils.DbNavigation
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.hannesdorfmann.mosby3.mvp.conductor.MvpController
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 interface ActionBarProvider {
     fun supportActionBar(): ActionBar?
@@ -195,5 +198,9 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
 //            actionBar.setTitle(title)
 //        }
 //    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(mes: DbMessageEvent) {
+    }
 
 }

@@ -52,6 +52,8 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation supportDependencies.testJunit
     androidTestImplementation supportDependencies.testExtJunit
     androidTestImplementation supportDependencies.testEspressoCore
@@ -63,6 +65,9 @@ dependencies {
 
     implementation supportDependencies.coreKtx
     implementation supportDependencies.constraintLayout
+
+    // Google Services
+    implementation supportDependencies.ggServicesMaps
 
     // firebase
     implementation supportDependencies.firebaseCore
@@ -161,8 +166,6 @@ dependencies {
     //implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     // annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
     //kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
-
-
 
 
 }

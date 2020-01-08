@@ -4,6 +4,7 @@ import android.content.Context
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.dylanbui.routerapp.StartApplication
+import com.dylanbui.routerapp.typicode.google_map.GoogleMapViewController
 import com.dylanbui.routerapp.typicode.google_map.PlaceAutoCompleteViewController
 import com.dylanbui.routerapp.typicode.post.PostDetailViewController
 import com.dylanbui.routerapp.typicode.post.PostListViewController
@@ -38,7 +39,8 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         // var vcl = SplashViewController()
         // vcl.nav = this
         // var vcl = PlaceAutoCompleteViewController()
-        var vcl = ViewPhotoViewController()
+        // var vcl = ViewPhotoViewController()
+        var vcl = GoogleMapViewController()
         router.setRoot(RouterTransaction.with(vcl))
 
 //        router.setRoot(RouterTransaction.with(FirstViewController())

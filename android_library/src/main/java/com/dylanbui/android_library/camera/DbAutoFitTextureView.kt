@@ -1,4 +1,4 @@
-package com.dylanbui.android_library.photo_gallery
+package com.dylanbui.android_library.camera
 
 import android.content.Context
 import android.util.AttributeSet

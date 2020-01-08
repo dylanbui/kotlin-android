@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/black">
 
-        <com.dylanbui.android_library.photo_gallery.DbAutoFitTextureView
+        <com.dylanbui.android_library.camera.DbAutoFitTextureView
             android:id="@+id/textureView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

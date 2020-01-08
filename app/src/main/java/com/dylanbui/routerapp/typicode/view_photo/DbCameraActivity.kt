@@ -2,11 +2,8 @@ package com.dylanbui.routerapp.typicode.view_photo
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraMetadata
-import android.hardware.camera2.CaptureRequest
 import android.media.Image
 import android.os.Bundle
 import android.os.Environment
@@ -18,9 +15,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dylanbui.android_library.camera.ezcam.EZCam
-import com.dylanbui.android_library.camera.ezcam.EZCamCallback
+import com.dylanbui.android_library.DbPermissions
 import com.dylanbui.android_library.camera.DbAutoFitTextureView
+import com.dylanbui.android_library.camera.dbcam.DbCameraManager
+import com.dylanbui.android_library.camera.dbcam.DbCameraManagerCallback
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
@@ -31,12 +29,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+/*
+* DONE : EZCam hay DbCameraManager deu xu dung duoc !!!
+*
+* */
 
-class DbCameraActivity : AppCompatActivity(), EZCamCallback {
+
+class DbCameraActivity : AppCompatActivity(), DbCameraManagerCallback {
 
     private var dateFormat: SimpleDateFormat? = null
     private val TAG = "CAM"
-    
+
     // -- Intent Params --
     var minTotalItem = 1
     var maxTotalItem = 1
@@ -44,7 +47,7 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
     var pathName: String? = null
     var filePrefix: String = "my_camera_"
 
-    private lateinit var ezCam: EZCam
+    private lateinit var ezCam: DbCameraManager //EZCam
     private lateinit var listImage: RecyclerView
     private lateinit var textureView: DbAutoFitTextureView
     private lateinit var mAdapter: DbCameraPhotoAdapter
@@ -66,10 +69,10 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
         textureView = findViewById<DbAutoFitTextureView>(R.id.textureView)
         dateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
-        ezCam = EZCam(this)
+        ezCam = DbCameraManager(this, textureView)
         ezCam.setCameraCallback(this)
-        val id = ezCam.camerasList.get(CameraCharacteristics.LENS_FACING_BACK)
-        ezCam.selectCamera(id)
+//        val id = ezCam.camerasList.get(CameraCharacteristics.LENS_FACING_BACK)
+//        ezCam.selectCamera(id)
 
         listImage = findViewById<RecyclerView>(R.id.listImage)
         listImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -80,7 +83,7 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
         takePictureButton.setOnClickListener { //mSpinnerTakePicture?.onNext(200)
             if (mAdapter.listPhotos.size < maxTotalItem) {
                 this.allowCameraControl(false)
-                ezCam?.takePicture()
+                ezCam.takePicture()
             } else {
                 //var message = getString(R.string.str_max_limit_image, maxTotalItem.toString())
                 showToast("Loi chup qua nhieu hinh !!")
@@ -110,28 +113,42 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
         }
 
         this.allowCameraControl(false)
+    }
 
-        RxPermissions(this)
-            .request(
-                Manifest.permission.CAMERA
-                , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .subscribe({ grand ->
-                if (grand) {
-                    ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
-                }
-            })
+    override fun onResume() {
+        super.onResume()
 
+        DbPermissions.requestAccessPhotoLibrary(this) { grand ->
+            if (grand) {
+                // -- Start camera at Resume event --
+                ezCam.onResumeCapture()
+            }
+        }
+
+//        RxPermissions(this)
+//            .request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
+//            .subscribe() { grand ->
+//                if (grand) {
+//                    ezCam.onResumeCapture()
+//                }
+//            }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ezCam.onPause()
     }
 
     override fun onCameraReady() {
-        ezCam.setCaptureSetting(
-            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE,
-            CameraMetadata.COLOR_CORRECTION_ABERRATION_MODE_HIGH_QUALITY
-        )
-        ezCam.startPreview()
-
+//        ezCam.setCaptureSetting(
+//            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE,
+//            CameraMetadata.COLOR_CORRECTION_ABERRATION_MODE_HIGH_QUALITY
+//        )
+//        ezCam.startPreview()
         this.allowCameraControl(true)
     }
 
@@ -164,14 +181,18 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
         // -- Tao file tam de luu --
         val filename = filePrefix + System.currentTimeMillis() + ".jpg"
+
         return File(storageDir, filename)
+//        val dir = getOutputDirectory(this)
+//        dLog(dir.path)
+//        return File(dir.path, filename)
     }
 
     override fun onPicture(image: Image) {
 
         try {
             var file = makeFile()
-            EZCam.saveImage(image, file)
+            DbCameraManager.saveImage(image, file)
 
             // -- Save to Library --
             // -- Sau khi luu vao Pictures, thi duong dan anh tren khong con ton tai --
@@ -192,12 +213,14 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
         // -- Truong hop chi tra ve 1 tam anh --
         if (maxTotalItem == 1) {
-            ezCam.stopPreview()
+            // ezCam.stopPreview()
             this.returnIntentResult()
-            return
+            //return
         }
         // -- Restart review camera --
         // ezCam?.restartPreview()
+
+
     }
 
     override fun onCameraDisconnected() {
@@ -209,18 +232,18 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        ezCam.close()
-        super.onDestroy()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//    }
+//
+//    override fun onDestroy() {
+//        ezCam.close()
+//        super.onDestroy()
+//    }
 
     private fun allowCameraControl(allow: Boolean) {
         // deletePictureButton.isClickable = allow
@@ -241,6 +264,15 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 //            }
 //            mAdapter?.addImage(image)
 //        }
+    }
+
+    /** Use external media if it is available, our app's file directory otherwise */
+    fun getOutputDirectory(context: Context): File {
+        val appContext = context.applicationContext
+        val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
+            File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() } }
+        return if (mediaDir != null && mediaDir.exists())
+            mediaDir else appContext.filesDir
     }
 }
 

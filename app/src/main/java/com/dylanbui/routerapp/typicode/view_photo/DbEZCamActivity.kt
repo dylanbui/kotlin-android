@@ -1,4 +1,4 @@
-package com.dylanbui.android_library.camera
+package com.dylanbui.routerapp.typicode.view_photo
 
 import android.Manifest
 import android.app.Activity
@@ -18,11 +18,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dylanbui.android_library.R
 import com.dylanbui.android_library.camera.ezcam.EZCam
 import com.dylanbui.android_library.camera.ezcam.EZCamCallback
+import com.dylanbui.android_library.camera.DbAutoFitTextureView
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
+import com.dylanbui.routerapp.R
 import com.tbruyelle.rxpermissions2.RxPermissions
 import java.io.File
 import java.io.IOException
@@ -31,7 +32,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DbCameraActivity : AppCompatActivity(), EZCamCallback {
+class DbEZCamActivity : AppCompatActivity(), EZCamCallback {
 
     private var dateFormat: SimpleDateFormat? = null
     private val TAG = "CAM"

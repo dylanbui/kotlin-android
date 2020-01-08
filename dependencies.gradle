@@ -9,6 +9,8 @@ ext {
             testExtJunit           :         "androidx.test.ext:junit:1.1.1",
             testEspressoCore        :         "androidx.test.espresso:espresso-core:3.2.0",
 
+            ggServicesMaps        :         "com.google.android.gms:play-services-maps:11.8.0",
+
             // Kotlin + Android UI
             kotlinStdlibJdk7           :         "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
             design           :         "com.android.support:design:27.1.0",
