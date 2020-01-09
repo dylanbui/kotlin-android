@@ -71,9 +71,14 @@ dependencies {
     implementation supportDependencies.appCompat
     implementation supportDependencies.kotlinStdlibJdk7
 
-
     implementation supportDependencies.coreKtx
     implementation supportDependencies.constraintLayout
+
+    // Google Services
+    implementation supportDependencies.ggServicesMaps
+    implementation supportDependencies.ggServicesLocation
+    implementation supportDependencies.ggServicesAds
+    implementation supportDependencies.ggServicesGcm
 
     // firebase
     implementation supportDependencies.firebaseCore

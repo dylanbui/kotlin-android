@@ -3,14 +3,17 @@ package com.dylanbui.routerapp.typicode.google_map
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.dylanbui.android_library.location_manager.DbLocationManager
+import com.dylanbui.android_library.location_manager.DbLocationManagerImpl
+import com.dylanbui.android_library.utils.Utils
+import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
-import com.dylanbui.routerapp.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.dylanbui.routerapp.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 /*
@@ -31,9 +34,11 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
     private lateinit var ggMap: GoogleMap
     private lateinit var ggMapView: MapView
+    private lateinit var btnFab: FloatingActionButton
+    private lateinit var btnLocation: Button
+    private val locationManager : DbLocationManager = DbLocationManagerImpl()
 
-
-    override fun setTitle(): String? = "GoogleMap Controller"
+    override fun setTitle(): String? = "GoogleMap - Controller"
 
     override fun createPresenter(): GoogleMapPresenter = GoogleMapPresenter()
 
@@ -47,6 +52,35 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
         ggMapView.onCreate(null)
         ggMapView.getMapAsync(this)
 
+        // Cach nao cung dung duoc
+//        val mapFragment = (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.ggMapFragment) as SupportMapFragment
+//        mapFragment.getMapAsync(this)
+
+        btnFab = view.findViewById(R.id.btnFab)
+        btnFab.setOnClickListener { _ ->
+            activity?.toast("setOnClickListener")
+        }
+
+        btnLocation = view.findViewById(R.id.btnLocation)
+        btnLocation.setOnClickListener { _ ->
+
+            locationManager.getCurrentLocation(activity = this.activity!!) {
+                // handle location data
+                moveToLocation("Vi tri hien tai", LatLng(it.latitude, it.longitude))
+            }
+
+//            locationManager.getLastKnownPosition(
+//                activity = this.activity!!,
+//                onLastLocationFound = { location ->
+//                    // handle location data
+//                    moveToLocation("Vi tri hien tai", LatLng(location.latitude, location.longitude))
+//                },
+//                onNoLocationFound = {
+//                    // handle no location data
+//                    activity?.toast("khong onNoLocationFound")
+//                })
+
+        }
     }
 
     override fun onPreAttach() {
@@ -83,8 +117,26 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(10.764291,106.654309)
-        ggMap.addMarker(MarkerOptions().position(sydney).title("Propzy"))
+        val markerPropzy = MarkerOptions().position(sydney).title("Propzy")
+        ggMap.addMarker(markerPropzy)
         ggMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+//        Utils.delayFunc(3000) {
+//            // Updates the location and zoom of the MapView
+//            moveToLocation("Vi tri moi", LatLng(43.1, -87.9))
+//        }
+
+        // Dung thang nay phai cap quyen truoc
+        //ggMap.isMyLocationEnabled = true
+
+    }
+
+    fun moveToLocation(title: String, location: LatLng) {
+        // Updates the location and zoom of the MapView
+        val markerPos = MarkerOptions().position(location).title(title)
+        ggMap.addMarker(markerPos)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 16f)
+        ggMap.animateCamera(cameraUpdate)
     }
 
 }

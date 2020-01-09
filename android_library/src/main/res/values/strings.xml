@@ -17,4 +17,10 @@
   <string name="error_connecting_to_places_api">Error connecting to Places API</string>
   <string name="error_cannot_process_json_results">Cannot process JSON results</string>
   <string name="error_lib_not_initialized">Please initialize the api before using it</string>
+
+  <!-- For DbPermissionManager -->
+  <string name="permission_request_explanation_btn_ok_text">ok</string>
+  <string name="permission_request_explanation_btn_grant_text">grant</string>
+  <string name="permission_request_explanation_btn_deny_text">deny</string>
+
 </resources>
