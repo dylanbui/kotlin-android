@@ -40,7 +40,7 @@ class PlaceAutoCompleteViewController: Controller() {
     fun onViewBound(view: View) {
 
         placesApi = DbGoogleServices.Builder()
-            .apiKey("AIzaSyDDOSDICyPGej1Iku5Z7uj0V_LHFQcmFDk")
+            .apiKey("AIzaSyC512FiDx1hUcWlAGOpU6Kns2WruLPSIWk")
             .build(activity?.baseContext!!)
 
         var autoCompleteEditText = view.findViewById<DbAutoCompleteTextView>(R.id.autoCompleteEditText)

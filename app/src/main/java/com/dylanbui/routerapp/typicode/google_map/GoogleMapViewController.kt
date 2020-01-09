@@ -33,7 +33,7 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
     private lateinit var ggMapView: MapView
 
 
-    override fun setTitle(): String? = "GoogleMap"
+    override fun setTitle(): String? = "GoogleMap Controller"
 
     override fun createPresenter(): GoogleMapPresenter = GoogleMapPresenter()
 
@@ -45,7 +45,6 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
         ggMapView = view.findViewById(R.id.ggMapView) as MapView
         ggMapView.onCreate(null)
-        ggMapView.onStart()
         ggMapView.getMapAsync(this)
 
     }
@@ -83,8 +82,8 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
         ggMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        ggMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        val sydney = LatLng(10.764291,106.654309)
+        ggMap.addMarker(MarkerOptions().position(sydney).title("Propzy"))
         ggMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 

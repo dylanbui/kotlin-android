@@ -52,7 +52,6 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation supportDependencies.testJunit
     androidTestImplementation supportDependencies.testExtJunit
@@ -68,6 +67,9 @@ dependencies {
 
     // Google Services
     implementation supportDependencies.ggServicesMaps
+    implementation supportDependencies.ggServicesLocation
+    implementation supportDependencies.ggServicesAds
+    implementation supportDependencies.ggServicesGcm
 
     // firebase
     implementation supportDependencies.firebaseCore
