@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
+import com.dylanbui.android_library.BaseContainerActivity
 import com.dylanbui.android_library.utils.ManagePermissions
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.typicode.AppCoordinator
@@ -45,6 +46,36 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 //    }
 //}
 
+
+class MainActivity : BaseContainerActivity()
+{
+    private lateinit var container: ViewGroup
+    private lateinit var router: Router
+    var appCoordinator: AppCoordinator? = null
+
+    override fun getActivityLayoutId(): Int = R.layout.activity_main
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        container = findViewById(R.id.controller_container)
+        router = Conductor.attachRouter(this, container, savedInstanceState)
+
+        appCoordinator = AppCoordinator(router)
+        appCoordinator?.start()
+    }
+
+    // -- Make view in onCreate --
+    override fun onViewBound() {
+        super.onViewBound()
+    }
+
+
+}
+
+
+
+/*
 
 class MainActivity : AppCompatActivity()
 {
@@ -214,3 +245,6 @@ class MainActivity : AppCompatActivity()
 
 
 }
+
+
+ */

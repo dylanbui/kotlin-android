@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.typicode.google_map
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.Button
 import com.dylanbui.android_library.location_manager.DbLocationManager
 import com.dylanbui.android_library.location_manager.DbLocationManagerImpl
 import com.dylanbui.android_library.utils.Utils
+import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
 import com.google.android.gms.maps.*
@@ -36,6 +38,7 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
     private lateinit var ggMapView: MapView
     private lateinit var btnFab: FloatingActionButton
     private lateinit var btnLocation: Button
+    private lateinit var btnCameraPermission: Button
     private val locationManager : DbLocationManager = DbLocationManagerImpl()
 
     override fun setTitle(): String? = "GoogleMap - Controller"
@@ -63,24 +66,36 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
         btnLocation = view.findViewById(R.id.btnLocation)
         btnLocation.setOnClickListener { _ ->
-
             locationManager.getCurrentLocation(activity = this.activity!!) {
                 // handle location data
                 moveToLocation("Vi tri hien tai", LatLng(it.latitude, it.longitude))
             }
-
-//            locationManager.getLastKnownPosition(
-//                activity = this.activity!!,
-//                onLastLocationFound = { location ->
-//                    // handle location data
-//                    moveToLocation("Vi tri hien tai", LatLng(location.latitude, location.longitude))
-//                },
-//                onNoLocationFound = {
-//                    // handle no location data
-//                    activity?.toast("khong onNoLocationFound")
-//                })
-
         }
+
+        btnCameraPermission = view.findViewById(R.id.btnCameraPermission)
+        btnCameraPermission.setOnClickListener { _ ->
+
+
+
+            mainActivity!!.managePermissions.checkPermissions(
+                activity = this.activity!!,
+                permissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE),
+                onPermissionResult = { permissionResult ->
+                    // handle permission result
+                    dLog("getGranted: " + permissionResult.getGranted().toString())
+                    dLog("getDenied: " + permissionResult.getDenied().toString())
+                    if(permissionResult.areAllGranted()){
+                        // Do the task now
+                        activity?.toast("Permissions granted.")
+                    }else{
+                        activity?.toast("Permissions denied.")
+                    }
+                }, requestCode = 222)
+        }
+
     }
 
     override fun onPreAttach() {

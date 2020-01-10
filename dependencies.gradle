@@ -14,6 +14,12 @@ ext {
             ggServicesAds           : 'com.google.android.gms:play-services-ads:15.0.0',
             ggServicesGcm           : 'com.google.android.gms:play-services-gcm:15.0.1',
             ggServicesMaps          : 'com.google.android.gms:play-services-maps:15.0.1',
+            ggServicesPlaces        : 'com.google.android.gms:play-services-places:15.0.1',
+
+            // Firebase push notification
+            fbMessaging : 'com.google.firebase:firebase-messaging:20.1.0',
+            fbConfig : 'com.google.firebase:firebase-config:19.1.0',
+            fbCore : 'com.google.firebase:firebase-core:17.2.1',
 
 
             // Kotlin + Android UI

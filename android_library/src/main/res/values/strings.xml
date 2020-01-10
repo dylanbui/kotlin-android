@@ -23,4 +23,7 @@
   <string name="permission_request_explanation_btn_grant_text">grant</string>
   <string name="permission_request_explanation_btn_deny_text">deny</string>
 
+  <!-- For DbPushManager -->
+  <string name="default_notification_channel_id">default_channel</string>
+
 </resources>

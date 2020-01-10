@@ -90,36 +90,66 @@ class ViewPhotoViewController : BaseMvpController<ViewPhotoViewAction, ViewPhoto
 
         btnPermission = view.findViewById(R.id.btnPermission)
         btnPermission.setOnClickListener { _ ->
-            this.mainActivity?.rxPermissions?.request(
-                Manifest.permission.CAMERA
-                , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )?.subscribe({ grand ->
-                if (grand) {
-                    activity?.toast("Da chap nha quyen")
-                } else {
-                    activity?.toast("Tu choi quyen TRUY CAP")
-                }
-            })
+            this.mainActivity?.checkPermissions(permissions = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE),
+                onPermissionResult = { permissionResult ->
+                    // handle permission result
+                    dLog("getGranted: " + permissionResult.getGranted().toString())
+                    dLog("getDenied: " + permissionResult.getDenied().toString())
+                    if(permissionResult.areAllGranted()){
+                        // Do the task now
+                        activity?.toast("Permissions granted.")
+                    }else{
+                        activity?.toast("Permissions denied.")
+                    }
+                }, requestCode = 222)
 
+//            this.mainActivity?.rxPermissions?.request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )?.subscribe({ grand ->
+//                if (grand) {
+//                    activity?.toast("Da chap nha quyen")
+//                } else {
+//                    activity?.toast("Tu choi quyen TRUY CAP")
+//                }
+//            })
         }
 
         btnPickImage = view.findViewById(R.id.btnChoosePhoto)
         btnPickImage.setOnClickListener { _ ->
             // Toast.makeText(applicationContext, "show ra loi", Toast.LENGTH_LONG).show()
             // Toast.makeText(activity, "show ra loi", Toast.LENGTH_LONG).show()
+            this.mainActivity?.checkPermissions(permissions = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE),
+                onPermissionResult = { permissionResult ->
+                    // handle permission result
+                    dLog("getGranted: " + permissionResult.getGranted().toString())
+                    dLog("getDenied: " + permissionResult.getDenied().toString())
+                    if(permissionResult.areAllGranted()){
+                        // Do the task now
+                        activity?.toast("Permissions granted.")
+                    }else{
+                        activity?.toast("Permissions denied.")
+                    }
+                }, requestCode = 333)
 
-            this.mainActivity?.rxPermissions?.request(
-                Manifest.permission.CAMERA
-                , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )?.subscribe({ grand ->
-                if (grand) {
-                    this.choosePhotoPicker()
-                } else {
-                    activity?.toast("Tu choi quyen TRUY CAP")
-                }
-            })
+//            this.mainActivity?.rxPermissions?.request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )?.subscribe({ grand ->
+//                if (grand) {
+//                    this.choosePhotoPicker()
+//                } else {
+//                    activity?.toast("Tu choi quyen TRUY CAP")
+//                }
+//            })
 
 
         }

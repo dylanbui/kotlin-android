@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 //apply plugin: 'kotlin-kapt'
 
 ext {
@@ -65,11 +67,30 @@ dependencies {
     implementation supportDependencies.coreKtx
     implementation supportDependencies.constraintLayout
 
+    // Push notification
+    implementation supportDependencies.fbConfig
+    implementation supportDependencies.fbCore
+    implementation supportDependencies.fbMessaging
+//    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+//    implementation 'com.google.firebase:firebase-config:19.1.0'
+//    implementation 'com.google.firebase:firebase-core:17.2.1'
+
+//    implementation 'com.google.firebase:firebase-core:17.2.1'
+//    // this line must be included to integrate with Firebase
+//    // implementation 'com.google.firebase:firebase-messaging:10.2.1'
+//
+//    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+//    implementation 'com.google.firebase:firebase-config:16.0.0'
+    // implementation 'com.google.firebase:firebase-core:16.0.0'
+
+
+
     // Google Services
     implementation supportDependencies.ggServicesMaps
     implementation supportDependencies.ggServicesLocation
     implementation supportDependencies.ggServicesAds
     implementation supportDependencies.ggServicesGcm
+    // implementation supportDependencies.ggServicesPlaces
 
     // firebase
     implementation supportDependencies.firebaseCore

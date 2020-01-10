@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "141101624500",
+    "firebase_url": "https://kotlindbapp.firebaseio.com",
+    "project_id": "kotlindbapp",
+    "storage_bucket": "kotlindbapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141101624500:android:864bcf75370fcd162abbe1",
+        "android_client_info": {
+          "package_name": "com.dylanbui.routerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141101624500-ekffmcne0su94mi3dscg9gap4l1c29qt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdGKAU3-6rvw4-wY1X6xSDmbDooL5Gucg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141101624500-ekffmcne0su94mi3dscg9gap4l1c29qt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

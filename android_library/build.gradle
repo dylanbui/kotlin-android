@@ -74,6 +74,11 @@ dependencies {
     implementation supportDependencies.coreKtx
     implementation supportDependencies.constraintLayout
 
+    // Push notification
+    implementation supportDependencies.fbConfig
+    implementation supportDependencies.fbCore
+    implementation supportDependencies.fbMessaging
+
     // Google Services
     implementation supportDependencies.ggServicesMaps
     implementation supportDependencies.ggServicesLocation

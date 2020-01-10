@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Looper
+import android.util.Log
 import com.dylanbui.android_library.permission_manager.DbPermissionManager
 import com.dylanbui.android_library.permission_manager.DbPermissionManagerImpl
 import com.google.android.gms.common.api.ResolvableApiException
@@ -23,9 +25,9 @@ import com.google.android.gms.tasks.Task
  */
 class DbLocationManagerImpl : DbLocationManager {
 
-    private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LAST_POSITION = 123
-    private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LOCATION_TRACKER = 345
-    private val REQUEST_CHECK_SETTINGS_FOR_LOCATION_TRACKKER = 234
+    private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LAST_POSITION = 12300
+    private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LOCATION_TRACKER = 34500
+    private val REQUEST_CHECK_SETTINGS_FOR_LOCATION_TRACKKER = 23400
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var onLastLocationFound: ((Location) -> Unit)? = null
     private var onNoLocationFound: (() -> Unit)? = null
@@ -63,20 +65,20 @@ class DbLocationManagerImpl : DbLocationManager {
     }
 
     override fun getCurrentLocation(activity: Activity, onLocation: (Location) -> Unit) {
-        // DbLocationTrackerConfig default config
-//        data class DbLocationTrackerConfig(val interval: Long = 10000,
-//                                           val fastestInterval: Long = 5000L,
-//                                           val priority: Int = LocationRequest.PRIORITY_HIGH_ACCURACY)
-        val config = DbLocationTrackerConfig(10000,
-             5000,
-            LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-
-        this.startLocationTracker(activity, config) {
-            this.stopLocationTracker()
-            onLocation.invoke(it)
-        }
+        this.getLastKnownPosition(
+            activity = activity,
+            onLastLocationFound = { location ->
+                // handle last location data found
+                Log.d("TAG", "location => " + location.toString())
+                onLocation(location)
+            },
+            onNoLocationFound = {
+                // Not found, get new location data
+                val config = DbLocationTrackerConfig(100, 50,
+                    LocationRequest.PRIORITY_HIGH_ACCURACY)
+                this.requestNewLocationData(config, onLocation)
+            })
     }
-
 
     /**
      * handle permission request result
@@ -84,14 +86,6 @@ class DbLocationManagerImpl : DbLocationManager {
      */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean? {
         return permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun checkLocationPermissions(mActivity: Activity): Boolean {
-        val coarseEnabled =
-            mActivity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) === PackageManager.PERMISSION_GRANTED
-        val fineEnabled =
-            mActivity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED
-        return coarseEnabled && fineEnabled
     }
 
     /**
@@ -249,11 +243,28 @@ class DbLocationManagerImpl : DbLocationManager {
             }
         }
 
-
         fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */)
-
     }
 
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData(config: DbLocationTrackerConfig, onLocation: (Location) -> Unit) {
+        val mLocationRequest = LocationRequest().apply {
+            interval = config.interval
+            fastestInterval = config.fastestInterval
+            priority = config.priority
+            numUpdates = 1 // Important, because it be looper
+        }
+
+        val mLocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                onLocation.invoke(locationResult.lastLocation)
+                lastTrackedLocation = locationResult.lastLocation
+            }
+        }
+
+        fusedLocationClient?.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
+    }
 
     /**
      * handle onActivityResult for location settings resolver
@@ -270,4 +281,14 @@ class DbLocationManagerImpl : DbLocationManager {
         }
         return false
     }
+
+    /*
+    private fun checkLocationPermissions(mActivity: Activity): Boolean {
+        val coarseEnabled =
+            mActivity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) === PackageManager.PERMISSION_GRANTED
+        val fineEnabled =
+            mActivity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED
+        return coarseEnabled && fineEnabled
+    }
+     */
 }
