@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 
 @SuppressLint("all")
-object EditTextUtils {
+object DbEditTextUtils {
 
     fun setupEditTextUI(view: View?, activity: Activity) {
         try {

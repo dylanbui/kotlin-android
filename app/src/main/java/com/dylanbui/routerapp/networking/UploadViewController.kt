@@ -9,7 +9,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
-import com.dylanbui.android_library.utils.Utils
+import com.dylanbui.android_library.utils.DbUtils
 import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 import com.dylanbui.android_library.utils.fromJson
@@ -83,7 +83,7 @@ class UploadViewController : Controller()
             it.enableUpArrow(router.backstackSize > 1)
         }
 
-        progressDialog = Utils.makeProgressDialog( activity!!, "Loading..")
+        progressDialog = DbUtils.makeProgressDialog( activity!!, "Loading..")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

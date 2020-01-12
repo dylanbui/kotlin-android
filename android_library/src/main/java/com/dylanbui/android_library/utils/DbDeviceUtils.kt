@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 
 @SuppressLint("all")
-object DeviceUtils {
+object DbDeviceUtils {
 
     @SuppressLint("MissingPermission")
     fun isOnline(context: Context): Boolean {
@@ -56,9 +56,9 @@ object DeviceUtils {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
         return if (model.startsWith(manufacturer)) {
-            Utils.capitalize(model)
+            DbUtils.capitalize(model)
         } else {
-            Utils.capitalize(manufacturer) + " " + model
+            DbUtils.capitalize(manufacturer) + " " + model
         }
     }
 

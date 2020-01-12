@@ -7,7 +7,7 @@ import android.text.style.UnderlineSpan
 import android.widget.TextView
 
 @SuppressLint("all")
-object TextViewUtils {
+object DbTextViewUtils {
 
     fun underLineTextView(tv: TextView) {
         if (TextUtils.isEmpty(tv.text)) return

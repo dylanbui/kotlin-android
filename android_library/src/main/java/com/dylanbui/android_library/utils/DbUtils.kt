@@ -32,7 +32,7 @@ import kotlin.math.roundToInt
 // @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 // @Suppress
 @SuppressLint("all")
-object Utils {
+object DbUtils {
 
     fun getCompressFolderPath(context: Context): String {
         return (Environment.getExternalStorageDirectory().toString()

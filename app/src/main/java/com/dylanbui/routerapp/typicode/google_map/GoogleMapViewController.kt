@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.dylanbui.android_library.location_manager.DbLocationManager
 import com.dylanbui.android_library.location_manager.DbLocationManagerImpl
-import com.dylanbui.android_library.utils.Utils
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController

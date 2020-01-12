@@ -12,7 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.dylanbui.android_library.DbMessageEvent
-import com.dylanbui.android_library.utils.Utils
+import com.dylanbui.android_library.utils.DbUtils
 import com.dylanbui.routerapp.utils.DbNavigation
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
@@ -66,7 +66,7 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
         val view: View = inflateView(inflater, container)
         progressView = view.findViewById(R.id.progressView)
         activity?.let {
-            this.progressDialog = Utils.makeProgressDialog(it, getStringResource(R.string.loading_title))
+            this.progressDialog = DbUtils.makeProgressDialog(it, getStringResource(R.string.loading_title))
         }
         toolbar = view.findViewById(R.id.toolbar)
         toolbar?.title = setTitle()

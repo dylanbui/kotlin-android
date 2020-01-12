@@ -6,7 +6,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 
 @SuppressLint("all")
-object ImageViewUtils {
+object DbImageViewUtils {
 
     fun rotateImage(source: Bitmap, angle: Float): Bitmap {
         var matrix = Matrix()

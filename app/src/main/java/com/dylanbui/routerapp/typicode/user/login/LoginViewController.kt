@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
-import com.dylanbui.android_library.utils.EditTextUtils
+import com.dylanbui.android_library.utils.*
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
@@ -107,8 +107,8 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
 
         activity?.let {
             val controllerContainer = view.findViewById<ViewGroup>(R.id.controllerContainer)
-            EditTextUtils.setupEditTextUI(controllerContainer, it)
-            EditTextUtils.requestFocus(txtUsername, it)
+            DbEditTextUtils.setupEditTextUI(controllerContainer, it)
+            DbEditTextUtils.requestFocus(txtUsername, it)
         }
 
     }

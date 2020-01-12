@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
-import com.dylanbui.android_library.utils.EditTextUtils
+import com.dylanbui.android_library.utils.*
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
@@ -113,7 +113,7 @@ class RegisterViewController : BaseMvpController<RegisterActionView, RegisterPre
 
         activity?.let {
             val controllerContainer = view.findViewById<ViewGroup>(R.id.controllerContainer)
-            EditTextUtils.setupEditTextUI(controllerContainer, it)
+            DbEditTextUtils.setupEditTextUI(controllerContainer, it)
             // EditTextUtils.requestFocus(txtUsername, it)
         }
 

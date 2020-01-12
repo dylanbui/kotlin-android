@@ -1,13 +1,10 @@
 package com.dylanbui.android_library.push_manager
 
 import android.content.Context
-import com.dylanbui.android_library.utils.doAsync
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
-
-
 
 /**
  * <p>PushManagerImpl is based on PushManager and contains all connection logic for handling FCM</p>
@@ -69,9 +66,14 @@ object DbPushManagerImpl : DbPushManager {
         // init firebase
         initPushManager(context)
 
-        doAsync {
+        // New code
+        Thread(Runnable {
             FirebaseInstanceId.getInstance().deleteInstanceId()
-        }
+        }).start()
+        // Old code
+//        doAsync {
+//            FirebaseInstanceId.getInstance().deleteInstanceId()
+//        }
     }
 
 

@@ -35,7 +35,7 @@ class ForgotPwViewController : BaseMvpController<ForgotPwActionView, ForgotPwPre
             // router.defaultPushController(ForgotPwViewController())
 
             this.showLoading()
-            Utils.delayFunc(3000) {
+            DbUtils.delayFunc(3000) {
                 this.hideLoading()
             }
 
@@ -116,7 +116,7 @@ class ForgotPwViewController : BaseMvpController<ForgotPwActionView, ForgotPwPre
 
         activity?.let {
             val controllerContainer = view.findViewById<ViewGroup>(R.id.controllerContainer)
-            EditTextUtils.setupEditTextUI(controllerContainer, it)
+            DbEditTextUtils.setupEditTextUI(controllerContainer, it)
             // EditTextUtils.requestFocus(txtUsername, it)
         }
 

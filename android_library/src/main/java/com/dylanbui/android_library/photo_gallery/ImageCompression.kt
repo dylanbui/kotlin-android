@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.media.ExifInterface
 import android.os.AsyncTask
-import com.dylanbui.android_library.utils.Utils
+import com.dylanbui.android_library.utils.DbUtils
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.io.FileNotFoundException
@@ -28,7 +28,7 @@ class ImageCompression(private val context: Context, size: Float) : AsyncTask<St
         get() {
             var uriString = ""
             try {
-                val mediaStorageDir = File(Utils.getCompressFolderPath(context))
+                val mediaStorageDir = File(DbUtils.getCompressFolderPath(context))
                 if (!mediaStorageDir.exists()) {
                     mediaStorageDir.mkdirs()
                 }

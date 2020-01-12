@@ -2,7 +2,7 @@ package com.dylanbui.routerapp
 
 import android.app.Application
 import android.content.Context
-import com.dylanbui.android_library.utils.DeviceUtils
+import com.dylanbui.android_library.utils.DbDeviceUtils
 import com.dylanbui.routerapp.networking.AppNetwork
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -89,9 +89,9 @@ class StartApplication : Application() {
 //        user = PreUtil.getObject(PreUtil.KEY_USER, User::class.java)
 //        profile = PreUtil.getObject(PreUtil.KEY_PROFILE, Profile::class.java)
 
-        versionApp = DeviceUtils.getVersionApp(this)
-        deviceName = DeviceUtils.getDeviceName()
-        versionName = DeviceUtils.getVersionName()
+        versionApp = DbDeviceUtils.getVersionApp(this)
+        deviceName = DbDeviceUtils.getDeviceName()
+        versionName = DbDeviceUtils.getVersionName()
 //        deviceToken = Utils.getDeviceToken() // Pai co Firebase
 //        Realm.init(this)
 //        val config = RealmConfiguration.Builder().name("surveyapp.realm").build()

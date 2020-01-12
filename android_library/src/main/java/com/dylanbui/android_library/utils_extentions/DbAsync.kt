@@ -1,4 +1,4 @@
-package com.dylanbui.android_library.utils
+package com.dylanbui.android_library.utils_extentions
 
 import android.app.Activity
 import android.content.Context
@@ -12,6 +12,19 @@ import java.util.concurrent.Future
 
 // https://github.com/Kotlin/anko/blob/d5a526512b48c5cd2e3b8f6ff14b153c2337aa22/anko/library/static/commons/src/Async.kt
 // https://github.com/Kotlin/anko/tree/master/anko/library/static/commons/src/main/java
+// https://www.raywenderlich.com/5193-anko-commons-tutorial
+
+/*
+
+// Example from Anko documentation
+doAsync {
+    // Long background task
+    uiThread {
+        result.text = "Done"
+    }
+}
+
+* */
 
 /**
  * Execute [f] on the application UI thread.
@@ -27,14 +40,14 @@ inline fun Fragment.runOnUiThread(crossinline f: () -> Unit) {
     activity?.runOnUiThread { f() }
 }
 
-class AnkoAsyncContext<T>(val weakRef: WeakReference<T>)
+class DbAsyncContext<T>(val weakRef: WeakReference<T>)
 
 /**
  * Execute [f] on the application UI thread.
  * If the [doAsync] receiver still exists (was not collected by GC),
  *  [f] gets it as a parameter ([f] gets null if the receiver does not exist anymore).
  */
-fun <T> AnkoAsyncContext<T>.onComplete(f: (T?) -> Unit) {
+fun <T> DbAsyncContext<T>.onComplete(f: (T?) -> Unit) {
     val ref = weakRef.get()
     if (ContextHelper.mainThread == Thread.currentThread()) {
         f(ref)
@@ -48,7 +61,7 @@ fun <T> AnkoAsyncContext<T>.onComplete(f: (T?) -> Unit) {
  * [doAsync] receiver will be passed to [f].
  * If the receiver does not exist anymore (it was collected by GC), [f] will not be executed.
  */
-fun <T> AnkoAsyncContext<T>.uiThread(f: (T) -> Unit): Boolean {
+fun <T> DbAsyncContext<T>.uiThread(f: (T) -> Unit): Boolean {
     val ref = weakRef.get() ?: return false
     if (ContextHelper.mainThread == Thread.currentThread()) {
         f(ref)
@@ -63,37 +76,22 @@ fun <T> AnkoAsyncContext<T>.uiThread(f: (T) -> Unit): Boolean {
  * The receiver [Activity] will be passed to [f].
  *  If it is not exist anymore or if it was finished, [f] will not be called.
  */
-fun <T: Activity> AnkoAsyncContext<T>.activityUiThread(f: (T) -> Unit): Boolean {
+fun <T: Activity> DbAsyncContext<T>.activityUiThread(f: (T) -> Unit): Boolean {
     val activity = weakRef.get() ?: return false
     if (activity.isFinishing) return false
     activity.runOnUiThread { f(activity) }
     return true
 }
 
-fun <T: Activity> AnkoAsyncContext<T>.activityUiThreadWithContext(f: Context.(T) -> Unit): Boolean {
+fun <T: Activity> DbAsyncContext<T>.activityUiThreadWithContext(f: Context.(T) -> Unit): Boolean {
     val activity = weakRef.get() ?: return false
     if (activity.isFinishing) return false
     activity.runOnUiThread { activity.f(activity) }
     return true
 }
 
-//@JvmName("activityContextUiThread")
-//fun <T: Activity> AnkoAsyncContext<AnkoContext<T>>.activityUiThread(f: (T) -> Unit): Boolean {
-//    val activity = weakRef.get()?.owner ?: return false
-//    if (activity.isFinishing) return false
-//    activity.runOnUiThread { f(activity) }
-//    return true
-//}
-//
-//@JvmName("activityContextUiThreadWithContext")
-//fun <T: Activity> AnkoAsyncContext<AnkoContext<T>>.activityUiThreadWithContext(f: Context.(T) -> Unit): Boolean {
-//    val activity = weakRef.get()?.owner ?: return false
-//    if (activity.isFinishing) return false
-//    activity.runOnUiThread { activity.f(activity) }
-//    return true
-//}
 
-fun <T: Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit): Boolean {
+fun <T: Fragment> DbAsyncContext<T>.fragmentUiThread(f: (T) -> Unit): Boolean {
     val fragment = weakRef.get() ?: return false
     if (fragment.isDetached) return false
     val activity = fragment.activity ?: return false
@@ -101,7 +99,7 @@ fun <T: Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit): Boolean 
     return true
 }
 
-fun <T: Fragment> AnkoAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T) -> Unit): Boolean {
+fun <T: Fragment> DbAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T) -> Unit): Boolean {
     val fragment = weakRef.get() ?: return false
     if (fragment.isDetached) return false
     val activity = fragment.activity ?: return false
@@ -118,9 +116,9 @@ private val crashLogger = { throwable : Throwable -> throwable.printStackTrace()
  */
 fun <T> T.doAsync(
     exceptionHandler: ((Throwable) -> Unit)? = crashLogger,
-    task: AnkoAsyncContext<T>.() -> Unit
+    task: DbAsyncContext<T>.() -> Unit
 ): Future<Unit> {
-    val context = AnkoAsyncContext(WeakReference(this))
+    val context = DbAsyncContext(WeakReference(this))
     return BackgroundExecutor.submit {
         return@submit try {
             context.task()
@@ -138,9 +136,9 @@ fun <T> T.doAsync(
 fun <T> T.doAsync(
     exceptionHandler: ((Throwable) -> Unit)? = crashLogger,
     executorService: ExecutorService,
-    task: AnkoAsyncContext<T>.() -> Unit
+    task: DbAsyncContext<T>.() -> Unit
 ): Future<Unit> {
-    val context = AnkoAsyncContext(WeakReference(this))
+    val context = DbAsyncContext(WeakReference(this))
     return executorService.submit<Unit> {
         try {
             context.task()
@@ -152,9 +150,9 @@ fun <T> T.doAsync(
 
 fun <T, R> T.doAsyncResult(
     exceptionHandler: ((Throwable) -> Unit)? = crashLogger,
-    task: AnkoAsyncContext<T>.() -> R
+    task: DbAsyncContext<T>.() -> R
 ): Future<R> {
-    val context = AnkoAsyncContext(WeakReference(this))
+    val context = DbAsyncContext(WeakReference(this))
     return BackgroundExecutor.submit {
         try {
             context.task()
@@ -168,9 +166,9 @@ fun <T, R> T.doAsyncResult(
 fun <T, R> T.doAsyncResult(
     exceptionHandler: ((Throwable) -> Unit)? = crashLogger,
     executorService: ExecutorService,
-    task: AnkoAsyncContext<T>.() -> R
+    task: DbAsyncContext<T>.() -> R
 ): Future<R> {
-    val context = AnkoAsyncContext(WeakReference(this))
+    val context = DbAsyncContext(WeakReference(this))
     return executorService.submit<R> {
         try {
             context.task()
