@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tabBeach"
+        android:icon="@drawable/ic_tabbar_beach_24dp"
+        android:title="Beach" />
+    <item
+        android:id="@+id/tabGas"
+        android:icon="@drawable/ic_tabbar_gas_station_24dp"
+        android:title="Gas" />
+    <item
+        android:id="@+id/tabOverview"
+        android:icon="@drawable/ic_tabbar_overview_24dp"
+        android:title="Overview" />
+
+    <item
+        android:id="@+id/tabPerson"
+        android:icon="@drawable/ic_tabbar_person_24dp"
+        android:title="Person" />
+
+</menu>

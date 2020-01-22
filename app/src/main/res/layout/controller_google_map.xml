@@ -6,7 +6,8 @@
     android:orientation="vertical">
 
     <!-- Include toolbar, remove this line when hide -->
-    <include layout="@layout/toolbar_native" />
+<!--    <include layout="@layout/toolbar_native" />-->
+    <include layout="@layout/toolbar_background_image" />
 
     <RelativeLayout
         android:id="@+id/controllerContainer"

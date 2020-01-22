@@ -5,16 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.dylanbui.android_library.location_manager.DbLocationManager
 import com.dylanbui.android_library.location_manager.DbLocationManagerImpl
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.BaseMvpController
-import com.google.android.gms.maps.*
+import com.dylanbui.routerapp.R
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.dylanbui.routerapp.R
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 
 /*
@@ -50,6 +56,14 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
     override fun onViewBound(view: View) {
 
+        // setAppBarHeight()
+
+        val appBarLayout: AppBarLayout = view.findViewById(R.id.appBarLayout)
+//        appBarLayout.layoutParams = ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            getStatusBarHeight() + dpToPx(48 + 56)
+//        )
+
         ggMapView = view.findViewById(R.id.ggMapView) as MapView
         ggMapView.onCreate(null)
         ggMapView.getMapAsync(this)
@@ -73,8 +87,6 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
 
         btnCameraPermission = view.findViewById(R.id.btnCameraPermission)
         btnCameraPermission.setOnClickListener { _ ->
-
-
 
             mainActivity!!.managePermissions.checkPermissions(
                 activity = this.activity!!,
@@ -151,6 +163,31 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
         ggMap.addMarker(markerPos)
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 16f)
         ggMap.animateCamera(cameraUpdate)
+    }
+
+
+    // -- Private functions --
+
+    private fun setAppBarHeight() {
+        val appBarLayout: AppBarLayout = view!!.findViewById(R.id.appBarLayout)
+        appBarLayout.layoutParams = CoordinatorLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            getStatusBarHeight() + dpToPx(48 + 56)
+        )
+    }
+
+    private fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources!!.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources!!.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val density = resources!!.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
     }
 
 }

@@ -9,6 +9,7 @@ import com.dylanbui.routerapp.typicode.google_map.PlaceAutoCompleteViewControlle
 import com.dylanbui.routerapp.typicode.post.PostDetailViewController
 import com.dylanbui.routerapp.typicode.post.PostListViewController
 import com.dylanbui.routerapp.typicode.splash_intro.SplashViewController
+import com.dylanbui.routerapp.typicode.tabbar.MainTabarController
 import com.dylanbui.routerapp.typicode.user.login.LoginViewController
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewController
@@ -40,7 +41,8 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         // vcl.nav = this
         // var vcl = PlaceAutoCompleteViewController()
         // var vcl = ViewPhotoViewController()
-        var vcl = GoogleMapViewController()
+         var vcl = GoogleMapViewController()
+//        var vcl = MainTabarController()
         router.setRoot(RouterTransaction.with(vcl))
 
 //        router.setRoot(RouterTransaction.with(FirstViewController())

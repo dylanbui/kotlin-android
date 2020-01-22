@@ -3,6 +3,7 @@ package com.dylanbui.routerapp
 import android.Manifest
 import android.os.Bundle
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -57,6 +58,11 @@ class MainActivity : BaseContainerActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        val rootLayout = findViewById<ViewGroup>(R.id.rootLayout)
+//        rootLayout.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//        rootLayout.systemUiVisibility =
+//            SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_HIsDE_NAVIGATION
 
         container = findViewById(R.id.controller_container)
         router = Conductor.attachRouter(this, container, savedInstanceState)

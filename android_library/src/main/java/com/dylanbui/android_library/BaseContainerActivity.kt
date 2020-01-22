@@ -29,13 +29,22 @@ abstract class BaseContainerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // In Activity's onCreate() for instance
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            var w = getWindow()
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        }
+        // Cho phep full man hinh
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //var w = getWindow()
+//            window.setFlags(
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//            )
+//            // An thanh navigation cua device
+//            window.decorView.apply {
+//                // Hide both the navigation bar and the status bar.
+//                // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+//                // a general rule, you should design your app to hide the status bar whenever you
+//                // hide the navigation bar.
+//                systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+//            }
+//        }
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(getActivityLayoutId())
