@@ -88,7 +88,7 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
         btnCameraPermission = view.findViewById(R.id.btnCameraPermission)
         btnCameraPermission.setOnClickListener { _ ->
 
-            mainActivity!!.managePermissions.checkPermissions(
+            mainActivity!!.permissionManager.checkPermissions(
                 activity = this.activity!!,
                 permissions = arrayOf(
                     Manifest.permission.CAMERA,

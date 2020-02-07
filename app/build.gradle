@@ -122,6 +122,8 @@ dependencies {
 
     // Conductor
     implementation supportDependencies.conductor
+    implementation supportDependencies.conductorSupport
+
     // MVP Conductor Plugin
     implementation supportDependencies.conductorMvp
 

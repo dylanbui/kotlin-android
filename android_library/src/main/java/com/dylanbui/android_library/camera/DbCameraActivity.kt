@@ -21,9 +21,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dylanbui.android_library.R
 import com.dylanbui.android_library.camera.ezcam.EZCam
 import com.dylanbui.android_library.camera.ezcam.EZCamCallback
+import com.dylanbui.android_library.permission_manager.DbPermissionManager
+import com.dylanbui.android_library.permission_manager.DbPermissionManagerImpl
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
-import com.tbruyelle.rxpermissions2.RxPermissions
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -52,6 +53,9 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
     private lateinit var deletePictureButton: View
     private lateinit var savePictureButton: View
 
+    private val REQUEST_CAMERA = 101
+
+    val permissionManager: DbPermissionManager = DbPermissionManagerImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,18 +114,28 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 
         this.allowCameraControl(false)
 
-        RxPermissions(this)
-            .request(
-                Manifest.permission.CAMERA
+        permissionManager.checkPermissions(
+            activity = this,
+            permissions = arrayOf(Manifest.permission.CAMERA
                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .subscribe({ grand ->
-                if (grand) {
+                , Manifest.permission.READ_EXTERNAL_STORAGE),
+            onPermissionResult = { permissionResult ->
+                // handle permission result
+                if (permissionResult.areAllGranted()) {
                     ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
                 }
-            })
-
+            }, requestCode = REQUEST_CAMERA)
+//        RxPermissions(this)
+//            .request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
+//            .subscribe({ grand ->
+//                if (grand) {
+//                    ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
+//                }
+//            })
     }
 
     override fun onCameraReady() {
@@ -241,5 +255,12 @@ class DbCameraActivity : AppCompatActivity(), EZCamCallback {
 //            mAdapter?.addImage(image)
 //        }
     }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            ?: super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 }
 

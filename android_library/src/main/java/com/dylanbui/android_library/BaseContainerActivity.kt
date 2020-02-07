@@ -21,7 +21,7 @@ abstract class BaseContainerActivity : AppCompatActivity() {
 
     fun getToolBarLayoutId(): Int? = null
 
-    val managePermissions: DbPermissionManager = DbPermissionManagerImpl
+    val permissionManager: DbPermissionManager = DbPermissionManagerImpl
 
     var toolbar: Toolbar? = null
     var alertDialog: Dialog? = null
@@ -123,8 +123,6 @@ abstract class BaseContainerActivity : AppCompatActivity() {
         return null
     }
 
-
-
     /**
      * check permission
      *
@@ -134,7 +132,7 @@ abstract class BaseContainerActivity : AppCompatActivity() {
                          permissionRequestPreExecuteExplanation: DbPermissionRequestExplanation? = null,
                          permissionRequestRetryExplanation: DbPermissionRequestExplanation? = null,
                          requestCode: Int? = null): Boolean {
-        return managePermissions.checkPermissions(this,
+        return permissionManager.checkPermissions(this,
             permissions,
             onPermissionResult,
             permissionRequestPreExecuteExplanation,
@@ -143,6 +141,7 @@ abstract class BaseContainerActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        managePermissions.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            ?: super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

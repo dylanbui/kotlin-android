@@ -13,8 +13,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dylanbui.android_library.R
+import com.dylanbui.android_library.permission_manager.DbPermissionManager
+import com.dylanbui.android_library.permission_manager.DbPermissionManagerImpl
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
-import com.tbruyelle.rxpermissions2.RxPermissions
 
 class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerPresenter>(), DbPhotoPickerViewAction,
     DbPhotoPickerAdapter.DbChoosePhotoListener {
@@ -26,7 +27,10 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     private lateinit var btnDone: Button
     private lateinit var rvImage: RecyclerView
 
-    private val TAKE_PHOTO_CODE = 0
+    private val TAKE_PHOTO_CODE = 100
+    private val REQUEST_CAMERA = 101
+
+    val managePermissions: DbPermissionManager = DbPermissionManagerImpl
 
     override fun createPresenter(): DbPhotoPickerPresenter = DbPhotoPickerPresenter()
 
@@ -66,18 +70,30 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     }
 
     override fun scanImage() {
-        RxPermissions(this)
-            .request(
-                Manifest.permission.CAMERA
+        managePermissions.checkPermissions(
+            activity = this,
+            permissions = arrayOf(Manifest.permission.CAMERA
                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .subscribe({ grand ->
-                if (grand) {
+                , Manifest.permission.READ_EXTERNAL_STORAGE),
+            onPermissionResult = { permissionResult ->
+                // handle permission result
+                if (permissionResult.areAllGranted()) {
                     getPresenter().queryImage(this)
-                } else getPresenter().finishChoosePhoto()
-            })
-
+                } else {
+                    getPresenter().finishChoosePhoto()
+                }
+            }, requestCode = REQUEST_CAMERA)
+//        RxPermissions(this)
+//            .request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
+//            .subscribe({ grand ->
+//                if (grand) {
+//                    getPresenter().queryImage(this)
+//                } else getPresenter().finishChoosePhoto()
+//            })
     }
 
     override fun finishChoosePhoto(result: String) {
@@ -120,17 +136,28 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
     }
 
     override fun onOpenCamera() {
-        RxPermissions(this)
-            .request(
-                Manifest.permission.CAMERA
+        managePermissions.checkPermissions(
+            activity = this,
+            permissions = arrayOf(Manifest.permission.CAMERA
                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .subscribe({ grand ->
-                if (grand) {
+                , Manifest.permission.READ_EXTERNAL_STORAGE),
+            onPermissionResult = { permissionResult ->
+                // handle permission result
+                if (permissionResult.areAllGranted()) {
                     getPresenter().openCamera(this)
                 }
-            })
+            }, requestCode = REQUEST_CAMERA)
+//        RxPermissions(this)
+//            .request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
+//            .subscribe({ grand ->
+//                if (grand) {
+//                    getPresenter().openCamera(this)
+//                }
+//            })
     }
 
     override fun onChecked(
@@ -140,6 +167,15 @@ class DbPhotoPickerActivity: MvpActivity<DbPhotoPickerViewAction, DbPhotoPickerP
         imageViewHolder: DbPhotoPickerAdapter.ImageViewHolder
     ) {
         presenter.onItemImageChecked(isChecked, position, myImage)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        managePermissions.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            ?: super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == REQUEST_CAMERA) {
+//            managePermissions.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

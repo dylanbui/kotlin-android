@@ -99,7 +99,7 @@ dependencies {
     implementation supportDependencies.rxkotlin
     implementation supportDependencies.rxandroid
     // rx permission, khong can dung trong thang app
-    implementation supportDependencies.rxpermissions
+    // implementation supportDependencies.rxpermissions
 
 
     // lottie

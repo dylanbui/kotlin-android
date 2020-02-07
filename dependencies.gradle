@@ -51,7 +51,11 @@ ext {
             rxkotlin         :         "io.reactivex.rxjava2:rxkotlin:2.2.0",
             rxandroid     :         "io.reactivex.rxjava2:rxandroid:2.0.1",
 
-            conductor         :         "com.bluelinelabs:conductor:3.0.0-rc1",
+
+            // If you want the components that go along with
+            // Android's support libraries (currently just a PagerAdapter):
+            conductor           :         "com.bluelinelabs:conductor:3.0.0-rc1",
+            conductorSupport    :         "com.bluelinelabs:conductor-support:3.0.0-rc1",
 
             conductorMvp         :         "com.hannesdorfmann.mosby3:mvp-conductor:3.1.0",
     ]

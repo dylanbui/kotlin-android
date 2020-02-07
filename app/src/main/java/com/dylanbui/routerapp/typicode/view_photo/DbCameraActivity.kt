@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dylanbui.android_library.DbPermissions
 import com.dylanbui.android_library.camera.DbAutoFitTextureView
 import com.dylanbui.android_library.camera.dbcam.DbCameraManager
 import com.dylanbui.android_library.camera.dbcam.DbCameraManagerCallback
@@ -118,12 +117,12 @@ class DbCameraActivity : AppCompatActivity(), DbCameraManagerCallback {
     override fun onResume() {
         super.onResume()
 
-        DbPermissions.requestAccessPhotoLibrary(this) { grand ->
-            if (grand) {
-                // -- Start camera at Resume event --
-                ezCam.onResumeCapture()
-            }
-        }
+//        DbPermissions.requestAccessPhotoLibrary(this) { grand ->
+//            if (grand) {
+//                // -- Start camera at Resume event --
+//                ezCam.onResumeCapture()
+//            }
+//        }
 
 //        RxPermissions(this)
 //            .request(

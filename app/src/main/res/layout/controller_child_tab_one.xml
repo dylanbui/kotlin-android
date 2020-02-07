@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Include toolbar, remove this line when hide -->
+    <!-- <include layout="@layout/toolbar_native" /> -->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/controllerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnTemplate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show Select Box" />
+
+        </LinearLayout>
+
+        <!-- Include progress page view -->
+        <!-- <include layout="@layout/include_progress_view" /> -->
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
+
+
+
+

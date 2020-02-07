@@ -1,0 +1,168 @@
+
+// -- SwitchViewGroup
+
+class SwitchViewGroup
+@JvmOverloads constructor(context: Context,
+                          attrs: AttributeSet? = null,
+                          defStyleAttr: Int = 0,
+                          defStyleRes: Int = 0)
+    : BaseViewGroup(context, attrs, defStyleAttr, defStyleRes) {
+
+    private var editText: EditText? = null
+    private var toggle: CustomSwitch? = null
+    private val checkChangeListener: UserAdapter.OnCheckedChangeListener? = null
+    private val textChangedListener: UserAdapter.OnTextChangeListener? = null
+
+
+    override
+    fun getLayoutRes(): Int = R.layout.switch_custom_view_group
+
+    override
+    fun setupStyleables(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
+    }
+
+    override
+    fun bindView() {
+        editText = findViewById(R.id.editText)
+        toggle = findViewById(R.id.toggle)
+    }
+
+    override
+    fun setupView() {
+    }
+
+    fun setTextToEditText(message: String?) {
+        editText?.setText(message)
+    }
+
+    fun setTextChangedListener(listener: TextWatcher) {
+        editText?.addTextChangedListener(listener)
+    }
+
+    fun setOnCheckChangeListener(listener: CompoundButton.OnCheckedChangeListener) {
+        toggle?.setOnCheckedChangeListener(listener)
+    }
+
+    fun setCheck(check: Boolean) {
+        toggle?.isChecked = check
+    }
+
+    public override fun onSaveInstanceState(): Parcelable? {
+        val superState = super.onSaveInstanceState()
+        // Must call
+        val ss = onSaveChildInstanceState(SavedState(superState)) as SavedState
+        // save data here
+        return ss
+    }
+
+
+    public override fun onRestoreInstanceState(state: Parcelable) {
+        if (state !is SavedState) {
+            super.onRestoreInstanceState(state)
+            return
+        }
+        super.onRestoreInstanceState(state)
+        // restore data here
+    }
+
+
+    internal class SavedState : BaseViewGroup.ChildSavedState {
+
+        constructor(superState: Parcelable) : super(superState) {}
+
+        constructor(`in`: Parcel, classLoader: ClassLoader) : super(`in`, classLoader) {
+            // save data here
+        }
+
+        override
+        fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            // restore data here
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.ClassLoaderCreator<SavedState> = object : Parcelable.ClassLoaderCreator<SavedState> {
+                override
+                fun createFromParcel(source: Parcel, loader: ClassLoader): SavedState = SavedState(source, loader)
+
+                override
+                fun createFromParcel(`in`: Parcel): SavedState? = null
+
+                override
+                fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+            }
+        }
+    }
+
+}
+
+// -- CustomSwitch
+
+class CustomSwitch
+    : Switch {
+
+    private var customState: Int = 0
+
+    constructor(context: Context) : super(context) {}
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    }
+
+    fun setCustomState(customState: Int) {
+        this.customState = customState
+    }
+
+    override
+    fun onSaveInstanceState(): Parcelable? {
+        val superState = super.onSaveInstanceState()
+        val ss = SavedState(superState)
+        ss.state = customState
+        return ss
+    }
+
+
+    override
+    fun onRestoreInstanceState(state: Parcelable) {
+        if (state !is SavedState) {
+            super.onRestoreInstanceState(state)
+            return
+        }
+        super.onRestoreInstanceState(state.superState)
+        setCustomState(state.state)
+    }
+
+
+    internal class SavedState : ViewSavedState {
+        var state: Int = 0
+
+        constructor(superState: Parcelable) : super(superState)
+
+        constructor(`in`: Parcel) : super(`in`) {
+            state = `in`.readInt()
+        }
+
+        override
+        fun writeToParcel(out: Parcel, flags: Int) = with(out) {
+            super.writeToParcel(out, flags)
+            out.writeInt(state)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+
+                override
+                fun createFromParcel(`in`: Parcel): SavedState? = SavedState(`in`)
+
+                override
+                fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+            }
+        }
+    }
+}
