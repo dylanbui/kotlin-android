@@ -14,18 +14,17 @@ import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
-
-
+/*
+Thang nay chay dung chuan Conductor
+Cac Controller cua Tab deu dung childRouter, moi Tab deu co Router rieng
+* */
 
 class CustomTabbarController : Controller(), BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
-
-//    lateinit var pagerAdapter: MyRouterPagerAdapter
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var viewPager: ViewPager
 
-    lateinit var pagerAdapter: RouterPagerAdapter
+
 
     private var prevMenuItem: MenuItem? = null
 
@@ -36,12 +35,7 @@ class CustomTabbarController : Controller(), BottomNavigationView.OnNavigationIt
         R.color.lime_300
     )
 
-
-    /**
-     * This is the current selected item id from the [BottomNavigationView]
-     */
-    @IdRes
-    private var currentSelectedItemId: Int = -1
+    private var pagerAdapter: RouterPagerAdapter
 
     init {
         pagerAdapter = object : RouterPagerAdapter(this) {

@@ -17,6 +17,10 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.dylanbui.routerapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+/*
+Vi du chay khong chinh xac, dung de demo Tabbar
+* */
+
 // -- Save status controller --
 private const val ROUTER_STATES_KEY = "STATE"
 

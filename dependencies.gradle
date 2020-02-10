@@ -58,6 +58,10 @@ ext {
             conductorSupport    :         "com.bluelinelabs:conductor-support:3.0.0-rc1",
 
             conductorMvp         :         "com.hannesdorfmann.mosby3:mvp-conductor:3.1.0",
+
+            // Cac thu vien ben ngoai, test truoc khi dua vao he thong
+            superBottomSheet :  "com.github.andrefrsousa:SuperBottomSheet:1.5.0",
+            modalBottomSheetDialogFragment : "com.github.Commit451:ModalBottomSheetDialogFragment:1.1.0",
     ]
 
 

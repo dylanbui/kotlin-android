@@ -127,6 +127,10 @@ dependencies {
     // MVP Conductor Plugin
     implementation supportDependencies.conductorMvp
 
+    // Cac thu vien ben ngoai, test truoc khi dua vao he thong
+    implementation supportDependencies.superBottomSheet
+    implementation supportDependencies.modalBottomSheetDialogFragment
+
     implementation project(':android_library')
 
 
