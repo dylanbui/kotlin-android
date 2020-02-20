@@ -101,7 +101,6 @@ class SplashPresenter : BaseMvpPresenter<SplashActionView>(), CoroutineScope
         }
 
         jobUpdate.invokeOnCompletion {
-
             Log.d("TAG", " jobUpdate --- ${Thread.currentThread()} has run.")
         }
 
