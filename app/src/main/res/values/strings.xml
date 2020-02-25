@@ -47,4 +47,14 @@
     <string name="global_code">Global Code</string>
     <string name="title_activity_maps">Map</string>
 
+
+    <!-- Time -->
+    <string name="history_date_format" translatable="false">EEE d MMM</string>
+    <string name="history_detail_date_format" translatable="false">yyyy/MM/dd - HH:mm</string>
+    <string name="inapp_popup_date_format" translatable="false">yyyy/MM/dd</string>
+    <string name="inapp_popup_date_day" translatable="false">dd</string>
+    <string name="messages_date_format" translatable="false">dd/MM, HH:mm</string>
+    <string name="messages_list_date_format" translatable="false">dd/MM</string>
+    <string name="today_date_format" translatable="false">HH:mm</string>s
+
 </resources>

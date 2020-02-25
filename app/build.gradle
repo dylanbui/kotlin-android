@@ -52,7 +52,7 @@ allprojects {
 
 dependencies {
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation supportDependencies.testJunit

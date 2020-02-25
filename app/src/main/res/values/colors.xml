@@ -31,4 +31,7 @@
     <color name="grey_300">#e0e0e0</color>
     <color name="grey_400">#78909C</color>
 
+
+    <color name="backgroundVoip">#99FFFFFF</color>
+
 </resources>
