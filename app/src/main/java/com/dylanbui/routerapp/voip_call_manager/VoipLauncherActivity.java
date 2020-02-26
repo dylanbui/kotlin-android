@@ -40,14 +40,17 @@ public class VoipLauncherActivity extends AppCompatActivity {
         // Once the service is ready, we can move on in the application
         // We'll forward the intent action, type and extras so it can be handled
         // by the next activity if needed, it's not the launcher job to do that
-        Intent intent = new Intent();
-        intent.setClass(VoipLauncherActivity.this, VoipMainActivity.class);
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            intent.putExtras(getIntent().getExtras());
-        }
-        intent.setAction(getIntent().getAction());
-        intent.setType(getIntent().getType());
+        Intent intent = new Intent(VoipLauncherActivity.this, VoipMainActivity.class);
         startActivity(intent);
+
+//        Intent intent = new Intent();
+//        intent.setClass(VoipLauncherActivity.this, VoipMainActivity.class);
+//        if (getIntent() != null && getIntent().getExtras() != null) {
+//            intent.putExtras(getIntent().getExtras());
+//        }
+//        intent.setAction(getIntent().getAction());
+//        intent.setType(getIntent().getType());
+//        startActivity(intent);
     }
 
     // This thread will periodically check if the Service is ready, and then call onServiceReady

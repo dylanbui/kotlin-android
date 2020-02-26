@@ -74,7 +74,15 @@ public class VoipMainActivity extends AppCompatActivity {
         });
 
         // Remove old config
-        LinphoneService.getCore().removeProxyConfig(LinphoneService.getCore().getDefaultProxyConfig());
+        // LinphoneService.getCore().removeProxyConfig(LinphoneService.getCore().getDefaultProxyConfig());
+        LinphoneUtils.removeAuthConfig();
+
+        String strName = "826";
+        String strPw = "!Wbs9ZuYZu";
+        String strHost = "propzyhcm160.ccall.vn";
+        String strPropxy = "sbcwrtchcm.ccall.vn:5060";
+
+        LinphoneUtils.registerUserAuth(strName, strPw, strHost, strPropxy);
     }
 
     @Override
@@ -101,7 +109,7 @@ public class VoipMainActivity extends AppCompatActivity {
             updateLed(proxyConfig.getState());
         } else {
             // No account configured, we display the configuration activity
-            startActivity(new Intent(this, VoipConfigureAccountActivity.class));
+            // startActivity(new Intent(this, VoipConfigureAccountActivity.class));
         }
     }
 

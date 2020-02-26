@@ -1,13 +1,12 @@
 package com.dylanbui.routerapp.voip_call_manager;
 
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.TextureView;
+import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Chronometer;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,18 +15,33 @@ import com.dylanbui.routerapp.R;
 
 import org.linphone.core.Call;
 import org.linphone.core.Core;
+import org.linphone.core.CoreListener;
 import org.linphone.core.CoreListenerStub;
-import org.linphone.core.VideoDefinition;
 import org.linphone.core.tools.Log;
-import org.linphone.mediastream.Version;
 
 public class VoipCallActivity extends AppCompatActivity {
 
     // We use 2 TextureView, one for remote video and one for local camera preview
-    private TextureView mVideoView;
-    private TextureView mCaptureView;
 
-    private CoreListenerStub mCoreListener;
+//    private RelativeLayout mButtons,
+//            mActiveCalls,
+//            mContactAvatar,
+//            mActiveCallHeader,
+//            mConferenceHeader;
+
+    private ImageView mMicro, mSpeaker;
+    //    private ImageView mPause, mSwitchCamera, mRecordingInProgress;
+//    private ImageView mExtrasButtons, mAddCall, mTransferCall, mRecordCall, mConference;
+//    private ImageView mAudioRoute, mRouteEarpiece, mRouteSpeaker, mRouteBluetooth;
+    private TextView mContactName;
+    //    private ProgressBar mVideoInviteInProgress;
+    private Chronometer mCallTimer;
+
+
+    private Core mCore;
+    private CoreListener mListener;
+//    private AndroidAudioManager mAudioManager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,146 +49,205 @@ public class VoipCallActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_voip_call);
 
-        mVideoView = findViewById(R.id.videoSurface);
-        mCaptureView = findViewById(R.id.videoCaptureSurface);
+        mContactName = findViewById(R.id.current_contact_name);
+        mCallTimer = findViewById(R.id.current_call_timer);
 
-        Core core = LinphoneService.getCore();
-        // We need to tell the core in which to display what
-        core.setNativeVideoWindowId(mVideoView);
-        core.setNativePreviewWindowId(mCaptureView);
-
-        // Listen for call state changes
-        mCoreListener = new CoreListenerStub() {
-            @Override
-            public void onCallStateChanged(Core lc, Call call, Call.State cstate, String message) {
-                if (cstate == Call.State.End || cstate == Call.State.Released) {
-                    // Once call is finished (end state), terminate the activity
-                    // We also check for released state (called a few seconds later) just in case
-                    // we missed the first one
-                    finish();
-                }
-            }
-        };
-
-//        mCoreListener = new CoreListenerStub() {
-//            @Override
-//            public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
-//                if (state == Call.State.End || state == Call.State.Released) {
-//                    // Once call is finished (end state), terminate the activity
-//                    // We also check for released state (called a few seconds later) just in case
-//                    // we missed the first one
-//                    finish();
-//                }
-//            }
-//        };
-
-        findViewById(R.id.terminate_call).setOnClickListener(new View.OnClickListener() {
+        mMicro = findViewById(R.id.micro);
+        mMicro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Core core = LinphoneService.getCore();
-                if (core.getCallsNb() > 0) {
-                    Call call = core.getCurrentCall();
-                    if (call == null) {
-                        // Current call can be null if paused for example
-                        call = core.getCalls()[0];
-                    }
-                    call.terminate();
-                }
+                toggleMic();
             }
         });
+
+        mSpeaker = findViewById(R.id.speaker);
+        mSpeaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSpeaker();
+            }
+        });
+
+        ImageView hangUp = findViewById(R.id.hang_up);
+        hangUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinphoneUtils.hangUp();
+            }
+        });
+
+
+        // Core core = LinphoneService.getCore();
+        // We need to tell the core in which to display what
+        // Listen for call state changes
+        mListener = new CoreListenerStub() {
+
+            @Override
+            public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
+                if (state == Call.State.End || state == Call.State.Released) {
+                    if (core.getCallsNb() == 0) {
+                        finish();
+                    }
+                } else if (state == Call.State.PausedByRemote) {
+                    if (core.getCurrentCall() != null) {
+                        finish();
+                    }
+                } else if (state == Call.State.Pausing || state == Call.State.Paused) {
+                    if (core.getCurrentCall() != null) {
+
+                    }
+                } else if (state == Call.State.StreamsRunning) {
+
+                    setCurrentCallContactInformation();
+
+                }
+
+                updateButtons();
+            }
+        };
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        // This also must be done here in case of an outgoing call accepted
+        // before user granted or denied permissions
+        // or if an incoming call was answer from the notification
+
+        mCore = LinphoneService.getCore();
+        if (mCore != null) {
+            mCore.addListener(mListener);
+        }
+
+        // LinphoneService.getCore().addListener(mCoreListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        LinphoneService.getCore().addListener(mCoreListener);
-        resizePreview();
+        updateButtons();
+
+        if (mCore.getCallsNb() == 0) {
+            Log.w("[Call Activity] Resuming but no call found...");
+            finish();
+        }
     }
 
     @Override
     protected void onPause() {
-        LinphoneService.getCore().removeListener(mCoreListener);
-
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
+        Core core = LinphoneService.getCore();
+        if (core != null) {
+            core.removeListener(mListener);
+            core.setNativeVideoWindowId(null);
+            core.setNativePreviewWindowId(null);
+        }
+
+        mCallTimer.stop();
+        mCallTimer = null;
+
+        mListener = null;
+
+        mMicro = null;
+        mSpeaker = null;
+
+        mContactName = null;
+
         super.onDestroy();
     }
 
-    @TargetApi(24)
-    @Override
-    public void onUserLeaveHint() {
-        // If the device supports Picture in Picture let's use it
-        boolean supportsPip =
-                getPackageManager()
-                        .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
-        Log.i("[Call] Is picture in picture supported: " + supportsPip);
-        if (supportsPip && Version.sdkAboveOrEqual(24)) {
-            enterPictureInPictureMode();
-        }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (mAudioManager.onKeyVolumeAdjust(keyCode)) return true;
+//        return super.onKeyDown(keyCode, event);
+//    }
+
+
+    private void updateButtons() {
+        // Call call = mCore.getCurrentCall();
+        mMicro.setSelected(!mCore.micEnabled());
+        // mSpeaker.setSelected(mAudioManager.isAudioRoutedToSpeaker());
+
+//        updateAudioRouteButtons();
+//
+//        boolean isBluetoothAvailable = mAudioManager.isBluetoothHeadsetConnected();
+//        mSpeaker.setVisibility(isBluetoothAvailable ? View.GONE : View.VISIBLE);
+//        mAudioRoute.setVisibility(isBluetoothAvailable ? View.VISIBLE : View.GONE);
+//        if (!isBluetoothAvailable) {
+//            mRouteBluetooth.setVisibility(View.GONE);
+//            mRouteSpeaker.setVisibility(View.GONE);
+//            mRouteEarpiece.setVisibility(View.GONE);
+//        }
+
+//        mVideo.setEnabled(
+//                LinphonePreferences.instance().isVideoEnabled()
+//                        && call != null
+//                        && !call.mediaInProgress());
+//        mVideo.setSelected(call != null && call.getCurrentParams().videoEnabled());
+//        mSwitchCamera.setVisibility(
+//                call != null && call.getCurrentParams().videoEnabled()
+//                        ? View.VISIBLE
+//                        : View.INVISIBLE);
+//
+//        mPause.setEnabled(call != null && !call.mediaInProgress());
+
+//        mRecordCall.setSelected(call != null && call.isRecording());
+//        mRecordingInProgress.setVisibility(
+//                call != null && call.isRecording() ? View.VISIBLE : View.GONE);
+//
+//        mConference.setEnabled(
+//                mCore.getCallsNb() > 1
+//                        && mCore.getCallsNb() > mCore.getConferenceSize()
+//                        && !mCore.soundResourcesLocked());
     }
 
-    @Override
-    public void onPictureInPictureModeChanged(
-            boolean isInPictureInPictureMode, Configuration newConfig) {
-        if (isInPictureInPictureMode) {
-            // Currently nothing to do has we only display video
-            // But if we had controls or other UI elements we should hide them
-        } else {
-            // If we did hide something, let's make them visible again
-        }
+    private void toggleMic() {
+        mCore.enableMic(!mCore.micEnabled());
+        mMicro.setSelected(!mCore.micEnabled());
     }
 
-    private void resizePreview() {
-        Core core = LinphoneService.getCore();
-        if (core.getCallsNb() > 0) {
-            Call call = core.getCurrentCall();
-            if (call == null) {
-                call = core.getCalls()[0];
-            }
-            if (call == null) return;
+    private void toggleSpeaker() {
+        // co lop AndroidAudioManager trong Linphone su dung AudioManager de quan ly loa, loa ngoai, bluetooth
+//        if (mAudioManager.isAudioRoutedToSpeaker()) {
+//            mAudioManager.routeAudioToEarPiece();
+//        } else {
+//            mAudioManager.routeAudioToSpeaker();
+//        }
+//        mSpeaker.setSelected(mAudioManager.isAudioRoutedToSpeaker());
+    }
 
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int screenHeight = metrics.heightPixels;
-            int maxHeight =
-                    screenHeight / 4; // Let's take at most 1/4 of the screen for the camera preview
+    private void updateCurrentCallTimer() {
+        Call call = mCore.getCurrentCall();
+        if (call == null) return;
 
-            VideoDefinition videoSize =
-                    call.getCurrentParams()
-                            .getSentVideoDefinition(); // It already takes care of rotation
-            if (videoSize.getWidth() == 0 || videoSize.getHeight() == 0) {
-                Log.w(
-                        "[Video] Couldn't get sent video definition, using default video definition");
-                videoSize = core.getPreferredVideoDefinition();
-            }
-            int width = videoSize.getWidth();
-            int height = videoSize.getHeight();
+        mCallTimer.setBase(SystemClock.elapsedRealtime() - 1000 * call.getDuration());
+        mCallTimer.start();
+    }
 
-            Log.d("[Video] Video height is " + height + ", width is " + width);
-            width = width * maxHeight / height;
-            height = maxHeight;
+    private void setCurrentCallContactInformation() {
+        updateCurrentCallTimer();
 
-            if (mCaptureView == null) {
-                Log.e("[Video] mCaptureView is null !");
-                return;
-            }
+        Call call = mCore.getCurrentCall();
+        if (call == null) return;
 
-            RelativeLayout.LayoutParams newLp = new RelativeLayout.LayoutParams(width, height);
-            newLp.addRule(
-                    RelativeLayout.ALIGN_PARENT_BOTTOM,
-                    1); // Clears the rule, as there is no removeRule until API 17.
-            newLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-            mCaptureView.setLayoutParams(newLp);
-            Log.d("[Video] Video preview size set to " + width + "x" + height);
-        }
+        String displayName = LinphoneUtils.getAddressDisplayName(call.getRemoteAddress());
+        mContactName.setText(displayName);
+
+//        LinphoneContact contact =
+//                ContactsManager.getInstance().findContactFromAddress(call.getRemoteAddress());
+//        if (contact != null) {
+//            ContactAvatar.displayAvatar(contact, mContactAvatar, true);
+//            mContactName.setText(contact.getFullName());
+//        } else {
+//            String displayName = LinphoneUtils.getAddressDisplayName(call.getRemoteAddress());
+//            ContactAvatar.displayAvatar(displayName, mContactAvatar, true);
+//            mContactName.setText(displayName);
+//        }
     }
 }

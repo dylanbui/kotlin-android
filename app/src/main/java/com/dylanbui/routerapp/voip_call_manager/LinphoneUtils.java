@@ -41,17 +41,23 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.dylanbui.routerapp.R;
+import com.dylanbui.routerapp.easyphone.PhoneBean;
 
+import org.linphone.core.AVPFMode;
+import org.linphone.core.AccountCreator;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallLog;
+import org.linphone.core.CallParams;
 import org.linphone.core.ChatMessage;
 import org.linphone.core.Content;
 import org.linphone.core.Core;
+import org.linphone.core.CoreException;
 import org.linphone.core.EventLog;
 import org.linphone.core.Factory;
 import org.linphone.core.LogCollectionState;
 import org.linphone.core.ProxyConfig;
+import org.linphone.core.TransportType;
 import org.linphone.core.tools.Log;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +67,7 @@ import java.util.regex.Pattern;
 
 /** Helpers. */
 public final class LinphoneUtils {
+    private static final String TAG = "LinphoneUtils";
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     private LinphoneUtils() {}
@@ -210,5 +217,136 @@ public final class LinphoneUtils {
         }
     }
 
+    public static void registerUserAuth(String name, String password, String host, String proxy) {
+        Log.e(TAG, "registerUserAuth name = " + name);
+        Log.e(TAG, "registerUserAuth pw = " + password);
+        Log.e(TAG, "registerUserAuth host = " + host);
 
+        Core mCore = LinphoneService.getCore();
+        if (mCore == null) {
+            Log.e(TAG, "LinphoneService core == null");
+            return;
+        }
+
+//        String identify = "sip:" + name + "@" + host;
+//        proxy = "sip:" + host;
+
+        AccountCreator mAccountCreator = mCore.createAccountCreator(null);
+
+        // At least the 3 below values are required
+        mAccountCreator.setUsername(name);
+        mAccountCreator.setPassword(password);
+        mAccountCreator.setDomain(host);
+        mAccountCreator.setTransport(TransportType.Udp);
+
+        // This will automatically create the proxy config and auth info and add them to the Core
+        ProxyConfig cfg = mAccountCreator.createProxyConfig();
+        cfg.setAvpfMode(AVPFMode.Enabled);
+        cfg.setAvpfRrInterval(0);
+        cfg.enableQualityReporting(false);
+        cfg.setQualityReportingCollector(null);
+        cfg.setQualityReportingInterval(0);
+        cfg.enableRegister(true);
+
+
+        // String identify = "sip:" + strName + "@" + strHost;
+        // String proxy = "sip:" + host;
+
+        // Make identify
+//        Address identifyAdd = Factory.instance().createAddress(identify);
+//        cfg.setIdentityAddress(identifyAdd);
+//
+        cfg.setRoute(proxy);
+        cfg.setServerAddr(proxy);
+
+        // Make sure the newly created one is the default
+        mCore.setDefaultProxyConfig(cfg);
+
+        Log.i("getIdentityAddress = " + cfg.getIdentityAddress().asStringUriOnly());
+        Log.i("getRoutes = " + cfg.getRoutes()[0]);
+        Log.i("getServerAddr = " + cfg.getServerAddr());
+
+
+//        LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
+//        LinphoneAddress identifyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(identify);
+//        LinphoneAuthInfo authInfo = LinphoneCoreFactory.instance().createAuthInfo(name, null, password,
+//                null, null, host);
+//        LinphoneProxyConfig prxCfg = mLinphoneCore.createProxyConfig(identifyAddr.asString(),
+//                proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
+//        prxCfg.enableAvpf(false);
+//        prxCfg.setAvpfRRInterval(0);
+//        prxCfg.enableQualityReporting(false);
+//        prxCfg.setQualityReportingCollector(null);
+//        prxCfg.setQualityReportingInterval(0);
+//        prxCfg.enableRegister(true);
+//        mLinphoneCore.addProxyConfig(prxCfg);
+//        mLinphoneCore.addAuthInfo(authInfo);
+//        mLinphoneCore.setDefaultProxyConfig(prxCfg);
+    }
+
+    public static Call startSingleCallingTo(PhoneBean bean) {
+        Core mCore = LinphoneService.getCore();
+        if (mCore == null) return null;
+
+        Address address;
+
+        address = mCore.interpretUrl(bean.getUserName() + "@" + bean.getHost());
+
+        address.setDisplayName(bean.getDisplayName());
+        CallParams params = mCore.createCallParams(null);
+        return mCore.inviteAddressWithParams(address, params);
+    }
+
+    public static boolean acceptCall(Call call) {
+        Core mCore = LinphoneService.getCore();
+        if (mCore == null || call == null) return false;
+
+        CallParams params = mCore.createCallParams(call);
+
+//        boolean isLowBandwidthConnection =
+//                !LinphoneUtils.isHighBandwidthConnection(
+//                        LinphoneContext.instance().getApplicationContext());
+
+        if (params != null) {
+//            params.enableLowBandwidth(isLowBandwidthConnection);
+//            params.setRecordFile(
+//                    FileUtils.getCallRecordingFilename(mContext, call.getRemoteAddress()));
+        } else {
+            Log.e("[Call Manager] Could not create call params for call");
+            return false;
+        }
+
+        call.acceptWithParams(params);
+        return true;
+    }
+
+    /**
+     * 挂断电话
+     */
+    public static void hangUp() {
+        Core core = LinphoneService.getCore();
+        if (core == null) return;
+        if (core.getCallsNb() > 0) {
+            Call call = core.getCurrentCall();
+            if (call == null) {
+                // Current call can be null if paused for example
+                call = core.getCalls()[0];
+            }
+            call.terminate();
+        }
+//        Core mCore = LinphoneService.getCore();
+//        if (mCore == null) return;
+//        if (mCore.isInConference()) {
+//            mCore.terminateConference();
+//        } else {
+//            mCore.terminateAllCalls();
+//        }
+    }
+
+    public static void removeAuthConfig() {
+        Core core = LinphoneService.getCore();
+        if (core == null) return;
+        // Remove old config
+        core.removeProxyConfig(core.getDefaultProxyConfig());
+    }
 }

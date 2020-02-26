@@ -30,7 +30,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionAndStatusBar"
+        android:theme="@style/NoActionBar"
         tools:replace="android:icon,allowBackup">
 
         <!--
@@ -78,6 +78,15 @@
 
         <!--  Cac Activity dung cho SIP Call, VoipLauncherActivity -->
 
+
+        <activity
+            android:name=".voip_call_manager.CallOutgoingActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".voip_call_manager.CallIncomingActivity"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".voip_call_manager.VoipMainActivity"
             android:theme="@style/AppTheme" />
@@ -97,9 +106,6 @@
         <service
             android:name=".voip_call_manager.LinphoneService"
             android:label="@string/app_name" />
-
-
-
 
 
 
