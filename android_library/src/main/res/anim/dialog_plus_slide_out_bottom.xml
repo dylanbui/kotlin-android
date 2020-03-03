@@ -4,7 +4,7 @@
     >
 
   <translate
-      android:duration="@integer/dialogplus_animation_default_duration"
+      android:duration="@integer/dialog_plus_animation_default_duration"
       android:fromXDelta="0%"
       android:fromYDelta="0%"
       android:toXDelta="0%"
