@@ -14,7 +14,7 @@ import com.dylanbui.android_library.google_service.places_auto_complete.PlacesAu
 
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.R
-import com.tbruyelle.rxpermissions2.RxPermissions
+
 
 
 

@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.gms.google-services'
 
-//apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'
 
 ext {
     conductorVersion = "3.0.0-rc1"
@@ -36,10 +36,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    dataBinding {
-        enabled = true
     }
 
 }
@@ -106,8 +102,13 @@ dependencies {
     implementation supportDependencies.rxkotlin
     implementation supportDependencies.rxandroid
     // rx permission, khong can dung trong thang app
-    implementation supportDependencies.rxpermissions
+    // implementation supportDependencies.rxpermissions
 
+    // Support application lifecycle
+    implementation supportDependencies.archLifecycle
+    // Mapping
+    implementation supportDependencies.butterknife
+    kapt supportDependencies.butterknifeCompiler
 
     // lottie
     implementation supportDependencies.lottie

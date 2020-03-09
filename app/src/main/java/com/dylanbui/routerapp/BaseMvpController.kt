@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.dylanbui.android_library.DbMessageEvent
@@ -29,6 +31,8 @@ interface ActionBarProvider {
 @SuppressWarnings("deprecation", "unused")
 abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController<V, P>, BaseMvpView
 {
+    private var unbinder: Unbinder? = null
+
     open var nav: DbNavigation? = null
 
     protected var mainActivity: MainActivity? = null
@@ -64,6 +68,8 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
     {
         // -- inflateView for this Controller --
         val view: View = inflateView(inflater, container)
+        unbinder = ButterKnife.bind(this, view)
+
         progressView = view.findViewById(R.id.progressView)
         activity?.let {
             this.progressDialog = DbUtils.makeProgressDialog(it, getStringResource(R.string.loading_title))
@@ -106,6 +112,8 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : MvpController
         // -- Unregister Event Bus
         EventBus.getDefault().unregister(this)
         super.onDestroy()
+        unbinder?.unbind()
+        unbinder = null
     }
 
     // -- Interface BaseMvpView --

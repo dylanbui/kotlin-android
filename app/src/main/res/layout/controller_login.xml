@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/txtUsername"
+                android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
@@ -31,7 +31,7 @@
                 android:textSize="@dimen/text_size_15" />
 
             <EditText
-                android:id="@+id/txtPassword"
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
@@ -44,6 +44,23 @@
                 android:layout_height="wrap_content"
                 android:text="Login" />
 
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register" />
+
+            <Button
+                android:id="@+id/btnForgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password" />
+
+            <Button
+                android:id="@+id/btnDatetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datetime" />
 
             <com.dylanbui.routerapp.typicode.user.CButton
                 android:id="@+id/fbtn"

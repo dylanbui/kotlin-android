@@ -24,7 +24,6 @@ import com.dylanbui.android_library.camera.DbAutoFitTextureView
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
-import com.tbruyelle.rxpermissions2.RxPermissions
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -111,17 +110,17 @@ class DbEZCamActivity : AppCompatActivity(), EZCamCallback {
 
         this.allowCameraControl(false)
 
-        RxPermissions(this)
-            .request(
-                Manifest.permission.CAMERA
-                , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                , Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .subscribe({ grand ->
-                if (grand) {
-                    ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
-                }
-            })
+//        RxPermissions(this)
+//            .request(
+//                Manifest.permission.CAMERA
+//                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                , Manifest.permission.READ_EXTERNAL_STORAGE
+//            )
+//            .subscribe({ grand ->
+//                if (grand) {
+//                    ezCam.open(CameraDevice.TEMPLATE_PREVIEW, textureView)
+//                }
+//            })
 
     }
 

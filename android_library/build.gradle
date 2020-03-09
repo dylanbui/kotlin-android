@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 ext {
     conductorVersion = "3.0.0-rc1"
@@ -117,6 +118,12 @@ dependencies {
     implementation supportDependencies.conductor
     // MVP Conductor Plugin
     implementation supportDependencies.conductorMvp
+
+    // Support application lifecycle
+    implementation supportDependencies.archLifecycle
+    // Mapping
+    implementation supportDependencies.butterknife
+    kapt supportDependencies.butterknifeCompiler
 
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

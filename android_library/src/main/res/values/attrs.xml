@@ -3,8 +3,18 @@
 
     <!-- For class DbCircleImageView -->
     <declare-styleable name="DbCircleImageView">
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_circle_background_color" format="color" />
+    </declare-styleable>
+
+    <!-- For class DbSwipeRevealLayout -->
+    <declare-styleable name="DbSwipeRevealLayout">
+        <attr name="dragFromEdge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+        </attr>
     </declare-styleable>
 
 </resources>

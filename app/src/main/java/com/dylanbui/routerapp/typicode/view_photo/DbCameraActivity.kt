@@ -21,7 +21,6 @@ import com.dylanbui.android_library.camera.dbcam.DbCameraManagerCallback
 import com.dylanbui.android_library.photo_gallery.DbPhoto
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
-import com.tbruyelle.rxpermissions2.RxPermissions
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
