@@ -128,11 +128,16 @@ dependencies {
     // MVP Conductor Plugin
     implementation supportDependencies.conductorMvp
 
+    implementation supportDependencies.butterknife
+    kapt supportDependencies.butterknifeCompiler
+
     // Cac thu vien ben ngoai, test truoc khi dua vao he thong
     implementation supportDependencies.superBottomSheet
     implementation supportDependencies.modalBottomSheetDialogFragment
 
     implementation project(':android_library')
+
+    implementation project(':android_ui_custom')
 
 
     // Moi nhat

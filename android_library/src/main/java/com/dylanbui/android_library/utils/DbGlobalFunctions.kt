@@ -95,20 +95,3 @@ fun Context.toast(message: String) {
 fun dLog(str: String) {
     Log.d("TAG", str)
 }
-
-
-fun Parcel.writeBoolean(flag: Boolean) {
-    when(flag) {
-        true -> writeInt(1)
-        false -> writeInt(0)
-        else -> writeInt(0)
-    }
-}
-
-fun Parcel.readBoolean(): Boolean {
-    return when(readInt()) {
-        1 -> true
-        0 -> false
-        else -> false
-    }
-}
