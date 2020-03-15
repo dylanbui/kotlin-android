@@ -19,6 +19,7 @@ import com.dylanbui.android_library.utils.DbDialogAbstract
 import com.dylanbui.android_library.utils.DbEditTextUtils
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
+import com.dylanbui.android_library.utils_extentions.*
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
 import com.dylanbui.routerapp.networking.AppNetworkServiceError
@@ -122,6 +123,19 @@ class LoginViewController : BaseMvpController<LoginActionView, LoginPresenter>()
 
     override fun onAttach(view: View) {
         super.onAttach(view)
+
+
+        dLog("tim cai gi nua day")
+
+        var today = DbDate.today
+        var today30 = today + 30.days
+        var today60 = today + 60.days
+
+        dLog("Today = " + today.time)
+        dLog("today30 = " + today30.time)
+        dLog("today60 = " + today60.time)
+
+
 
         activity?.let {
             val controllerContainer = view.findViewById<ViewGroup>(R.id.controllerContainer)
