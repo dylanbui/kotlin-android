@@ -121,7 +121,7 @@ class PostListViewController : BaseMvpController<PostListActionView, PostListPre
     override fun updatePostList(page: Int, list: List<TyPost>) {
         // Reload data
         if (page == 0) postAdapter.clearData()
-        postAdapter.updateData(list.toMutableList())
+        postAdapter.updateData(ArrayList(list))
         layoutRefresh.isRefreshing = false
         progressView?.visibility = View.GONE
     }
