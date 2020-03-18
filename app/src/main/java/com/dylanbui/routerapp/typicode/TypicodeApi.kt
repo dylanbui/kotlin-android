@@ -4,9 +4,12 @@ import android.util.Log
 import com.dylanbui.routerapp.networking.*
 import com.dylanbui.android_library.utils.fromJson
 import com.dylanbui.android_library.utils.guardLet
+import com.dylanbui.routerapp.bgDispatcher
+import com.dylanbui.routerapp.uiDispatcher
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -42,21 +45,58 @@ object TyPostApi {
         })
     }
 
-    fun getPost(callback: (List<TyPost>, AppNetworkServiceError?) -> Unit) {
+    suspend fun aaas() = GlobalScope.launch(Dispatchers.IO)  {
 
-        var strUrl = "posts"
-        Log.d("TAG", "String Url : $strUrl")
+    }
 
-        TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+    fun getPost(callback: (ArrayList<TyPost>, AppNetworkServiceError?) -> Unit) = GlobalScope.launch(bgDispatcher) {
+
+        val strUrl = "posts"
+        var result: ArrayList<TyPost> = arrayListOf()
+        var err: AppNetworkServiceError? = null
+        TypicodeApi.getSynch(strUrl, object : TypicodeApiCallback {
             override fun success(responseData: JsonElement) {
-                callback(fromJson(responseData), null)
+                result = fromJson(responseData)
+                // callback(fromJson(responseData), null)
             }
 
             override fun failure(error: AppNetworkServiceError) {
                 // Empty list
-                callback(listOf<TyPost>(), error)
+                // callback(arrayListOf<TyPost>(), error)
+                err = error
             }
         })
+
+        withContext(uiDispatcher) {
+
+            Log.d("TAG", " 2 --- ${Thread.currentThread()} has run.")
+            Log.d("TAG", " --- ${result.toString()}")
+
+            if (err != null) {
+                callback(arrayListOf<TyPost>(), err)
+            } else {
+                callback(result, null)
+            }
+
+            // callback(arrayListOf<TyPost>(), null)
+        }
+
+
+
+
+
+
+        //TypicodeApi.get(strUrl, object : TypicodeApiCallback {
+//        TypicodeApi.getSynch(strUrl, object : TypicodeApiCallback {
+//            override fun success(responseData: JsonElement) {
+//                callback(fromJson(responseData), null)
+//            }
+//
+//            override fun failure(error: AppNetworkServiceError) {
+//                // Empty list
+//                callback(arrayListOf<TyPost>(), error)
+//            }
+//        })
     }
 
     fun getPostDetail(postId: Int = 0, callback: (TyPost, AppNetworkServiceError?) -> Unit) {
@@ -241,36 +281,36 @@ object TypicodeApi {
         BASE_URL = str
     }
 
-    private fun convertToJsonObject(dict: DictionaryType): JsonObject {
-        var jsonObject = JsonObject()
+//    private fun convertToJsonObject(dict: DictionaryType): JsonObject {
+//        var jsonObject = JsonObject()
+//
+//        dict.forEach {
+//            // New ways
+//            when (it.value) {
+//                null -> jsonObject.add(it.key, JsonNull.INSTANCE)
+//                is Boolean -> jsonObject.addProperty(it.key, it.value as Boolean)
+//                is Number -> jsonObject.addProperty(it.key, it.value as Number)
+//                else -> jsonObject.addProperty(it.key, it.value.toString())
+//            }
+//        }
+//        return jsonObject
+//    }
 
-        dict.forEach {
-            // New ways
-            when (it.value) {
-                null -> jsonObject.add(it.key, JsonNull.INSTANCE)
-                is Boolean -> jsonObject.addProperty(it.key, it.value as Boolean)
-                is Number -> jsonObject.addProperty(it.key, it.value as Number)
-                else -> jsonObject.addProperty(it.key, it.value.toString())
-            }
-        }
-        return jsonObject
-    }
-
-    private fun convertToUrlEncode(map: DictionaryType): String {
-        var sb = StringBuilder()
-        map.entries.forEach {
-            if (it.value == null) {
-                sb.append(it.key).append('=').append('&')
-            } else {
-                sb.append(it.key)
-                    .append('=')
-                    .append(URLEncoder.encode(it.value.toString(), "UTF_8"))
-                    .append('&')
-            }
-        }
-        sb.delete(sb.length - 1, sb.length)
-        return sb.toString()
-    }
+//    private fun convertToUrlEncode(map: DictionaryType): String {
+//        var sb = StringBuilder()
+//        map.entries.forEach {
+//            if (it.value == null) {
+//                sb.append(it.key).append('=').append('&')
+//            } else {
+//                sb.append(it.key)
+//                    .append('=')
+//                    .append(URLEncoder.encode(it.value.toString(), "UTF_8"))
+//                    .append('&')
+//            }
+//        }
+//        sb.delete(sb.length - 1, sb.length)
+//        return sb.toString()
+//    }
 
     fun getWithSuspend(path: String) {
         // Default set Method GET

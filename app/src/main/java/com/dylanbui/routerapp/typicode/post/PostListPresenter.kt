@@ -9,7 +9,7 @@ import com.dylanbui.routerapp.typicode.TyPostApi
 interface PostListActionView : BaseMvpView
 {
     fun onPostRowClick(position: Int, post: TyPost)
-    fun updatePostList(page: Int, list: List<TyPost>)
+    fun updatePostList(page: Int, list: ArrayList<TyPost>)
     fun showPostError(error : AppNetworkServiceError)
 //    fun setData(list: List<User>)
 //    fun showContent()

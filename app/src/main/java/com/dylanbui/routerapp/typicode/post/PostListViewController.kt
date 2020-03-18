@@ -42,7 +42,7 @@ class PostListViewController : BaseMvpController<PostListActionView, PostListPre
         layoutRefresh = view.findViewById(R.id.refreshLayout)
 
         // -- At here presenter == null --
-        postAdapter = PostListAdapter(view.context)
+        postAdapter = PostListAdapter()
 
         var layoutManager = LinearLayoutManager(view.context)
         recyclerView.setHasFixedSize(true)
@@ -118,10 +118,10 @@ class PostListViewController : BaseMvpController<PostListActionView, PostListPre
 //                .popChangeHandler(HorizontalChangeHandler()))
     }
 
-    override fun updatePostList(page: Int, list: List<TyPost>) {
+    override fun updatePostList(page: Int, list: ArrayList<TyPost>) {
         // Reload data
         if (page == 0) postAdapter.clearData()
-        postAdapter.updateData(list.toMutableList())
+        postAdapter.updateData(list)
         layoutRefresh.isRefreshing = false
         progressView?.visibility = View.GONE
     }

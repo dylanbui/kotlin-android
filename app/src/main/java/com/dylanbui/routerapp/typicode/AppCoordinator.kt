@@ -38,7 +38,7 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
     // private var router = router
 
     override fun start() {
-        // var vcl = PostListViewController()
+        var vcl = PostListViewController()
          // var vcl = SplashViewController()
         // var vcl = PlaceAutoCompleteViewController()
         // var vcl = ViewPhotoViewController()
@@ -46,7 +46,7 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
 //        var vcl = MainTabarController()
         // var vcl = CustomTabbarController()
         // var vcl = DemoBottomSheetViewController()
-        var vcl = LoginViewController()
+        //var vcl = LoginViewController()
         router.setRoot(RouterTransaction.with(vcl))
 
 //        router.setRoot(RouterTransaction.with(FirstViewController())
