@@ -12,6 +12,8 @@ import com.dylanbui.routerapp.typicode.ApplicationRoute
 import com.dylanbui.routerapp.utils.DbNavigation
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.android_library.utils.toast
+import com.dylanbui.routerapp.networking.ApiServiceError
+import com.dylanbui.routerapp.networking.CoroutinesNetwork
 
 //internal class AnimatorListenerAdapter(
 //    val onStart: ((Animator) -> Unit)? = null,
@@ -26,6 +28,27 @@ import com.dylanbui.android_library.utils.toast
 //    override fun onAnimationCancel(animation: Animator) = onCancel?.invoke(animation) ?: Unit
 //}
 // Example: animationView.addAnimatorListener(AnimatorListenerAdapter(onEnd = { _ ->  }))
+
+class DistrictUnit {
+
+    var districtId: Int? = null
+
+    var countryId: Int? = null
+    var regionId: Int? = null
+    var cityId: Int? = null
+    var orders: Int? = null
+
+    var districtName: String? = null
+    var districtShortName: String? = null
+    var districtNameEn: String? = null
+    var districtNameEnLower:String?=null
+    var districtNameLower: String? = null
+    var districtShortNameLower: String? = null
+
+}
+
+
+
 
 class SplashViewController: Controller(), Animator.AnimatorListener
 {
@@ -70,6 +93,39 @@ class SplashViewController: Controller(), Animator.AnimatorListener
 //            // Toast.makeText(applicationContext, "show ra loi", Toast.LENGTH_LONG).show()
 //            Toast.makeText(activity, "show ra loi", Toast.LENGTH_LONG).show()
 //        }
+
+
+        CoroutinesNetwork.doRequest("districts/1", CoroutinesNetwork.Method.GET) {
+                arrDistrict: List<DistrictUnit>?, error: ApiServiceError? ->
+
+            Log.d("TAG", " 1 ---- ${Thread.currentThread()} has run.")
+
+            if (error != null) {
+                dLog("Loi cai me gi" + error.errorCode + " -- " + error.errorMessage)
+                return@doRequest
+            }
+
+            arrDistrict?.let {
+
+                for (district: DistrictUnit in it) {
+                    dLog("  --- dictrict.districtName = " + district.districtName)
+                }
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 
     override fun onAttach(view: View)

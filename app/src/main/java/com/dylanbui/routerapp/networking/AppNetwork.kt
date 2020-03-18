@@ -117,10 +117,10 @@ object AppNetwork {
         // See http://square.github.io/okhttp/3.x/logging-interceptor/ to see the options.
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+//        val interceptor = HttpLoggingInterceptor()
+//        interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            // .addInterceptor(interceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .build()
 

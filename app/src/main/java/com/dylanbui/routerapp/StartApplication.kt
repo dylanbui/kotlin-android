@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.dylanbui.android_library.utils.DbDeviceUtils
 import com.dylanbui.routerapp.networking.AppNetwork
+import com.dylanbui.routerapp.networking.CoroutinesNetwork
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.squareup.picasso.Picasso
@@ -66,7 +67,9 @@ class StartApplication : Application() {
         super.onCreate()
         context = this
 
-        AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
+        // AppNetwork.setBaseUrl("http://45.117.162.50:8080/file/api/")
+        AppNetwork.setBaseUrl("http://app.propzy.vn:9090/sam/api/")
+        CoroutinesNetwork.setBaseUrl("http://app.propzy.vn:9090/sam/api/")
 
         // Debug picasso
         val picasso = Picasso.Builder(applicationContext)
