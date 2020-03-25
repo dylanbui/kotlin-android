@@ -12,7 +12,7 @@ import com.dylanbui.routerapp.typicode.TyPost
 import kotlinx.android.synthetic.main.item_post.view.*
 
 
-class PostListAdapter(context: Context, var listener: OnDbAdapterListener<TyPost>? = null) : DbBaseRecyclerAdapter<TyPost>()
+class PostListAdapter(var listener: OnDbAdapterListener<TyPost>? = null) : DbBaseRecyclerAdapter<TyPost>()
 {
     var presenter: PostListPresenter? = null
 
