@@ -15,6 +15,7 @@ import com.dylanbui.routerapp.typicode.tabbar.MainTabarController
 import com.dylanbui.routerapp.typicode.user.login.LoginViewController
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewController
+import com.dylanbui.routerapp.ui_controller.HitSpinnerController
 import com.dylanbui.routerapp.utils.*
 
 
@@ -40,7 +41,8 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
     override fun start() {
         // var vcl = PostListViewController()
 
-        var vcl = SplashViewController()
+        // var vcl = SplashViewController()
+        var vcl = HitSpinnerController()
         // var vcl = PlaceAutoCompleteViewController()
         // var vcl = ViewPhotoViewController()
 //         var vcl = GoogleMapViewController()
