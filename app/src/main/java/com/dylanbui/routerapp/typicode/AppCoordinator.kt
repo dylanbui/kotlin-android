@@ -7,6 +7,7 @@ import com.dylanbui.routerapp.StartApplication
 import com.dylanbui.routerapp.typicode.bottom_sheet.DemoBottomSheetViewController
 import com.dylanbui.routerapp.typicode.google_map.GoogleMapViewController
 import com.dylanbui.routerapp.typicode.google_map.PlaceAutoCompleteViewController
+import com.dylanbui.routerapp.typicode.multi_upload_progress.UploadProgressController
 import com.dylanbui.routerapp.typicode.post.PostDetailViewController
 import com.dylanbui.routerapp.typicode.post.PostListViewController
 import com.dylanbui.routerapp.typicode.splash_intro.SplashViewController
@@ -40,14 +41,16 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
     override fun start() {
         // var vcl = PostListViewController()
 
-        var vcl = SplashViewController()
+//        var vcl = SplashViewController()
         // var vcl = PlaceAutoCompleteViewController()
         // var vcl = ViewPhotoViewController()
 //         var vcl = GoogleMapViewController()
 //        var vcl = MainTabarController()
         // var vcl = CustomTabbarController()
         // var vcl = DemoBottomSheetViewController()
-//        var vcl = LoginViewController()
+        //var vcl = LoginViewController()
+        var vcl = UploadProgressController()
+
         router.setRoot(RouterTransaction.with(vcl))
 
 //        router.setRoot(RouterTransaction.with(FirstViewController())
