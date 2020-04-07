@@ -86,6 +86,24 @@
                 android:layout_marginStart="8dp"
                 android:text="show_progress_dialog"/>
 
+            <Button
+                android:id="@+id/showUploadDialogButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="show_ducbui_upload_dialog"/>
+
+            <Button
+                android:id="@+id/showCustomDialogButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="show_ducbui_custom_dialog"/>
+
 
         </LinearLayout>
 

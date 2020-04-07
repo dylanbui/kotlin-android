@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.dylanbui.android_library.ui_control.progress_dialog.DbCustomDialog
 import com.dylanbui.android_library.ui_control.progress_dialog.DbProgressDialog
+import com.dylanbui.android_library.ui_control.progress_dialog.DbUploadProgressDialog
 import com.dylanbui.android_library.utils_extentions.doAsync
 import com.dylanbui.android_library.utils_extentions.uiThread
 import com.dylanbui.routerapp.BaseMvpController
@@ -17,6 +20,9 @@ class UploadProgressController : BaseMvpController<UploadProgressViewAction, Upl
 
     /* ProgressDialog object declared globally */
     private lateinit var progressUploadDialog: DbProgressDialog
+
+    private lateinit var uploadDialog: DbUploadProgressDialog
+    private lateinit var customDialog: DbCustomDialog
 
     /* List of colors */
     private val colors = arrayListOf(
@@ -91,7 +97,8 @@ class UploadProgressController : BaseMvpController<UploadProgressViewAction, Upl
                             Log.e("TAG", "--- progress = ${progressUploadDialog.getProgress()}")
 
                             // Update Progress
-                            progressUploadDialog.setProgress(progressUploadDialog.getProgress() + 1)
+                            // progressUploadDialog.setProgress(progressUploadDialog.getProgress() + 1)
+                            progressUploadDialog.setProgress(i)
 
                             // Set message
                             progressUploadDialog.setMessage("Pretending to do some long task...${5 - i}")
@@ -173,6 +180,61 @@ class UploadProgressController : BaseMvpController<UploadProgressViewAction, Upl
 
 
 
+        uploadDialog = DbUploadProgressDialog(activity)
+
+        /*progressDialog.apply {
+            setMessage("Loading")
+            setMax(5)
+            setProgress(4)
+            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        }.show()*/
+
+        // Set message
+        uploadDialog.setMessage("Upload file to server...")
+        // Set maximum progress
+        uploadDialog.setMaxFiles(1)
+        // Set Current Progress
+        uploadDialog.setProgress(0, 0)
+        /* showProgressDialog Click Listener */
+        view.showUploadDialogButton?.setOnClickListener {
+
+            // Show dialog
+            uploadDialog.show()
+
+            /* Faking a long task */
+            doAsync {
+                Thread(Runnable {
+                    var i = 0
+                    while (++i <= uploadDialog.getMaxFiles()) {
+
+                        for (j: Int in 0..100) {
+                            uiThread {
+
+                                Log.e("TAG", "--- progress = ${uploadDialog.getProgress()}")
+
+                                // Update Progress
+                                uploadDialog.setProgress(j, i)
+
+                                // Set message
+                                uploadDialog.setMessage("Pretending to do some long task...${uploadDialog.getMaxFiles() - i}")
+
+                            }
+                            Thread.sleep(100)
+                        }
+
+                    }
+                }).run()
+                uiThread {
+                    // Dismiss dialog
+                    uploadDialog.dismiss()
+
+                }
+            }
+
+        }
+
+
+        showCustom(view)
     }
 
     override fun onPreAttach() {
@@ -184,6 +246,67 @@ class UploadProgressController : BaseMvpController<UploadProgressViewAction, Upl
         super.onAttach(view)
     }
 
+
+    private fun showCustom(view: View) {
+        // Initialize progressDialog
+        customDialog = DbCustomDialog(activity as AppCompatActivity, DbCustomDialog.ProgressStyle.HorizontalStyle)
+
+        /*progressDialog.apply {
+            setMessage("Loading")
+            setMax(5)
+            setProgress(4)
+            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        }.show()*/
+
+        // Set message
+        customDialog.setMessage("Cho xu ly long task...")
+
+        // Set maximum progress
+        customDialog.setMax(5)
+
+        // Set Current Progress
+        customDialog.setProgress(0)
+
+        // Set cancelable
+        // customDialog.setCancelable(true)
+
+        /* showProgressDialog Click Listener */
+        view.showCustomDialogButton?.setOnClickListener {
+
+            // Show dialog
+            customDialog.show()
+
+            /* Faking a long task */
+            doAsync {
+                Thread(Runnable {
+                    var i = 0
+                    while (++i <= 5) {
+                        uiThread {
+
+                            Log.e("TAG", "--- progress = ${progressUploadDialog.getProgress()}")
+
+                            // Update Progress
+                            // progressUploadDialog.setProgress(progressUploadDialog.getProgress() + 1)
+                            customDialog.setProgress(i)
+
+                            // Set message
+                            customDialog.setMessage("Cho xu ly long task...${5 - i}")
+
+                        }
+                        Thread.sleep(2000)
+                    }
+                }).run()
+                uiThread {
+                    // Dismiss dialog
+                    customDialog.dismiss()
+
+                }
+            }
+
+        }
+
+
+    }
 
 }
 
