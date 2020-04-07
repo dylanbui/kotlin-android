@@ -308,7 +308,9 @@ object AppNetwork {
 //        uploadData.mimeType = "image/jpeg"
 
         // create RequestBody instance from file
-        val requestFile = RequestBodyWithProgress(fileUpload, RequestBodyWithProgress.ContentType.JPG_IMAGE, onProgress)
+        val requestFile = RequestBodyWithProgress(fileUpload,
+            RequestBodyWithProgress.ContentType.JPG_IMAGE,
+            onProgress)
 
         // MultipartBody.Part is used to send also the actual file name
         val body = MultipartBody.Part.createFormData(fileField, "filename.jpg", requestFile)

@@ -24,6 +24,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 
 class ApiServiceError(var errorCode: Int, var errorMessage: String)
@@ -72,6 +73,9 @@ object CoroutinesNetwork {
 //        interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
             // .addInterceptor(interceptor)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .build()
 
