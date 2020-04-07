@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NumericKeyboard">
+        <attr name="nk_button_done_src" format="reference" />
+        <attr name="nk_button_backspace_src" format="reference" />
+
+        <attr name="nk_button_fontFamily" format="string" />
+        <attr name="nk_button_textColor" format="color|reference" />
+        <attr name="nk_button_enabledTextColor" format="color|reference" />
+        <attr name="nk_button_textSize" format="dimension" />
+        <attr name="nk_button_background" format="reference" />
+    </declare-styleable>
+
+
+    <dimen name="keyboardRowHeight">56dp</dimen>
+    <dimen name="keyboardHeight">224dp</dimen>
+    <integer name="keyboardAnimationDuration">200</integer>
+
+    <dimen name="firstRowPosition">0dp</dimen>
+    <dimen name="secondRowPosition">56dp</dimen>
+    <dimen name="thirdRowPosition">112dp</dimen>
+    <dimen name="fourthRowPosition">168dp</dimen>
+
+    <dimen name="backspaceTopPadding">8dp</dimen>
+
+
+    <!-- keyboard -->
+    <string name="keyboard.key.1" translatable="false">1</string>
+    <string name="keyboard.key.2" translatable="false">2</string>
+    <string name="keyboard.key.3" translatable="false">3</string>
+    <string name="keyboard.key.4" translatable="false">4</string>
+    <string name="keyboard.key.5" translatable="false">5</string>
+    <string name="keyboard.key.6" translatable="false">6</string>
+    <string name="keyboard.key.7" translatable="false">7</string>
+    <string name="keyboard.key.8" translatable="false">8</string>
+    <string name="keyboard.key.9" translatable="false">9</string>
+    <string name="keyboard.key.0" translatable="false">0</string>
+    <string name="keyboard.key.00" translatable="false">00</string>
+    <string name="keyboard.key.unlimited" translatable="false">∞</string>
+    <string name="keyboard.caption.unlimited">Unlimited</string>
+
+</resources>
