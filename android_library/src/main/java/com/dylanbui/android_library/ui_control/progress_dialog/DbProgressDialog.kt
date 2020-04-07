@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.Spannable
@@ -15,34 +16,18 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import com.dylanbui.android_library.R
 import java.text.NumberFormat
-
-internal fun View.setVisible(isVisible: Boolean, animate: Boolean = false, onEnd: (() -> Unit)? = null) {
-    if (animate) {
-        if (isVisible) {
-            alpha = 0f
-            setVisible(true)
-        }
-        ViewCompat.animate(this)
-            .alpha(if (isVisible) 1f else 0f)
-            .withEndAction {
-                if (!isVisible) {
-                    setVisible(false)
-                }
-                onEnd?.invoke()
-            }
-    } else {
-        visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-}
 
 /***
  * Created by Livin Mathew <mail@livinmathew.me> on 10/3/18.
@@ -56,8 +41,12 @@ internal fun View.setVisible(isVisible: Boolean, animate: Boolean = false, onEnd
  *
  * <p>The progress range is 0 to {@link #getMax() max}.</p>
  * Base on v0.1.5 : https://github.com/Livin21/MissMe
+ * Y tuong la dung View tren top man hinh, co the ap dung cho cac loai hinh khac
+ * DucBui 07/04/2020 chinh sua lai ke thua tu AlertDialog
  */
-class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivity: FragmentActivity? = null) {
+
+class DbProgressDialog(context: AppCompatActivity,
+                       private val mProgressStyle: ProgressStyle = ProgressStyle.SpinnerStyle) : AlertDialog(context) {
 
     companion object {
         const val INVALID_ID = -1
@@ -86,7 +75,7 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
     private var mProgress: ProgressBar? = null
     private var mMessageView: TextView? = null
 
-    private var mProgressStyle: ProgressStyle = ProgressStyle.SpinnerStyle
+    // private var mProgressStyle: ProgressStyle = ProgressStyle.SpinnerStyle
     private var mProgressNumber: TextView? = null
     private var mProgressNumberFormat: String? = null
     private var mProgressPercent: TextView? = null
@@ -107,14 +96,11 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
     private var mProgressDialogView: View? = null
     private lateinit var mView: View
 
-    private var cancelable: Boolean = false
+//    private var cancelable: Boolean = false
 
     init {
 
         initFormats()
-
-        if (mActivity == null)
-            mActivity = mFragmentActivity?.parent
 
         if (mMax > 0) setMax(mMax)
         if (mProgressVal > 0) setProgress(mProgressVal)
@@ -126,14 +112,39 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
         setMessage(mMessage)
 
         setIndeterminate(mIndeterminate)
+    }
+
+    @SuppressLint("InflateParams")
+    override fun onCreate(savedInstanceState: Bundle?) {
+//        viewDialog = LayoutInflater.from(context).inflate(R.layout.view_dialog_horizontal_progress, null)
+//        setView(viewDialog)
 
         /* Initialize spinner layout as the default layout */
-        spinnerLayout()
+        // spinnerLayout()
+
+        // val style = mProgressStyle
+        when (mProgressStyle) {
+            ProgressStyle.HorizontalStyle -> horizontalLayout()
+            ProgressStyle.SpinnerStyle -> spinnerLayout()
+            is ProgressStyle.CustomStyle -> setCustomLayout(mProgressStyle)
+        }
 
         onProgressChanged()
 
         /* Hide progress dialog initially */
-        dismiss()
+//        dismiss()
+//
+        setCancelable(false) // Dont allow touch out dismiss
+
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+
 
     }
 
@@ -145,10 +156,12 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
 
     private fun spinnerLayout() {
 
-        val inflater = LayoutInflater.from(mActivity)
+        val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.progress_dialog_spinner, null, false)
         // Default black - 60%
-        view.background = ColorDrawable(Color.parseColor("#99000000"))
+        // view.background = ColorDrawable(Color.parseColor("#99000000"))
+
+        mProgressDialogView = view.findViewById(R.id.progressDialogView)
 
         mProgress = view.findViewById<View>(R.id.progress) as ProgressBar
         mMessageView = view.findViewById<View>(R.id.message) as TextView
@@ -161,9 +174,7 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
     }
 
     private fun setCustomLayout(customProgressStyle: ProgressStyle.CustomStyle) {
-        checkNotNull(mActivity) { "Activity must not be null at this point" }
-
-        customProgressStyle.viewMaker.invoke(mActivity!!).let {
+        customProgressStyle.viewMaker.invoke(context).let {
             if (customProgressStyle.messageView != INVALID_ID) {
                 mMessageView = it.findViewById(customProgressStyle.messageView)
             }
@@ -176,7 +187,7 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
 
     private fun horizontalLayout() {
 
-        val inflater = LayoutInflater.from(mActivity)
+        val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.progress_dialog_horizontal, null, false)
 
         /* Use a separate handler to update the text views as they
@@ -208,6 +219,8 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
             }
         }
 
+        mProgressDialogView = view.findViewById(R.id.progressDialogView)
+
         mProgress = view.findViewById<View>(R.id.progress) as ProgressBar
         mProgressNumber = view.findViewById<View>(R.id.progress_number) as TextView
         mProgressPercent = view.findViewById<View>(R.id.progress_percent) as TextView
@@ -221,31 +234,31 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
         setView(view)
     }
 
-    private fun setView(view: View) {
-        val layoutParams = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.MATCH_PARENT
-        )
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-        mActivity?.addContentView(view, layoutParams)
-        mView = view
-        mProgressDialogView = view.findViewById(R.id.progressDialogView)
-
-        /* If clicked anywhere on the screen except the progress dialog,
-         * the progress dialog must dismiss depending upon the value of cancelable
-         */
-        mView.setOnClickListener {
-            if (cancelable)
-                dismiss()
-        }
-
-        /* Left empty purposefully. To detach progressDialog and
-         * its contents from layout's click listener
-         */
-        mProgressDialogView?.setOnClickListener {}
-
-        mView.visibility = View.GONE
-    }
+//    private fun setView(view: View) {
+//        val layoutParams = RelativeLayout.LayoutParams(
+//            RelativeLayout.LayoutParams.MATCH_PARENT,
+//            RelativeLayout.LayoutParams.MATCH_PARENT
+//        )
+//        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+//        mActivity?.addContentView(view, layoutParams)
+//        mView = view
+//        mProgressDialogView = view.findViewById(R.id.progressDialogView)
+//
+//        /* If clicked anywhere on the screen except the progress dialog,
+//         * the progress dialog must dismiss depending upon the value of cancelable
+//         */
+//        mView.setOnClickListener {
+//            if (cancelable)
+//                dismiss()
+//        }
+//
+//        /* Left empty purposefully. To detach progressDialog and
+//         * its contents from layout's click listener
+//         */
+//        mProgressDialogView?.setOnClickListener {}
+//
+//        mView.visibility = View.GONE
+//    }
 
     private fun onProgressChanged() {
         if (mProgressStyle == ProgressStyle.HorizontalStyle) {
@@ -446,15 +459,15 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
      *
      * @param style the style of this ProgressDialog
      */
-    fun setProgressStyle(style: ProgressStyle): DbProgressDialog {
-        mProgressStyle = style
-        when (style) {
-            ProgressStyle.HorizontalStyle -> horizontalLayout()
-            ProgressStyle.SpinnerStyle -> spinnerLayout()
-            is ProgressStyle.CustomStyle -> setCustomLayout(style)
-        }
-        return this
-    }
+//    fun setProgressStyle(style: ProgressStyle): DbProgressDialog {
+//        mProgressStyle = style
+////        when (style) {
+////            ProgressStyle.HorizontalStyle -> horizontalLayout()
+////            ProgressStyle.SpinnerStyle -> spinnerLayout()
+////            is ProgressStyle.CustomStyle -> setCustomLayout(style)
+////        }
+//        return this
+//    }
 
     /**
      * Change the format of the small text showing current and maximum units
@@ -500,30 +513,30 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
      * Create and show progress dialog
      */
     /* Display progress dialog */
-    fun show(animate: Boolean = true): DbProgressDialog {
-        mView.setVisible(true, animate)
-        return this
-    }
+//    fun show(animate: Boolean = true): DbProgressDialog {
+//        mView.setVisible(true, animate)
+//        return this
+//    }
 
     /**
      * Dismiss progress dialog
      **/
     /* Hide progress dialog */
-    fun dismiss(animate: Boolean = true) {
-        mView.setVisible(false, animate) {
-            setProgress(0)
-        }
-    }
+//    fun dismiss(animate: Boolean = true) {
+//        mView.setVisible(false, animate) {
+//            setProgress(0)
+//        }
+//    }
 
     /**
      * Sets whether the dialog is cancelable or not.  Default is true.
      * @param cancelable A boolean which determines if the dialog can be dismissed by the user
      **/
     /* Toggles value of cancelable */
-    fun setCancelable(cancelable: Boolean): DbProgressDialog {
-        this.cancelable = cancelable
-        return this
-    }
+//    fun setCancelable(cancelable: Boolean): DbProgressDialog {
+//        this.cancelable = cancelable
+//        return this
+//    }
 
     /**
      * Set progress bar color.
@@ -547,8 +560,8 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
      **/
     fun onBackPressed(superOnBackPressed: () -> Unit) {
         if (mView.visibility == View.VISIBLE) {
-            if (cancelable)
-                dismiss()
+//            if (cancelable)
+//                dismiss()
         } else
             superOnBackPressed.invoke()
     }
@@ -557,7 +570,7 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
      * Says whether the dialog is cancelable or not.  Default is true.
      * @return value of cancelable
      */
-    fun isCancelable(): Boolean = cancelable
+//    fun isCancelable(): Boolean = cancelable
 
     /**
      * Set message TextView's text color manually.
@@ -566,7 +579,7 @@ class DbProgressDialog(private var mActivity: Activity? = null, mFragmentActivit
      */
     /* Sets text color */
     fun setTextColor(color: Int): DbProgressDialog {
-        mMessageView?.setTextColor(ContextCompat.getColor(mActivity!!, color))
+        mMessageView?.setTextColor(ContextCompat.getColor(context, color))
         return this
     }
 

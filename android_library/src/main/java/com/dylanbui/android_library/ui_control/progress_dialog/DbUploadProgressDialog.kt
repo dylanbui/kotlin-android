@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.Spannable
@@ -14,16 +15,19 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.dylanbui.android_library.R
 import java.text.NumberFormat
 
 
-class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentActivity: FragmentActivity? = null) {
+class DbUploadProgressDialog(context: AppCompatActivity) : AlertDialog(context) {
 
     private var mMaxFileVal: Int = 0
     private var mCurrentFileVal: Int = 0
@@ -49,21 +53,9 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
 
         initFormats()
 
-        if (mActivity == null)
-            mActivity = mFragmentActivity?.parent
-
         if (mProgressVal > 0) setProgress(mProgressVal, mCurrentFileVal)
         if (mProgressDrawable != null) setProgressDrawable(mProgressDrawable!!)
         setMessage(mMessage)
-
-        /* Initialize spinner layout as the default layout */
-        horizontalLayout()
-
-        onProgressChanged()
-
-        /* Hide progress dialog initially */
-        dismiss()
-
     }
 
     private fun initFormats() {
@@ -72,12 +64,26 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
         mProgressPercentFormat?.maximumFractionDigits = 0
     }
 
+    @SuppressLint("InflateParams")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        /* Initialize spinner layout as the default layout */
+        horizontalLayout()
+
+        onProgressChanged()
+
+        setCancelable(false)
+
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        super.onCreate(savedInstanceState)
+    }
+
     private fun horizontalLayout() {
 
-        val inflater = LayoutInflater.from(mActivity)
+        val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.progress_dialog_horizontal, null, false)
         // Defautl black - 60%
-        view.background = ColorDrawable(Color.parseColor("#99000000"))
+        // view.background = ColorDrawable(Color.parseColor("#99000000"))
         /* Use a separate handler to update the text views as they
          * must be updated on the same thread that created them.
          */
@@ -107,6 +113,8 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
             }
         }
 
+        mProgressDialogView = view.findViewById(R.id.progressDialogView)
+
         mProgress = view.findViewById<View>(R.id.progress) as ProgressBar
         mProgressNumber = view.findViewById<View>(R.id.progress_number) as TextView
         mProgressPercent = view.findViewById<View>(R.id.progress_percent) as TextView
@@ -119,32 +127,6 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
         setMessage(mMessage)
 
         setView(view)
-    }
-
-    private fun setView(view: View) {
-        val layoutParams = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.MATCH_PARENT
-        )
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-        mActivity?.addContentView(view, layoutParams)
-        mView = view
-        mProgressDialogView = view.findViewById(R.id.progressDialogView)
-
-        /* If clicked anywhere on the screen except the progress dialog,
-         * the progress dialog must dismiss depending upon the value of cancelable
-         */
-//        mView.setOnClickListener {
-//            if (cancelable)
-//                dismiss()
-//        }
-
-        /* Left empty purposefully. To detach progressDialog and
-         * its contents from layout's click listener
-         */
-        mProgressDialogView?.setOnClickListener {}
-
-        mView.visibility = View.GONE
     }
 
     private fun onProgressChanged() {
@@ -264,25 +246,6 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
     }
 
     /**
-     * Create and show progress dialog
-     */
-    /* Display progress dialog */
-    fun show(animate: Boolean = true): DbUploadProgressDialog {
-        mView.setVisible(true, animate)
-        return this
-    }
-
-    /**
-     * Dismiss progress dialog
-     **/
-    /* Hide progress dialog */
-    fun dismiss(animate: Boolean = true) {
-        mView.setVisible(false, animate) {
-            setProgress(0, 0)
-        }
-    }
-
-    /**
      * Set progress bar color.
      * Color should be a constant from Color class, eg: Color.RED
      * NB: Not a resId
@@ -319,7 +282,7 @@ class DbUploadProgressDialog(private var mActivity: Activity? = null, mFragmentA
      */
     /* Sets text color */
     fun setTextColor(color: Int): DbUploadProgressDialog {
-        mMessageView?.setTextColor(ContextCompat.getColor(mActivity!!, color))
+        mMessageView?.setTextColor(ContextCompat.getColor(context, color))
         return this
     }
 
