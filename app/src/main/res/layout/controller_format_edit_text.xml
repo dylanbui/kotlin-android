@@ -80,14 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:isDecimal="true"
-                android:text="123456789.50"
                 android:layout_marginTop="8dp"/>
 
             <com.dylanbui.android_library.ui_control.decimal_edittext.DbAutoFormatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:isDecimal="false"
-                android:text="987654321"
                 android:layout_marginTop="8dp"/>
 
 

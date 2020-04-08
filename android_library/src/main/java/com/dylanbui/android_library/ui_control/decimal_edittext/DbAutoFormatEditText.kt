@@ -19,8 +19,8 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class DbAutoFormatEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : AppCompatEditText (context, attrs, defStyleAttr) {
+
+class DbAutoFormatEditText : AppCompatEditText  {
 
     companion object {
         private const val prefix = ""
@@ -36,11 +36,37 @@ class DbAutoFormatEditText @JvmOverloads constructor(context: Context, attrs: At
 
     private var isDecimal = false
 
-    private var currencyTextWatcher: CurrencyTextWatcher
+    private lateinit var currencyTextWatcher: CurrencyTextWatcher
 
-    init {
-        // this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-        this.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+//    init {
+//        this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+////        this.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+//        this.hint = prefix
+//        this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(MAX_LENGTH))
+//
+//        // obtainAttributes(attrs)
+//
+//        currencyTextWatcher = CurrencyTextWatcher(this, isDecimal)
+//
+//
+//    }
+
+    constructor(context: Context) : super(context) {
+        init(context, null)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context, attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init(context, attrs)
+    }
+
+    private fun init(context: Context, attrs: AttributeSet?) {
+
+        this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+//        this.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
         this.hint = prefix
         this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(MAX_LENGTH))
 
@@ -48,6 +74,8 @@ class DbAutoFormatEditText @JvmOverloads constructor(context: Context, attrs: At
 
         currencyTextWatcher = CurrencyTextWatcher(this, isDecimal)
     }
+
+
 
     private fun obtainAttributes(attrs: AttributeSet?) {
         if (attrs != null) {
@@ -146,21 +174,36 @@ class DbAutoFormatEditText @JvmOverloads constructor(context: Context, attrs: At
             var result: String
             var newStart = start
             try { // Extract value without its comma
-                val digitAndDotText = input.replace(",", "")
+                var digitAndDotText = input.replace(",", "")
                 var commaAmount = 0
                 // if user press . turn it into 0.
-                if (input.startsWith(".") && input.length == 1) {
-                    editText.setText("0.")
-                    editText.setSelection(editText.text.toString().length)
+                if ((input.startsWith(".") || input.startsWith("0")) && input.length == 1) {
+                    if (isDecimal) {
+                        editText.setText("0.")
+                        editText.setSelection(editText.text.toString().length)
+                    } else {
+                        editText.setText("")
+                    }
+
                     return
                 }
                 // if user press . when number already exist turns it into comma
                 if (input.startsWith(".") && input.length > 1) {
+                    // Kiem tra them trung hop neu user bam 0 hay dau . o dau
+                    // Phia xu ly remove no ra neu isDecimal == false
+                    if (!isDecimal) {
+                        // Remove fist character insert (is . or 0)
+                        editText.setText(input.substring(1))
+                        editText.setSelection(0)
+                        return
+                    }
+
                     val st = StringTokenizer(input)
                     val afterDot = st.nextToken(".")
-                    editText.setText("0." + DbAutoFormatUtil.extractDigits(afterDot))
-                    editText.setSelection(2)
-                    return
+                    val strOnlyDigits = afterDot.replace("\\D+".toRegex(), "")
+                    editText.setText("0.$strOnlyDigits") //DbAutoFormatUtil.extractDigits(afterDot))
+                    digitAndDotText = "0.$strOnlyDigits"
+                    // editText.setSelection(2)
                 }
 
 //                if (digitAndDotText.contains(".")) { // escape sequence for .
@@ -260,15 +303,21 @@ class DbAutoFormatEditText @JvmOverloads constructor(context: Context, attrs: At
                 return DECIMAL_SEPARATOR
             }
             val parsed = BigDecimal(str)
+
+            // do format cho nay lam mat dau cham
             // example pattern VND #,###.00
             // "#,###." + getDecimalPattern(str)
-            // val decimalFormatTemp = "#${GROUP_SEPARATOR}###${DECIMAL_SEPARATOR}" + getDecimalPattern(str)
+            var decimalFormatTemp = "#${GROUP_SEPARATOR}###${DECIMAL_SEPARATOR}" + getDecimalPattern(str)
 
-            var decimalFormatTemp = "#${GROUP_SEPARATOR}###"
-            val decimalPattern = getDecimalPattern(str)
-            if (decimalPattern.isNotEmpty()) {
-                decimalFormatTemp = "$decimalFormatTemp${DECIMAL_SEPARATOR}" + getDecimalPattern(str)
+            if (parsed < BigDecimal(1.0)) { // is 0.X
+                decimalFormatTemp = "0${DECIMAL_SEPARATOR}" + getDecimalPattern(str)
             }
+
+//            var decimalFormatTemp = "#${GROUP_SEPARATOR}###"
+//            val decimalPattern = getDecimalPattern(str)
+//            if (decimalPattern.isNotEmpty()) {
+//                decimalFormatTemp = "$decimalFormatTemp${DECIMAL_SEPARATOR}" + getDecimalPattern(str)
+//            }
 
             val formatter = DecimalFormat(decimalFormatTemp, decimalSymbols)
 //            val formatter = DecimalFormat(
