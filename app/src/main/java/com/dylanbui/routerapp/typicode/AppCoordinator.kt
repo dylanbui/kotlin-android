@@ -5,6 +5,7 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.dylanbui.routerapp.StartApplication
 import com.dylanbui.routerapp.typicode.bottom_sheet.DemoBottomSheetViewController
+import com.dylanbui.routerapp.typicode.format_edittext.FormatEditTextController
 import com.dylanbui.routerapp.typicode.google_map.GoogleMapViewController
 import com.dylanbui.routerapp.typicode.google_map.PlaceAutoCompleteViewController
 import com.dylanbui.routerapp.typicode.multi_upload_progress.UploadProgressController
@@ -49,7 +50,8 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         // var vcl = CustomTabbarController()
         // var vcl = DemoBottomSheetViewController()
         //var vcl = LoginViewController()
-        var vcl = UploadProgressController()
+        //var vcl = UploadProgressController()
+        var vcl = FormatEditTextController()
 
         router.setRoot(RouterTransaction.with(vcl))
 
