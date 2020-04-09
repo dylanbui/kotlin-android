@@ -18,38 +18,26 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
+/* DucBui 09/04/2020 make on:
 
+https://github.com/PhanVanLinh/AndroidCurrencyEditText
+https://github.com/aldoKelvianto/AutoFormatEditText
+
+* */
 
 class DbAutoFormatEditText : AppCompatEditText  {
 
     companion object {
-        private const val prefix = ""
-        private const val MAX_LENGTH = 20
+        private const val MAX_LENGTH = 19 // '123,456,789,123,456' => length 19
         private const val MAX_DECIMAL_DIGIT = 2
 
         private const val DECIMAL_SEPARATOR: String = "."
         private const val GROUP_SEPARATOR: String = ","
         private const val DECIMAL_FORMAT = "#${GROUP_SEPARATOR}###${DECIMAL_SEPARATOR}###" // "#,###.###" 3 so le
-
-        //DecimalFormat("#,###.###", DecimalFormatSymbols(Locale.US))
     }
 
     private var isDecimal = false
-
     private lateinit var currencyTextWatcher: CurrencyTextWatcher
-
-//    init {
-//        this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-////        this.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
-//        this.hint = prefix
-//        this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(MAX_LENGTH))
-//
-//        // obtainAttributes(attrs)
-//
-//        currencyTextWatcher = CurrencyTextWatcher(this, isDecimal)
-//
-//
-//    }
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -66,16 +54,12 @@ class DbAutoFormatEditText : AppCompatEditText  {
     private fun init(context: Context, attrs: AttributeSet?) {
 
         this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-//        this.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
-        this.hint = prefix
         this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(MAX_LENGTH))
 
         obtainAttributes(attrs)
 
         currencyTextWatcher = CurrencyTextWatcher(this, isDecimal)
     }
-
-
 
     private fun obtainAttributes(attrs: AttributeSet?) {
         if (attrs != null) {
@@ -97,6 +81,10 @@ class DbAutoFormatEditText : AppCompatEditText  {
         }
     }
 
+    fun setValue(number: String) {
+        setValue(number.toDouble())
+    }
+
     fun setValue(number: Double) {
 //        var strValue = number.toString()
 //        Log.e("TAG", "str = " + strValue)
@@ -107,12 +95,12 @@ class DbAutoFormatEditText : AppCompatEditText  {
 
     fun getValue(): Double {
         val str = text.toString()
-        if (str.isEmpty() || str == prefix) {
+        if (str.isEmpty()) {
             return 0.0
         }
 
         // -- Remove prefix, and GROUP_SEPARATOR (",") --
-        val number = str.replace(prefix, "").replace("[${GROUP_SEPARATOR}]".toRegex(), "")
+        val number = str.replace("[${GROUP_SEPARATOR}]".toRegex(), "")
         // -- Replace right DECIMAL_SEPARATOR is "." --
         val rightNumber = number.replace(DECIMAL_SEPARATOR, ".")
         return rightNumber.toDouble()
@@ -177,7 +165,7 @@ class DbAutoFormatEditText : AppCompatEditText  {
                 var digitAndDotText = input.replace(",", "")
                 var commaAmount = 0
                 // if user press . turn it into 0.
-                if ((input.startsWith(".") || input.startsWith("0")) && input.length == 1) {
+                if (input.startsWith(".") && input.length == 1) {
                     if (isDecimal) {
                         editText.setText("0.")
                         editText.setSelection(editText.text.toString().length)
@@ -192,18 +180,20 @@ class DbAutoFormatEditText : AppCompatEditText  {
                     // Kiem tra them trung hop neu user bam 0 hay dau . o dau
                     // Phia xu ly remove no ra neu isDecimal == false
                     if (!isDecimal) {
-                        // Remove fist character insert (is . or 0)
+                        // Remove fist character insert (is .)
                         editText.setText(input.substring(1))
                         editText.setSelection(0)
                         return
                     }
 
+                    // Case : Use input '1234' after input . before '1' => '.1234'
+                    // Neu da co . truoc do, he thong se khong xu ly
+                    // co le he thong da xu ly thay khi phat hien neu co . roi
                     val st = StringTokenizer(input)
                     val afterDot = st.nextToken(".")
                     val strOnlyDigits = afterDot.replace("\\D+".toRegex(), "")
-                    editText.setText("0.$strOnlyDigits") //DbAutoFormatUtil.extractDigits(afterDot))
+                    // editText.setText("0.$strOnlyDigits") //DbAutoFormatUtil.extractDigits(afterDot))
                     digitAndDotText = "0.$strOnlyDigits"
-                    // editText.setSelection(2)
                 }
 
 //                if (digitAndDotText.contains(".")) { // escape sequence for .
@@ -239,7 +229,7 @@ class DbAutoFormatEditText : AppCompatEditText  {
                 newStart += if (action == ACTION_DELETE) 0 else 1
 
                 // calculate comma amount in edit text
-                commaAmount += DbAutoFormatUtil.getCommaOccurrence(result)
+                commaAmount += getCommaOccurrence(result)
                 // flag to mark whether new comma is added / removed
                 if (commaAmount >= 1 && prevCommaAmount != commaAmount) {
                     newStart += if (action == ACTION_DELETE) -1 else 1
@@ -283,8 +273,6 @@ class DbAutoFormatEditText : AppCompatEditText  {
 
 
         ///////////------------------------
-
-
 
         internal fun formatNumber(number: String): String {
             if (isDecimal) {
@@ -343,54 +331,69 @@ class DbAutoFormatEditText : AppCompatEditText  {
             return decimalPattern.toString()
         }
 
-
-    }
-
-}
-
-
-private object DbAutoFormatUtil {
-
-    private const val FORMAT_NO_DECIMAL = "###,###"
-    private const val FORMAT_WITH_DECIMAL = "###,###.###"
-    private fun getCharOccurrence(input: String, c: Char): Int {
-        var occurrence = 0
-        val chars = input.toCharArray()
-        for (thisChar in chars) {
-            if (thisChar == c) {
-                occurrence++
-            }
+        // Get num ',' in input string
+        fun getCommaOccurrence(input: String): Int {
+            return getCharOccurrence(input, ',')
         }
-        return occurrence
+
+        private fun getCharOccurrence(input: String, c: Char): Int {
+            var occurrence = 0
+            val chars = input.toCharArray()
+            for (thisChar in chars) {
+                if (thisChar == c) {
+                    occurrence++
+                }
+            }
+            return occurrence
+        }
+
     }
 
-    @JvmStatic
-    fun getCommaOccurrence(input: String): Int {
-        return getCharOccurrence(input, ',')
-    }
-
-    @JvmStatic
-    fun extractDigits(input: String): String {
-        return input.replace("\\D+".toRegex(), "")
-    }
-
-    private fun formatToStringWithoutDecimal(value: Double): String {
-        val formatter: NumberFormat =
-            DecimalFormat(FORMAT_NO_DECIMAL)
-        return formatter.format(value)
-    }
-
-    @JvmStatic
-    fun formatToStringWithoutDecimal(value: String): String {
-        return formatToStringWithoutDecimal(value.toDouble())
-    }
-
-    fun formatWithDecimal(price: String): String {
-        return formatWithDecimal(price.toDouble())
-    }
-
-    private fun formatWithDecimal(price: Double): String {
-        val formatter: NumberFormat = DecimalFormat(FORMAT_WITH_DECIMAL)
-        return formatter.format(price)
-    }
 }
+
+
+//private object DbAutoFormatUtil {
+//
+//    private const val FORMAT_NO_DECIMAL = "###,###"
+//    private const val FORMAT_WITH_DECIMAL = "###,###.###"
+//    private fun getCharOccurrence(input: String, c: Char): Int {
+//        var occurrence = 0
+//        val chars = input.toCharArray()
+//        for (thisChar in chars) {
+//            if (thisChar == c) {
+//                occurrence++
+//            }
+//        }
+//        return occurrence
+//    }
+//
+//    @JvmStatic
+//    fun getCommaOccurrence(input: String): Int {
+//        return getCharOccurrence(input, ',')
+//    }
+//
+//    @JvmStatic
+//    fun extractDigits(input: String): String {
+//        return input.replace("\\D+".toRegex(), "")
+//    }
+//
+//    private fun formatToStringWithoutDecimal(value: Double): String {
+//        val formatter: NumberFormat =
+//            DecimalFormat(FORMAT_NO_DECIMAL)
+//        return formatter.format(value)
+//    }
+//
+//    @JvmStatic
+//    fun formatToStringWithoutDecimal(value: String): String {
+//        return formatToStringWithoutDecimal(value.toDouble())
+//    }
+//
+//    fun formatWithDecimal(price: String): String {
+//        return formatWithDecimal(price.toDouble())
+//    }
+//
+//    private fun formatWithDecimal(price: Double): String {
+//        val formatter: NumberFormat = DecimalFormat(FORMAT_WITH_DECIMAL)
+//        return formatter.format(price)
+//    }
+//}

@@ -77,15 +77,19 @@
                 android:layout_height="30dp"/>
 
             <com.dylanbui.android_library.ui_control.decimal_edittext.DbAutoFormatEditText
+                android:id="@+id/edtDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:isDecimal="true"
+                android:hint="Nhập số Decimal"
                 android:layout_marginTop="8dp"/>
 
             <com.dylanbui.android_library.ui_control.decimal_edittext.DbAutoFormatEditText
+                android:id="@+id/edtNonDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:isDecimal="false"
+                android:hint="Nhập số Non-Decimal"
                 android:layout_marginTop="8dp"/>
 
 
