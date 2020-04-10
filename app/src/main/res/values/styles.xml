@@ -57,4 +57,12 @@
 
 
 
+    <style name="numericKeyboard">
+        <item name="nk_button_fontFamily">sans-serif-light</item>
+        <item name="nk_button_textColor">#37474f</item>
+        <item name="nk_button_enabledTextColor">#4cb5ab</item>
+        <item name="nk_button_textSize">32sp</item>
+        <item name="nk_button_background">@drawable/sel_keyboard_symbol</item>
+    </style>
+
 </resources>

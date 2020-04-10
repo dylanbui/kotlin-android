@@ -1,9 +1,11 @@
 package com.dylanbui.android_library.ui_control.numeric_keyboard.editor
 
 import android.content.Context
+import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import com.dylanbui.android_library.R
 import com.dylanbui.android_library.ui_control.numeric_keyboard.Key
 import com.dylanbui.android_library.ui_control.numeric_keyboard.Mode
@@ -11,8 +13,21 @@ import com.dylanbui.android_library.ui_control.numeric_keyboard.Mode
 
 import java.text.DecimalFormat
 
+fun EditText.suppressSoftKeyboard() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        showSoftInputOnFocus = false
+    } else {
+        try {
+            val method = EditText::class.java.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
+            method.isAccessible = true
+            method.invoke(this, false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
 
-class NumericEditText(context: Context, attrs: AttributeSet) : EditText(context, attrs), INumericEditor {
+class NumericEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs), INumericEditor {
     private var unlimited: Boolean = false
     private var value = 0.0
     var onDoneClickListener: OnDoneClickListener? = null
@@ -20,6 +35,7 @@ class NumericEditText(context: Context, attrs: AttributeSet) : EditText(context,
     init {
         inputType = InputType.TYPE_NULL
         hint = decimalFormat.format(value)
+        suppressSoftKeyboard()
     }
 
     override fun getMode(): Mode {
@@ -43,7 +59,7 @@ class NumericEditText(context: Context, attrs: AttributeSet) : EditText(context,
             Key.DONE -> onDoneClickListener?.onDoneClicked()
             Key.UNLIMITED -> unlimited = !unlimited
         }
-        invalidateValue()
+         invalidateValue()
     }
 
     private fun invalidateValue() {
@@ -58,10 +74,9 @@ class NumericEditText(context: Context, attrs: AttributeSet) : EditText(context,
     }
 
     companion object {
-        private val decimalFormat: DecimalFormat
+        private val decimalFormat: DecimalFormat = DecimalFormat()
 
         init {
-            decimalFormat = DecimalFormat()
             decimalFormat.isDecimalSeparatorAlwaysShown = true
             decimalFormat.minimumFractionDigits = 2
             decimalFormat.maximumFractionDigits = 2

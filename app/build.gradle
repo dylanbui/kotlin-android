@@ -152,6 +152,10 @@ dependencies {
     implementation supportDependencies.superBottomSheet
     implementation supportDependencies.modalBottomSheetDialogFragment
 
+    // Test
+    // implementation 'com.konaire.numeric-keyboard:numeric-keyboard:1.1.0'
+    // implementation 'com.carlos.widget:numberkeyboard:1.1.+'
+
     implementation project(':android_library')
 
     implementation project(':android_ui_custom')

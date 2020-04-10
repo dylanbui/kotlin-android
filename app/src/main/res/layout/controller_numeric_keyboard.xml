@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Include toolbar, remove this line when hide -->
+    <!-- <include layout="@layout/toolbar_native" /> -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/focus_thief"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <com.carlos.number.keyboard.KeyBoardLayout
+            android:id="@+id/keyboard_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:key_board_clear_text="Clear"
+            app:key_board_del_res="@color/aqua"
+            app:key_board_type="number_with_decimals"
+            app:key_item_background="@color/blue_grey_300"
+            app:key_text_color="@color/colorPrimaryDark"
+            app:key_text_size="25dp"
+            app:key_board_line_res="@color/blue"/>
+
+        <ScrollView
+            android:id="@+id/contentScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/space"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+
+                <EditText
+                    android:id="@+id/simple_edit_text_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Simple edittext" />
+
+                <EditText
+                    android:id="@+id/simple_edit_text_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Simple edittext" />
+
+                <com.dylanbui.android_library.ui_control.numeric_keyboard.editor.NumericEditText
+                    android:id="@+id/numeric_edit_text_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <com.dylanbui.android_library.ui_control.numeric_keyboard.editor.NumericEditText
+                    android:id="@+id/numeric_edit_text_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/keyboardHeight"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white_trans"
+            android:visibility="gone" />
+
+        <com.dylanbui.android_library.ui_control.numeric_keyboard.NumericKeyboard
+            android:id="@+id/keyboardOld"
+            style="@style/numericKeyboard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:background="#eceff0" />
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>
+
+
+
+
+
+
