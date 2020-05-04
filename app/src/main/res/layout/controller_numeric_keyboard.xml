@@ -20,20 +20,6 @@
             android:focusable="true"
             android:focusableInTouchMode="true" />
 
-        <com.carlos.number.keyboard.KeyBoardLayout
-            android:id="@+id/keyboard_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:key_board_clear_text="Clear"
-            app:key_board_del_res="@color/aqua"
-            app:key_board_type="number_with_decimals"
-            app:key_item_background="@color/blue_grey_300"
-            app:key_text_color="@color/colorPrimaryDark"
-            app:key_text_size="25dp"
-            app:key_board_line_res="@color/blue"/>
 
         <ScrollView
             android:id="@+id/contentScrollView"
@@ -49,6 +35,12 @@
                 android:padding="16dp">
 
 
+                <Button
+                    android:id="@+id/btnTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Test Coroutines" />
 
                 <EditText
                     android:id="@+id/simple_edit_text_1"

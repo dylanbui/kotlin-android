@@ -53,6 +53,7 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         //var vcl = LoginViewController()
         //var vcl = UploadProgressController()
         // var vcl = FormatEditTextController()
+
         var vcl = NumericKeyboardController()
 
         router.setRoot(RouterTransaction.with(vcl))

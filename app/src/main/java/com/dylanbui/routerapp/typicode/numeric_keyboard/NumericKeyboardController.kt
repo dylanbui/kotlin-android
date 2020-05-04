@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.typicode.numeric_keyboard
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -9,8 +10,10 @@ import com.dylanbui.android_library.ui_control.numeric_keyboard.NumericKeyboard
 import com.dylanbui.android_library.ui_control.numeric_keyboard.editor.NumericEditText
 import com.dylanbui.android_library.ui_control.numeric_keyboard.setup.IKeyboardManager
 import com.dylanbui.android_library.ui_control.numeric_keyboard.setup.KeyboardManager
+import com.dylanbui.android_library.utils.onClick
 import com.dylanbui.routerapp.BaseMvpController
 import com.dylanbui.routerapp.R
+import kotlinx.android.synthetic.main.controller_numeric_keyboard.view.*
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -47,6 +50,13 @@ class NumericKeyboardController :
     override fun onViewBound(view: View) {
         injectViews(view)
         settingKeyboard(content, space, keyboard)
+
+
+        view.btnTest?.onClick {
+            presenter?.testCoroutinesType2 {
+                Log.d("TAG", " Done btnTest CLICK --- ${Thread.currentThread()} has run.")
+            }
+        }
     }
 
     override fun onPreAttach() {
@@ -56,6 +66,8 @@ class NumericKeyboardController :
 
     override fun onAttach(view: View) {
         super.onAttach(view)
+
+
     }
 
 
@@ -81,6 +93,10 @@ class NumericKeyboardController :
 
 
 
+    }
+
+    override fun updateDisplay(content: String) {
+        Log.d("TAG", " updateDisplay [$content] --- ${Thread.currentThread()}.")
     }
 
 //    override fun handleBack(): Boolean {

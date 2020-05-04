@@ -13,6 +13,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
+inline fun <reified T> className() = Class.forName(T::class.qualifiedName) as Class
+
+
+//inline fun <reified T: IResponse> makeThisInstance(): T {
+//    // return T::class.java.newInstance()
+//
+//    val e = className<T>().newInstance() as T
+//    // e.parseJsonString("")
+//    return e
+////    if (e is IResponse) {
+////        e.parseJsonString("")
+////    }
+////    return e.newInstance() as T
+//
+//}
 
 interface BaseService<T> {
 
@@ -66,6 +81,11 @@ class GenericNetwork {
     fun create() = GlobalScope.launch {
         val sService = createService(TestApi::class.java)
         val response = sService.makeGetRequest("")
+        response.body()
     }
+
+
+
+
 
 }
