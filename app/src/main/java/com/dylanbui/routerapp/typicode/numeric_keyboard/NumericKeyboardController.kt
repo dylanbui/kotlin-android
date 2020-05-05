@@ -53,7 +53,7 @@ class NumericKeyboardController :
 
 
         view.btnTest?.onClick {
-            presenter?.testCoroutinesType2 {
+            presenter?.testCoroutinesType4 {
                 Log.d("TAG", " Done btnTest CLICK --- ${Thread.currentThread()} has run.")
             }
         }

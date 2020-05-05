@@ -6,6 +6,8 @@ import com.dylanbui.routerapp.BaseMvpView
 import com.dylanbui.routerapp.bgDispatcher
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 interface NumericKeyboardViewAction : BaseMvpView {
 
@@ -60,4 +62,42 @@ class NumericKeyboardPresenter : BaseMvpPresenter<NumericKeyboardViewAction>(), 
     }
 
 
+    fun testCoroutinesType3(completeTest: ()->Unit)  {
+
+        val test = TestCallService()
+
+        test.doThreadTwo("Thread 1", 2000) {
+            ifViewAttached { it.updateDisplay("Thread 1") }
+        }
+
+        test.doThreadTwo("Thread 2", 500) {
+            ifViewAttached { it.updateDisplay("Thread 2") }
+        }
+
+        test.doThreadTwo("Thread 3", 1500) {
+            ifViewAttached { it.updateDisplay("Thread 3") }
+        }
+
+        test.doThreadTwo("Thread 4", 1000) {
+            ifViewAttached { it.updateDisplay("Thread 4") }
+        }
+
+        completeTest()
+    }
+
+    fun testCoroutinesType4(completeTest: ()->Unit) = launch {
+
+        val test = TestCallService()
+
+        val str: String = suspendCoroutine {
+            test.doThreadTwo("Thread 1", 3000) {
+                Log.d("TAG", " [suspendCoroutine] ---- ${Thread.currentThread()}.")
+                it.resume("Thread 1")
+            }
+        }
+
+        Log.d("TAG", " [$str] ---- ${Thread.currentThread()}.")
+
+        completeTest()
+    }
 }
