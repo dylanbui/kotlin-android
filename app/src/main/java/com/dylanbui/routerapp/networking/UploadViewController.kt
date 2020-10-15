@@ -3,6 +3,7 @@ package com.dylanbui.routerapp.networking
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -37,8 +38,7 @@ class UploadViewController : Controller()
 
     private fun setTitle(): String = "Upload View Controller"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.controller_upload, container, false)
         onViewBound(view)
         return view

@@ -3,7 +3,9 @@ package com.dylanbui.routerapp.typicode
 import android.content.Context
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.dylanbui.routerapp.StartApplication
+import com.dylanbui.routerapp.demofragment.FirstViewController
 import com.dylanbui.routerapp.typicode.bottom_sheet.DemoBottomSheetViewController
 import com.dylanbui.routerapp.typicode.format_edittext.FormatEditTextController
 import com.dylanbui.routerapp.typicode.google_map.GoogleMapViewController
@@ -54,13 +56,12 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         //var vcl = UploadProgressController()
         // var vcl = FormatEditTextController()
 
-        var vcl = NumericKeyboardController()
+        //var vcl = NumericKeyboardController()
+        //router.setRoot(RouterTransaction.with(vcl))
 
-        router.setRoot(RouterTransaction.with(vcl))
-
-//        router.setRoot(RouterTransaction.with(FirstViewController())
-//            .pushChangeHandler(FadeChangeHandler())
-//            .popChangeHandler(FadeChangeHandler()))
+        router.setRoot(RouterTransaction.with(FirstViewController())
+            .pushChangeHandler(FadeChangeHandler())
+            .popChangeHandler(FadeChangeHandler()))
     }
 
     private fun splashPageComplete() {

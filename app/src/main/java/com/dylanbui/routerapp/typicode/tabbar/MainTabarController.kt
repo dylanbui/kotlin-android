@@ -41,7 +41,7 @@ class MainTabarController : Controller(), BottomNavigationView.OnNavigationItemS
     @IdRes
     private var currentSelectedItemId: Int = -1
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.controller_main_tabbar, container, false)
 
         val childContainer = view.findViewById<ViewGroup>(R.id.tabbar_changeHandlerFrameLayout)
@@ -160,7 +160,7 @@ private const val CONDUCT_TEXT = "ARG"
 
 class ConductorController(text: String = "") : Controller(Bundle().apply { putString(CONDUCT_TEXT, text) }) {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.controller_main_tabbar_demo_content, container, false)
         view.setBackgroundColor(ContextCompat.getColor(view.context,R.color.blue_text_color))
         // view.setBackgroundColor(Color.BLUE)

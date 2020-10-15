@@ -1,15 +1,15 @@
 package com.dylanbui.routerapp.typicode.tabbar
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.viewpager.widget.ViewPager
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.support.RouterPagerAdapter
+import com.bluelinelabs.conductor.viewpager.RouterPagerAdapter
 import com.dylanbui.android_library.utils.dLog
 import com.dylanbui.routerapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -68,7 +68,7 @@ class CustomTabbarController : Controller(), BottomNavigationView.OnNavigationIt
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
 
         retainViewMode = RetainViewMode.RETAIN_DETACH
 

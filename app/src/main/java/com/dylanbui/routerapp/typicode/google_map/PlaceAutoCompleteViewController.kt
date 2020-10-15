@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.typicode.google_map
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ class PlaceAutoCompleteViewController: Controller() {
     var country = ""
     var zipCode = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         var view = inflater.inflate(R.layout.controller_place_auto_complete, container, false)
         onViewBound(view)

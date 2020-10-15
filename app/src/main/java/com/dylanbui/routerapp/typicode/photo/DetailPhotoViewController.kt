@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.typicode.photo
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +26,7 @@ class DetailPhotoViewController : Controller()
 
     private fun setTitle(): String = "Detail Photo"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.controller_photo_detail, container, false)
         onViewBound(view)
         return view

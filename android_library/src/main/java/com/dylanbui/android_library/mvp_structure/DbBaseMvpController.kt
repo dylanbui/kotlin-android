@@ -1,22 +1,18 @@
-package com.dylanbui.routerapp
+package com.dylanbui.android_library.mvp_structure
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
+import com.dylanbui.android_library.DbError
 import com.dylanbui.android_library.DbMessageEvent
 import com.dylanbui.android_library.mvp_structure.conductor.DbMvpController
-import com.dylanbui.android_library.utils.DbUtils
-import com.dylanbui.routerapp.utils.DbNavigation
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 import org.greenrobot.eventbus.EventBus
@@ -29,21 +25,16 @@ interface ActionBarProvider {
 
 @Suppress("OverridingDeprecatedMember", "DEPRECATION")
 @SuppressWarnings("deprecation", "unused")
-abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpController<V, P>, BaseMvpView
+abstract class DbBaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpController<V, P>, DbBaseMvpView
 {
-    private var unbinder: Unbinder? = null
-
     open var nav: DbNavigation? = null
-
-    protected var mainActivity: MainActivity? = null
-    protected var toolbar: Toolbar? = null
-    protected var progressView: ViewGroup? = null // Loading for control
-    protected var progressDialog: AlertDialog? = null // Loading for page
 
     // Inject dependencies once per life of Controller
     private val injectRunOnce by lazy { onPreAttach() }
 
     protected open fun setTitle(): String? = null
+
+    // open fun showToolbar() : Boolean  = true
 
     protected constructor(): this(null) {
 
@@ -64,19 +55,17 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpControll
 
     protected abstract fun inflateView(inflater: LayoutInflater, container: ViewGroup): View
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
+        Log.d("onCreateView", this.javaClass.name)
         // -- inflateView for this Controller --
         val view: View = inflateView(inflater, container)
-        unbinder = ButterKnife.bind(this, view)
-
-        progressView = view.findViewById(R.id.progressView)
-        activity?.let {
-            this.progressDialog = DbUtils.makeProgressDialog(it, getStringResource(R.string.loading_title))
-        }
-        toolbar = view.findViewById(R.id.toolbar)
-        toolbar?.title = setTitle()
-        this.enableBackButton()
+        // progressView = view.findViewById(R.id.progressView)
+//        activity?.let {
+//            this.progressDialog = DbUtils.makeProgressDialog(it, getStringResource(R.string.loading_title))
+//        }
+        // toolbar = view.findViewById(R.id.toolbar)
+//        toolbar?.title = setTitle()
+//        this.enableBackButton()
         // -- Register Event Bus , At OnCreateView
         EventBus.getDefault().register(this)
         // -- Blind View for this Controller --
@@ -95,62 +84,65 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpControll
 
         super.onAttach(view)
 
-        this.mainActivity = activity as? MainActivity
-        this.mainActivity?.let {
-            it.setToolBarTitle(setTitle())
-            it.enableUpArrow(router.backstackSize > 1)
-        }
+//        this.mainActivity = activity as? MainActivity
+//        this.mainActivity?.let {
+//            it.setToolBarTitle(setTitle())
+//            it.enableUpArrow(router.backstackSize > 1)
+//        }
 
     }
 
     override fun onDestroyView(view: View)
     {
-        super.onDestroyView(view)
-    }
-
-    override fun onDestroy() {
         // -- Unregister Event Bus
         EventBus.getDefault().unregister(this)
-        super.onDestroy()
-        unbinder?.unbind()
-        unbinder = null
+        super.onDestroyView(view)
     }
 
     // -- Interface BaseMvpView --
 
     override fun getStringResource(resourceId: Int): String {
-        return activity?.getString(resourceId) ?: ""
+        // return activity?.getString(resourceId) ?: ""
+        return ""
     }
 
     override fun showLoading() {
-        this.progressDialog?.show()
+        // this.progressDialog?.show()
     }
 
     override fun hideLoading() {
-        this.progressDialog?.hide()
+        // this.progressDialog?.hide()
+    }
+
+    override fun showToast(text: String) {
+
+    }
+
+    override fun showError(error: DbError) {
+
     }
 
     // -- --
 
-    protected open fun enableBackButton(enable: Boolean = true) {
-        // dLog("router.backstackSize = ${router.backstackSize}")
-        toolbar?.let {
-            if (router.backstackSize > 1) {
-                it.setNavigationIcon(R.drawable.ic_arrow_back)
-                it.setNavigationOnClickListener { _ ->
-                    if (router.backstackSize > 1) {
-                        router.popCurrentController()
-                    }
-                }
-            } else {
-                it.navigationIcon = null
-            }
-            // Hide back button
-            if (!enable) {
-                it.navigationIcon = null
-            }
-        }
-    }
+//    protected open fun enableBackButton(enable: Boolean = true) {
+//        // dLog("router.backstackSize = ${router.backstackSize}")
+//        toolbar?.let {
+//            if (router.backstackSize > 1) {
+//                it.setNavigationIcon(R.drawable.ic_arrow_back)
+//                it.setNavigationOnClickListener { _ ->
+//                    if (router.backstackSize > 1) {
+//                        router.popCurrentController()
+//                    }
+//                }
+//            } else {
+//                it.navigationIcon = null
+//            }
+//            // Hide back button
+//            if (!enable) {
+//                it.navigationIcon = null
+//            }
+//        }
+//    }
 
     // -- Make animation change controller
     override fun onChangeStarted(changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
@@ -181,6 +173,13 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpControll
         }
     }
 
+    fun hideKeyboardFrom(view: View) {
+        view.clearFocus()
+        val imm =
+            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     fun showKeyboard() {
         activity?.let {
             val imm = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -208,7 +207,7 @@ abstract class BaseMvpController<V: MvpView, P: MvpPresenter<V>> : DbMvpControll
 //    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(mes: DbMessageEvent) {
+    open fun onMessageEvent(mes: DbMessageEvent) {
     }
 
 }

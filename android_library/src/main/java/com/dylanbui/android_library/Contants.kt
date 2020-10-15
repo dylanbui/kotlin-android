@@ -4,6 +4,11 @@ import org.greenrobot.eventbus.EventBus
 
 typealias DictionaryType = HashMap<String, Any?>
 
+interface DbError {
+    var errorCode: Int
+    var errorMessage: String
+} // Use for save error
+
 interface DbMessageEvent {}
 
 // Define enum nhu la 1 data class

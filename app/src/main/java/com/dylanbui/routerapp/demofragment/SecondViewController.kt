@@ -1,12 +1,11 @@
 package com.dylanbui.routerapp.demofragment
 
+import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.Toast
-import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.*
-import com.dylanbui.routerapp.MainActivity
 import com.dylanbui.routerapp.R
 
 class SecondViewController : BaseController()
@@ -14,8 +13,12 @@ class SecondViewController : BaseController()
     lateinit var btnFirst: Button
     lateinit var btnNext: Button
 
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         return inflater.inflate(R.layout.controller_first, container, false)
+    }
+
+    override fun inflateView(inflater: LayoutInflater, container: ViewGroup): View {
+        TODO("Not yet implemented")
     }
 
     override fun hasOptionsMenu(): Boolean = true

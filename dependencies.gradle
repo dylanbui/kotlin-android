@@ -59,8 +59,8 @@ ext {
 
             // If you want the components that go along with
             // Android's support libraries (currently just a PagerAdapter):
-            conductor           :         "com.bluelinelabs:conductor:3.0.0-rc1",
-            conductorSupport    :         "com.bluelinelabs:conductor-support:3.0.0-rc1",
+            //conductor           :         "com.bluelinelabs:conductor:3.0.0-rc1",
+            //conductorSupport    :         "com.bluelinelabs:conductor-support:3.0.0-rc1",
 
             conductorMvp         :         "com.hannesdorfmann.mosby3:mvp-conductor:3.1.0",
 

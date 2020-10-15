@@ -115,9 +115,20 @@ dependencies {
     implementation supportDependencies.eventbus
 
     // Conductor
-    implementation supportDependencies.conductor
+    implementation 'com.bluelinelabs:conductor:3.0.0-rc5'
+
+    // AndroidX Transition change handlers:
+    implementation 'com.bluelinelabs:conductor-androidx-transition:3.0.0-rc5'
+
+    // ViewPager PagerAdapter:
+    implementation 'com.bluelinelabs:conductor-viewpager:3.0.0-rc5'
+
+    implementation  'com.hannesdorfmann.mosby3:mvp:3.1.1'
+
+    // implementation supportDependencies.conductor
+    ///implementation 'com.bluelinelabs:conductor:3.0.0-rc5'
     // MVP Conductor Plugin
-    implementation supportDependencies.conductorMvp
+    //implementation supportDependencies.conductorMvp
 
     // Support application lifecycle
     implementation supportDependencies.archLifecycle

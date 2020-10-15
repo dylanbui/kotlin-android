@@ -2,6 +2,7 @@ package com.dylanbui.routerapp.demofragment
 
 
 import android.app.Activity
+import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
@@ -28,7 +29,7 @@ abstract class BaseController: Controller(), LayoutContainer {
 
     var toolbar: Toolbar? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflateView(inflater, container).also {
             // applicationContext
             // Khong can thiet

@@ -19,7 +19,7 @@ class ChildController(text: String = "", backgroundColor: Int = 0) : Controller(
 
 }) {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.controller_main_tabbar_demo_content, container, false)
         view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.blue_text_color))
         // view.setBackgroundColor(Color.BLUE)

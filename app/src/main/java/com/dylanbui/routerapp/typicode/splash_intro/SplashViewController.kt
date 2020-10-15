@@ -1,6 +1,7 @@
 package com.dylanbui.routerapp.typicode.splash_intro
 
 import android.animation.Animator
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,8 +59,7 @@ class SplashViewController: Controller(), Animator.AnimatorListener
 
     var prensenter = SplashPresenter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.controller_splash, container, false)
         onViewBound(view)
         return view

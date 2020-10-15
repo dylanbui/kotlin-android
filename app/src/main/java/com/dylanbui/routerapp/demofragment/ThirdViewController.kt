@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.demofragment
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +17,7 @@ class ThirdViewController : Controller()
     lateinit var btnFirst: Button
     lateinit var btnNext: Button
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.controller_first, container, false)
         onViewBound(view)
         return view

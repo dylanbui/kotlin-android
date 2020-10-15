@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.retrofit
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +26,7 @@ class PostViewController : Controller(), PostsAdapter.PostRowListener
     private var scrollListener: EndlessRecyclerViewScrollListener? = null
     private lateinit var postAdapter: PostsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
-    {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.controller_post, container, false)
         onViewBound(view)
         return view

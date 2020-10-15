@@ -1,5 +1,6 @@
 package com.dylanbui.routerapp.typicode.photo
 
+import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,7 +37,7 @@ class ListPhotoViewController : Controller(),
 
     private fun setTitle(): String = "Title Photo"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         // Van giu Controler in Memory, khi push new controller
         retainViewMode = RetainViewMode.RETAIN_DETACH
 
