@@ -23,6 +23,18 @@ fun doPostNotification(message: DbMessageEvent) {
     EventBus.getDefault().post(message)
 }
 
+interface IDbItem {
+    var id: Int
+    var name: String
+    fun getDisplay(): String
+} // Use for save error
+
+class DbItem(override var id: Int, override var name: String): IDbItem {
+    override fun getDisplay(): String {
+        return name
+    }
+}
+
 //class DbMessageNotify(message: DbMessageEvent) {
 //    var message = message
 //}

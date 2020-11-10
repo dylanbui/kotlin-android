@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp">
+
+        <com.dylanbui.android_library.ui_control.hint_spinner.DbSpinner
+            android:id="@+id/dbms_spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:spinnerMode="dropdown"
+            app:dbspinner_hintTextColor="?attr/dbms_hint_color"
+            app:dbspinner_hintText="?attr/dbms_hint_text"
+            />
+
+        <ImageView
+            android:id="@+id/dbms_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:contentDescription=""
+            android:tint="@color/dodgerBlue"
+            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/dbms_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginStart="3dp"
+        android:background="@color/dodgerBlue"
+        android:contentDescription="" />
+</LinearLayout>

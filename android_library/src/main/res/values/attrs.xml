@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="DbMaterialSpinner">
+        <attr name="dbms_hint_text" format="string" />
+        <attr name="dbms_hint_color" format="color" />
+        <attr name="dbms_line_color" format="color" />
+        <attr name="dbms_arrow_color" format="color" />
+        <attr name="dbms_text_size" format="dimension" />
+    </declare-styleable>
+
+    <!-- For class DbSpinner -->
+    <declare-styleable name="DbSpinner">
+        <attr name="dbspinner_hintText" format="string"/>
+        <attr name="dbspinner_hintTextColor" format="reference"/>
+    </declare-styleable>
 
     <!-- For class DbCircleImageView -->
     <declare-styleable name="DbCircleImageView">

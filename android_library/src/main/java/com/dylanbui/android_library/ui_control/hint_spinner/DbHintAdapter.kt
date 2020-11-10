@@ -73,7 +73,7 @@ abstract class DbHintAdapter<T>(
         val item: Any? = getItem(position)
         val textView =
             view.findViewById<View>(R.id.text1) as TextView
-        textView.text = item.toString()
+        textView.text = "So thu $position" //item.toString()
         textView.hint = ""
         return view
     }

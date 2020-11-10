@@ -3,6 +3,9 @@ package com.dylanbui.routerapp.ui_controller
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.dylanbui.android_library.DbItem
+import com.dylanbui.android_library.IDbItem
 import com.dylanbui.android_library.ui_control.hint_spinner.DbHintAdapter
 import com.dylanbui.android_library.ui_control.hint_spinner.DbHintSpinner
 import com.dylanbui.android_library.utils.onClick
@@ -12,12 +15,18 @@ import com.dylanbui.routerapp.R
 import kotlinx.android.synthetic.main.controller_hit_spinner.view.*
 import kotlinx.android.synthetic.main.item_spinner_base_view.view.*
 
-data class SpinnerItem(val id: Int, val value: String)
+data class SpinnerItem(override var id: Int, override var name: String) : IDbItem {
+
+    override fun getDisplay(): String {
+        return name
+    }
+
+}
 
 class HitSpinnerController : BaseMvpController<HitSpinnerViewAction, HitSpinnerPresenter>(),
     HitSpinnerViewAction {
 
-    lateinit var spinnerResultCall: DbHintSpinner<SpinnerItem>
+    // lateinit var spinnerResultCall: DbHintSpinner<SpinnerItem>
     lateinit var lstResultCall: ArrayList<SpinnerItem>
 
     override fun setTitle(): String? = "HitSpinner"
@@ -41,15 +50,34 @@ class HitSpinnerController : BaseMvpController<HitSpinnerViewAction, HitSpinnerP
             SpinnerItem(97, "Gọi cho KH khi không có hàng phù hợp")
         )
 
-        val aaa = object : DbHintAdapter<SpinnerItem>(
-            activity!!,  "Kết quả cuộc gọi",
-            lstResultCall) {}
+//        val aaa = object : DbHintAdapter<SpinnerItem>(
+//            activity!!,  "Kết quả cuộc gọi",
+//            lstResultCall) {}
+//
+//        spinnerResultCall = DbHintSpinner(view.spnOptions, aaa, object : DbHintSpinner.Callback<SpinnerItem> { //position, itemAtPosition ->
+//            override fun onItemSelected(position: Int, itemAtPosition: SpinnerItem) {
+//                activity?.toast("position $position ")
+//            }
+//        })
 
-        spinnerResultCall = DbHintSpinner(view.spnOptions, aaa, object : DbHintSpinner.Callback<SpinnerItem> { //position, itemAtPosition ->
-            override fun onItemSelected(position: Int, itemAtPosition: SpinnerItem) {
-                activity?.toast("position $position ")
-            }
-        })
+
+//        view.spnOptionsItems.setStringItems(
+//            listOf("Gọi KH update sau đi xem"
+//                , "Gọi Gọi chủ tin đăng và KH set up Đặt Cọc"
+//                , "Gọi nhắc nhở KH"
+//                , "Gọi KH báo hàng mới"
+//            ), "-- Chon di ban")
+//        view.spnOptionsItems.onItemSelected(object : DbHintSpinner.Callback<DbItem> {
+//            override fun onItemSelected(position: Int, itemAtPosition: DbItem) {
+//                Toast.makeText(activity, "position = $position, ${itemAtPosition.name}", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onNothingSelected() {
+//                Toast.makeText(activity, "onNothingSelected", Toast.LENGTH_SHORT).show()
+//            }
+//
+//
+//        })
 
 
 //        spinnerResultCall = DbHintSpinner(view.spnOptions, object: DbHintAdapter<SpinnerItem>(
@@ -65,7 +93,7 @@ class HitSpinnerController : BaseMvpController<HitSpinnerViewAction, HitSpinnerP
 //
 //            }
 //        })
-        spinnerResultCall.init()
+        // spinnerResultCall.init()
     }
 
     override fun onPreAttach() {

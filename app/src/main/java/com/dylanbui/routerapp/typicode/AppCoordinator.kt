@@ -20,6 +20,7 @@ import com.dylanbui.routerapp.typicode.tabbar.MainTabarController
 import com.dylanbui.routerapp.typicode.user.login.LoginViewController
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewAction
 import com.dylanbui.routerapp.typicode.view_photo.ViewPhotoViewController
+import com.dylanbui.routerapp.ui_controller.HitSpinnerController
 import com.dylanbui.routerapp.utils.*
 
 
@@ -59,7 +60,10 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         //var vcl = NumericKeyboardController()
         //router.setRoot(RouterTransaction.with(vcl))
 
-        router.setRoot(RouterTransaction.with(FirstViewController())
+         var vcl = FirstViewController()
+        // var vcl = HitSpinnerController()
+
+        router.setRoot(RouterTransaction.with(vcl)
             .pushChangeHandler(FadeChangeHandler())
             .popChangeHandler(FadeChangeHandler()))
     }
