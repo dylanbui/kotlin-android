@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="DbMaterialSpinner">
-        <attr name="dbms_hint_text" format="string" />
+    <declare-styleable name="DbMyMaterialSpinner">
+        <attr name="dbmyms_hint_text" format="string" />
+        <attr name="dbmyms_hint_color" format="color" />
+        <attr name="dbmyms_line_color" format="color" />
+        <attr name="dbmyms_arrow_color" format="color" />
+        <attr name="dbmyms_text_size" format="dimension" />
+        <attr name="dbmyms_dropdown_vertical_offset" format="dimension" />
+    </declare-styleable>
+
+    <!-- For class Material Spinner -->
+    <declare-styleable name="DbMaterialSpinner" tools:ignore="ResourceName">
+        <attr name="dbms_arrow_tint" format="color" />
+        <attr name="dbms_hide_arrow" format="boolean" />
+        <attr name="dbms_arrow_drawble" format="reference" />
+        <attr name="dbms_spinner_background" format="reference" />
+        <attr name="dbms_background_color" format="color" />
+        <attr name="dbms_text_color" format="color" />
+        <attr name="dbms_dropdown_max_height" format="dimension" />
+        <attr name="dbms_dropdown_height" format="dimension">
+            <enum name="fill_parent" value="-1" />
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="dbms_background_selector" format="reference" />
+        <attr name="dbms_padding_top" format="dimension" />
+        <attr name="dbms_padding_left" format="dimension" />
+        <attr name="dbms_padding_bottom" format="dimension" />
+        <attr name="dbms_padding_right" format="dimension" />
+        <attr name="dbms_popup_padding_top" format="dimension" />
+        <attr name="dbms_popup_padding_left" format="dimension" />
+        <attr name="dbms_popup_padding_bottom" format="dimension" />
+        <attr name="dbms_popup_padding_right" format="dimension" />
+        <attr name="dbms_hint" format="string" />
         <attr name="dbms_hint_color" format="color" />
-        <attr name="dbms_line_color" format="color" />
-        <attr name="dbms_arrow_color" format="color" />
-        <attr name="dbms_text_size" format="dimension" />
     </declare-styleable>
 
     <!-- For class DbSpinner -->

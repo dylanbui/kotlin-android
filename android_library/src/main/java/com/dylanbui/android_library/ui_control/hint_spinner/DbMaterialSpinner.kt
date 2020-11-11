@@ -20,13 +20,14 @@ import kotlinx.android.synthetic.main.db_material_spinner.view.*
  * To change this template use File | Settings | File and Code Templates.
  */
 
-class DbMaterialSpinner : LinearLayout {
+class DbMyMaterialSpinner : LinearLayout {
 
     private var hintText: String? = null
     private var hintColor: Int? = null
     private var lineColor: Int? = null
     private var arrowColor: Int? = null
     // private var textSize: Int? = null
+    private var dropDownVerticalOffset: Int? = null
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -45,13 +46,14 @@ class DbMaterialSpinner : LinearLayout {
 
         if (attrs == null) throw Exception("Provide hint for the DbSpinner")
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DbMaterialSpinner)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DbMyMaterialSpinner)
 
-        hintText = typedArray.getString(R.styleable.DbMaterialSpinner_dbms_hint_text)
-        hintColor = typedArray.getColor(R.styleable.DbMaterialSpinner_dbms_hint_color, ContextCompat.getColor(context, R.color.hintText))
-        lineColor = typedArray.getColor(R.styleable.DbMaterialSpinner_dbms_line_color, ContextCompat.getColor(context, R.color.hintText))
-        arrowColor = typedArray.getColor(R.styleable.DbMaterialSpinner_dbms_arrow_color, ContextCompat.getColor(context, R.color.hintText))
+        hintText = typedArray.getString(R.styleable.DbMyMaterialSpinner_dbmyms_hint_text)
+        hintColor = typedArray.getColor(R.styleable.DbMyMaterialSpinner_dbmyms_hint_color, ContextCompat.getColor(context, R.color.hintText))
+        lineColor = typedArray.getColor(R.styleable.DbMyMaterialSpinner_dbmyms_line_color, ContextCompat.getColor(context, android.R.color.transparent))
+        arrowColor = typedArray.getColor(R.styleable.DbMyMaterialSpinner_dbmyms_arrow_color, ContextCompat.getColor(context, R.color.hintText))
         // textSize = typedArray.getDimensionPixelSize(R.styleable.DbMaterialSpinner_dbms_text_size, context.resources.getDimensionPixelSize(R.dimen.dbms_text_size))
+        dropDownVerticalOffset = typedArray.getDimensionPixelSize(R.styleable.DbMyMaterialSpinner_dbmyms_dropdown_vertical_offset, 0)
         typedArray.recycle()
 
         initData()
@@ -59,9 +61,9 @@ class DbMaterialSpinner : LinearLayout {
 
     private fun initData() {
         dbms_line.setBackgroundColor(lineColor!!)
-        // dbms_arrow.tintCurrentDrawable(arrowColor!!)
         dbms_arrow.setColorFilter(arrowColor!!)
         dbms_spinner.setHintText(hintText!!)
+        dbms_spinner.dropDownVerticalOffset = dropDownVerticalOffset ?: 0
     }
 
     /**
@@ -70,7 +72,7 @@ class DbMaterialSpinner : LinearLayout {
      * @param hint String
      **/
     fun setHint(hint: String) {
-        this@DbMaterialSpinner.hintText = hint
+        this@DbMyMaterialSpinner.hintText = hint
         initData()
     }
 
@@ -114,7 +116,7 @@ class DbMaterialSpinner : LinearLayout {
      * @param hintColor A Color
      **/
     fun setHintColor(hintColor: Int) {
-        this@DbMaterialSpinner.hintColor = hintColor
+        this@DbMyMaterialSpinner.hintColor = hintColor
         initData()
     }
 
@@ -124,7 +126,7 @@ class DbMaterialSpinner : LinearLayout {
      * @param arrowColor A Color
      **/
     fun setArrowColor(arrowColor: Int) {
-        this@DbMaterialSpinner.arrowColor = arrowColor
+        this@DbMyMaterialSpinner.arrowColor = arrowColor
         initData()
     }
 
@@ -134,7 +136,7 @@ class DbMaterialSpinner : LinearLayout {
      * @param lineColor A Color
      **/
     fun setLineColor(lineColor: Int) {
-        this@DbMaterialSpinner.lineColor = lineColor
+        this@DbMyMaterialSpinner.lineColor = lineColor
         initData()
     }
 

@@ -41,40 +41,106 @@
         android:scrollbars="vertical" />
 
 
-    <com.tiper.MaterialSpinner
-        android:id="@+id/material_spinner_2"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:prompt="@string/app_name"
-        android:textColor="#0ff"
-        tools:text="lalala" />
+<!--    <com.tiper.MaterialSpinner-->
+<!--        android:id="@+id/material_spinner_2"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:prompt="@string/app_name"-->
+<!--        android:textColor="#0ff"-->
+<!--        tools:text="lalala" />-->
 
 
-    <io.pravikant.materialspinner.MaterialSpinner
-        android:id="@+id/main_occupation"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+<!--    <io.pravikant.materialspinner.MaterialSpinner-->
+<!--        android:id="@+id/main_occupation"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:ms_text_size="@dimen/text_size_15"-->
+<!--        app:ms_hint="Occupation asd" />-->
+
+    <com.dylanbui.android_library.ui_control.material_spinner.DbMaterialSpinner
+        android:id="@+id/spnResultCall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ms_text_size="@dimen/text_size_15"
-        app:ms_hint="Occupation asd" />
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:dbms_hint="-- chon gia triiiii ---"
+        app:dbms_hint_color="@color/red" />
+
+    <Button
+        android:id="@+id/btnSaveTaTeo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="Save" />
+
+    <com.dylanbui.android_library.ui_control.hint_spinner.DbMyMaterialSpinner
+        android:id="@+id/dbmsspinner"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border"
+        app:dbmyms_hint_color="@color/brown_300"
+        app:dbmyms_dropdown_vertical_offset="60dp"
+        app:dbmyms_hint_text="--- Hien thi thu coi ban ---" />
+
+
+    <Button
+        android:id="@+id/btnSaveTa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="Save" />
 
     <LinearLayout
         android:layout_centerInParent="true"
         android:background="@drawable/border"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         tools:ignore="UselessParent">
 
-        <com.dylanbui.android_library.ui_control.hint_spinner.DbSpinner
-            android:id="@+id/dbspinner"
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:spinnerMode="dropdown"
-            android:background="@null"
-            android:dropDownVerticalOffset="40dp"
-            app:dbspinner_hintTextColor="@color/blue_text_color"
-            app:dbspinner_hintText="--- Select --- tu toi ne" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="2dp">
+
+            <com.dylanbui.android_library.ui_control.hint_spinner.DbSpinner
+                android:id="@+id/dbspinner"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="55dp"
+                app:dbspinner_hintText="-- Select me nowwww --"
+                app:dbspinner_hintTextColor="@color/blue_text_color" />
+
+            <ImageView
+                android:id="@+id/dbms_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:contentDescription="aaa"
+                android:tint="@color/dodgerBlue"
+                android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+        </FrameLayout>
+
+<!--        <com.dylanbui.android_library.ui_control.hint_spinner.DbSpinner-->
+<!--            android:id="@+id/dbspinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:spinnerMode="dropdown"-->
+<!--            android:background="@null"-->
+<!--            android:dropDownVerticalOffset="40dp"-->
+<!--            app:dbspinner_hintTextColor="@color/blue_text_color"-->
+<!--            app:dbspinner_hintText="-&#45;&#45; Select -&#45;&#45; tu toi ne" />-->
 
     </LinearLayout>
 

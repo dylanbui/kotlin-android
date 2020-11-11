@@ -79,36 +79,35 @@ class FirstViewController : Controller()
             "Gọi Gọi chủ tin đăng và KH set up Đặt Cọc"
             , "Gọi nhắc nhở KH", "Gọi KH báo hàng mới", "Gọi cho KH khi không có hàng phù hợp")
         // ArrayAdapter.createFromResource(this.activity, animalList, android.R.layout.simple_spinner_item)
-        val arrayAdapter = ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, animalList)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        view.material_spinner_2.adapter = arrayAdapter
-        view.material_spinner_2.hint = "-- Chon cai gì --"
-
-        view.material_spinner_2.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: MaterialSpinner, view: View?, position: Int, id: Long) {
-                Log.v("MaterialSpinner", "onItemSelected parent=${parent.id}, position=$position")
-                parent.focusSearch(View.FOCUS_UP)?.requestFocus()
-            }
-
-            override fun onNothingSelected(parent: MaterialSpinner) {
-                Log.v("MaterialSpinner", "onNothingSelected parent=${parent.id}")
-            }
-        }
-
-
-        val adapter = ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, callList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        view.main_occupation.setAdapter(adapter)
-        view.main_occupation.getSpinner().onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Toast.makeText(activity, "onItemSelected parent - position=$position", Toast.LENGTH_LONG).show()
-            }
-        }
-
+//        val arrayAdapter = ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, animalList)
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        view.material_spinner_2.adapter = arrayAdapter
+//        view.material_spinner_2.hint = "-- Chon cai gì --"
+//
+//        view.material_spinner_2.onItemSelectedListener = object : OnItemSelectedListener {
+//            override fun onItemSelected(parent: MaterialSpinner, view: View?, position: Int, id: Long) {
+//                Log.v("MaterialSpinner", "onItemSelected parent=${parent.id}, position=$position")
+//                parent.focusSearch(View.FOCUS_UP)?.requestFocus()
+//            }
+//
+//            override fun onNothingSelected(parent: MaterialSpinner) {
+//                Log.v("MaterialSpinner", "onNothingSelected parent=${parent.id}")
+//            }
+//        }
+//
+//
+//        val adapter = ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, callList)
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        view.main_occupation.setAdapter(adapter)
+//        view.main_occupation.getSpinner().onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                Toast.makeText(activity, "onItemSelected parent - position=$position", Toast.LENGTH_LONG).show()
+//            }
+//        }
 
         val lstResultCall = arrayListOf(
             SpinnerItem(85, "Gọi KH update sau đi xem"),
@@ -146,6 +145,21 @@ class FirstViewController : Controller()
         // view.dbspinner.addDropdownList("A", "B", "C", "D", "E")
         view.dbspinner.addAllDropdownItemList(lstResultCall)
 
+        ////
+        // view.dbmsspinner.setItemList(lstResultCall)
+        view.dbmsspinner.setItems(listOf("A", "B", "C", "D", "E"))
+        view.dbmsspinner.getSpinner().setOnItemSelectedListener(object : DbSpinner.OnItemSelectedListener {
+            override fun onItemSelected(isNothingSelected: Boolean, view: View?, position: Int, item: String?) {
+                if (isNothingSelected) return
+                Toast.makeText(activity, String.format("dbmsspinner: selected %s -> %s", position, item), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+        view.spnResultCall.setItems(listOf("A", "B", "C", "D", "E"))
+        view.spnResultCall.setOnItemSelectedListener { view, position, id, item ->
+            Toast.makeText(activity, String.format("spnResultCall: selected %s -> %s", position, item), Toast.LENGTH_SHORT).show()
+        }
 
 //        , object : DbHintSpinner.Callback<SpinnerItem> { //position, itemAtPosition ->
 //            override fun onItemSelected(position: Int, itemAtPosition: SpinnerItem) {

@@ -2,4 +2,12 @@
 <resources>
     <dimen name="dbms_text_size">18sp</dimen>
     <dimen name="dbms_text_margin">3dp</dimen>
+
+    <!-- material spinner -->
+    <dimen name="dbms__padding_left">24dp</dimen>
+    <dimen name="dbms__padding_top">12dp</dimen>
+    <dimen name="dbms__item_height">48dp</dimen>
+    <dimen name="dbms__popup_padding_left">24dp</dimen>
+    <dimen name="dbms__popup_padding_top">12dp</dimen>
+
 </resources>
