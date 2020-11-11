@@ -18,39 +18,45 @@
 package com.dylanbui.android_library.ui_control.material_spinner;
 
 import android.content.Context;
+import android.widget.ListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DbDbMaterialSpinnerAdapter<T> extends DbMaterialSpinnerBaseAdapter {
+final class DbMaterialSpinnerAdapterWrapper extends DbMaterialSpinnerBaseAdapter {
 
-  private final List<T> items;
+  private final ListAdapter listAdapter;
 
-  public DbDbMaterialSpinnerAdapter(Context context, List<T> items) {
+  public DbMaterialSpinnerAdapterWrapper(Context context, ListAdapter toWrap) {
     super(context);
-    this.items = items;
+    listAdapter = toWrap;
   }
 
   @Override public int getCount() {
-    int size = items.size();
+    int size = listAdapter.getCount();
     if (size == 1 || isHintEnabled()) return size;
     return size - 1;
   }
 
-  @Override public T getItem(int position) {
+  @Override public Object getItem(int position) {
     if (isHintEnabled()) {
-      return items.get(position);
-    } else if (position >= getSelectedIndex() && items.size() != 1) {
-      return items.get(position + 1);
+      return listAdapter.getItem(position);
+    } else if (position >= getSelectedIndex() && listAdapter.getCount() != 1) {
+      return listAdapter.getItem(position + 1);
     } else {
-      return items.get(position);
+      return listAdapter.getItem(position);
     }
   }
 
-  @Override public T get(int position) {
-    return items.get(position);
+  @Override public Object get(int position) {
+    return listAdapter.getItem(position);
   }
 
-  @Override public List<T> getItems() {
+  @Override public List<Object> getItems() {
+    List<Object> items = new ArrayList<>();
+    for (int i = 0; i < listAdapter.getCount(); i++) {
+      items.add(listAdapter.getItem(i));
+    }
     return items;
   }
 }

@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.db_material_spinner.view.*
  * To change this template use File | Settings | File and Code Templates.
  */
 
+// 11/11/2020: DucBui khong su dung nua, da chuyen qua dung material_spinner/DbMaterialSpinner
+
 class DbMyMaterialSpinner : LinearLayout {
 
     private var hintText: String? = null

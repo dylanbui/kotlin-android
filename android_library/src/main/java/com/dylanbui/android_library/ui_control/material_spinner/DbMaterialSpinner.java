@@ -424,7 +424,7 @@ public class DbMaterialSpinner extends TextView {
    * @param <T> The item type
    */
   public <T> void setItems(@NonNull List<T> items) {
-    adapter = new DbDbMaterialSpinnerAdapter<>(getContext(), items)
+    adapter = new DbMaterialSpinnerAdapter<>(getContext(), items)
             .setPopupPadding(popupPaddingLeft, popupPaddingTop, popupPaddingRight, popupPaddingBottom)
             .setBackgroundSelector(backgroundSelector)
             .setTextColor(textColor);
@@ -437,7 +437,7 @@ public class DbMaterialSpinner extends TextView {
    * @param adapter The list adapter
    */
   public void setAdapter(@NonNull ListAdapter adapter) {
-    this.adapter = new DbDbMaterialSpinnerAdapterWrapper(getContext(), adapter)
+    this.adapter = new DbMaterialSpinnerAdapterWrapper(getContext(), adapter)
             .setPopupPadding(popupPaddingLeft, popupPaddingTop, popupPaddingRight, popupPaddingBottom)
             .setBackgroundSelector(backgroundSelector)
             .setTextColor(textColor);
@@ -450,7 +450,7 @@ public class DbMaterialSpinner extends TextView {
    * @param adapter The adapter
    * @param <T> The type
    */
-  public <T> void setAdapter(DbDbMaterialSpinnerAdapter<T> adapter) {
+  public <T> void setAdapter(DbMaterialSpinnerAdapter<T> adapter) {
     this.adapter = adapter;
     this.adapter.setTextColor(textColor);
     this.adapter.setBackgroundSelector(backgroundSelector);
