@@ -181,6 +181,8 @@ dependencies {
 
     implementation project(':android_ui_custom')
 
+    implementation project(':android_core_kit')
+
 
     // Moi nhat
     //implementation 'androidx.appcompat:appcompat:1.1.0'

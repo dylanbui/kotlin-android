@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.controller_first.view.*
 import pyxis.uzuki.live.hintablespinner.HintableSpinner
 
 
+
 class FirstViewController : Controller()
 {
     lateinit var btnFirst: Button
@@ -173,6 +174,11 @@ class FirstViewController : Controller()
 //            }
 //        })
 //        spinnerResultCall.init()
+
+
+        DbUtils
+
+
 
     }
 
