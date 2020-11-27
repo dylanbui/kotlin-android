@@ -1,6 +1,3 @@
-include ':android_core_kit'
-project(':android_core_kit').projectDir = new File(settingsDir, '../AndroidLib/android_core_kit')
-
 include ':android_library'
 include ':android_ui_custom'
 include ':app'

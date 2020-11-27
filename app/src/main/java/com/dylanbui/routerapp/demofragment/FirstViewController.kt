@@ -176,10 +176,6 @@ class FirstViewController : Controller()
 //        spinnerResultCall.init()
 
 
-        DbUtils
-
-
-
     }
 
     override fun onAttach(view: View)

@@ -10,7 +10,6 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../AndroidLib/android_core_kit" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android_library" />
             <option value="$PROJECT_DIR$/android_ui_custom" />
