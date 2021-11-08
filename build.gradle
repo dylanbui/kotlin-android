@@ -29,5 +29,24 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+Integer generateVersionCode(String version, Integer build) {
+    // Vd : 1.2.10      => 12 010 000
+    // Vd : 1.2.999     => 12 999 000
+    // Vd : 1.3.1       => 13 001 000
+    // Vd : 2.1.0       => 21 000 000
+    /* Truong hop loi khi, den luc nay tao cung chet roi !!!
+    Vd : 1.321.0       => 1321 000 000
+    Vd : 21.1.0         => 211 000 000
+    */
+    String[] paths =  version.split('\\.')
+//    String versionMajor = paths[0] // Lay 1 so
+//    String versionMinor = paths[1] // Lay 2 so
+    String versionPatch = "000" + paths[2] // Lay 3 so
+    String vName = paths[0] + paths[1] + versionPatch.substring(versionPatch.length() - 3)
+    return vName.toInteger() * 1000 + build
+}
+
 // Load dependencies
-apply from: 'dependencies.gradle'
+// apply from: 'dependencies.gradle'
+
+

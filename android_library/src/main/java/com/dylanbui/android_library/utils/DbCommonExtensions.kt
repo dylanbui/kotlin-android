@@ -34,7 +34,6 @@ import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.properties.ReadOnlyProperty
@@ -453,42 +452,6 @@ fun RecyclerView.bindFloatingActionButton(fab: FloatingActionButton) = this.addO
         }
     }
 })
-
-/**
- * Loads an image from a url or path into an [ImageView] using [Picasso]
- */
-fun ImageView.load(urlOrPath: String?) {
-    Picasso.get()
-        .load(urlOrPath)
-        .into(this)
-}
-
-/**
- * Loads an image from a Drawable resource into an [ImageView] using [Picasso]
- */
-fun ImageView.load(@DrawableRes res: Int) {
-    Picasso.get()
-        .load(res)
-        .into(this)
-}
-
-/**
- * Loads an image from a [Uri] into an [ImageView] using [Picasso]
- */
-fun ImageView.load(uri: Uri) {
-    Picasso.get()
-        .load(uri)
-        .into(this)
-}
-
-/**
- * Loads an image from a [File] into an [ImageView] using [Picasso]
- */
-fun ImageView.load(file: File) {
-    Picasso.get()
-        .load(file)
-        .into(this)
-}
 
 /**
  * Starts an activity with no extras.

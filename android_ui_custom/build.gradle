@@ -42,32 +42,32 @@ allprojects {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation supportDependencies.testJunit
-    androidTestImplementation supportDependencies.testExtJunit
-    androidTestImplementation supportDependencies.testEspressoCore
+//    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    testImplementation supportDependencies.testJunit
+//    androidTestImplementation supportDependencies.testExtJunit
+//    androidTestImplementation supportDependencies.testEspressoCore
+//
+//    implementation supportDependencies.design
+//    implementation supportDependencies.appCompat
+//    implementation supportDependencies.kotlinStdlibJdk7
+//
+//
+//    implementation supportDependencies.coreKtx
+//    implementation supportDependencies.constraintLayout
 
-    implementation supportDependencies.design
-    implementation supportDependencies.appCompat
-    implementation supportDependencies.kotlinStdlibJdk7
 
-
-    implementation supportDependencies.coreKtx
-    implementation supportDependencies.constraintLayout
-
-
-    // coroutines
-    implementation supportDependencies.coroutines
-    // gson
-    implementation supportDependencies.gson
-    // glide
-    implementation supportDependencies.glide
-    // Reactive
-    implementation supportDependencies.rxkotlin
-    implementation supportDependencies.rxandroid
-    // Mapping library
-    implementation supportDependencies.butterknife
-    kapt supportDependencies.butterknifeCompiler
+//    // coroutines
+//    implementation supportDependencies.coroutines
+//    // gson
+//    implementation supportDependencies.gson
+//    // glide
+//    implementation supportDependencies.glide
+//    // Reactive
+//    implementation supportDependencies.rxkotlin
+//    implementation supportDependencies.rxandroid
+//    // Mapping library
+//    implementation supportDependencies.butterknife
+//    kapt supportDependencies.butterknifeCompiler
 
     implementation project(':android_library')
 }

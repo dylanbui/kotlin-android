@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This is template display RecyclerView -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Include toolbar, remove this line when hide -->
+    <include
+        layout="@layout/toolbar_native" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/controllerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:textSize="@dimen/text_size_15" />
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textSize="@dimen/text_size_15" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register" />
+
+            <Button
+                android:id="@+id/btnForgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password" />
+
+            <Button
+                android:id="@+id/btnDatetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datetime" />
+
+            <com.dylanbui.routerapp.typicode.user.CButton
+                android:id="@+id/fbtn"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_margin="32dp"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                app:fb_cornerRadius="2dp"
+                app:fb_shape="rectangle"
+                app:fb_divColor="#fff"
+                app:fb_divWidth="1dp"
+                app:fb_divHeight="40dp"
+                app:fb_rippleColor="#FBE9E7"
+                app:fb_iconWidth="28dp"
+                app:fb_iconHeight="28dp"
+                app:fb_iconPosition="left"
+                app:fb_iconMarginStart="20dp"
+                app:fb_iconMarginEnd="16dp"
+                app:fb_icon="@drawable/ic_thumb_up"
+                app:fb_iconColor="#FFF"
+                app:fb_textPaddingStart="16dp"
+                app:fb_textColor="#FFF"
+                app:fb_text="Like Me"
+                app:fb_backgroundColor="#FF7043"/>
+
+
+        </LinearLayout>
+
+        <!-- Include progress page view -->
+<!--        <include layout="@layout/include_progress_view" />-->
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
+
+
+
+

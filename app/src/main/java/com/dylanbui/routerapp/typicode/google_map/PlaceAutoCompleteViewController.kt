@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.bluelinelabs.conductor.Controller
 import com.dylanbui.android_library.google_service.DbGoogleServices
 import com.dylanbui.android_library.google_service.GgAddress
@@ -12,16 +14,11 @@ import com.dylanbui.android_library.google_service.GgPlace
 import com.dylanbui.android_library.google_service.GgPlaceDetail
 import com.dylanbui.android_library.google_service.places_auto_complete.DbAutoCompleteTextView
 import com.dylanbui.android_library.google_service.places_auto_complete.PlacesAutoCompleteAdapter
-
 import com.dylanbui.android_library.utils.toast
 import com.dylanbui.routerapp.R
 
 
-
-
-
-
-class PlaceAutoCompleteViewController: Controller() {
+class PlaceAutoCompleteViewController : Controller() {
 
     lateinit var placesApi: DbGoogleServices
 

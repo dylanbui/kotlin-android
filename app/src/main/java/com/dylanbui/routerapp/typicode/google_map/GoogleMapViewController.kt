@@ -22,7 +22,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-
 /*
 
 onCreateView -> create the mapview, then call onCreate on it
@@ -44,7 +43,7 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
     private lateinit var btnFab: FloatingActionButton
     private lateinit var btnLocation: Button
     private lateinit var btnCameraPermission: Button
-    private val locationManager : DbLocationManager = DbLocationManagerImpl()
+    private val locationManager: DbLocationManager = DbLocationManagerImpl()
 
     override fun setTitle(): String? = "GoogleMap - Controller"
 
@@ -98,10 +97,10 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
                     // handle permission result
                     dLog("getGranted: " + permissionResult.getGranted().toString())
                     dLog("getDenied: " + permissionResult.getDenied().toString())
-                    if(permissionResult.areAllGranted()){
+                    if (permissionResult.areAllGranted()) {
                         // Do the task now
                         activity?.toast("Permissions granted.")
-                    }else{
+                    } else {
                         activity?.toast("Permissions denied.")
                     }
                 }, requestCode = 222)
@@ -142,7 +141,7 @@ class GoogleMapViewController : BaseMvpController<GoogleMapViewAction, GoogleMap
         ggMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(10.764291,106.654309)
+        val sydney = LatLng(10.764291, 106.654309)
         val markerPropzy = MarkerOptions().position(sydney).title("Propzy")
         ggMap.addMarker(markerPropzy)
         ggMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))

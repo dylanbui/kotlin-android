@@ -22,8 +22,8 @@ android {
         applicationId "com.dylanbui.routerapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -68,22 +68,21 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation supportDependencies.testJunit
-    androidTestImplementation supportDependencies.testExtJunit
-    androidTestImplementation supportDependencies.testEspressoCore
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
 
-    implementation supportDependencies.design
-    implementation supportDependencies.appCompat
-    implementation supportDependencies.kotlinStdlibJdk7
+    implementation "com.android.support:design:28.0.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
 
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "com.android.support.constraint:constraint-layout:1.1.3"
 
-    implementation supportDependencies.coreKtx
-    implementation supportDependencies.constraintLayout
-
-    // Push notification
-    implementation supportDependencies.fbConfig
-    implementation supportDependencies.fbCore
-    implementation supportDependencies.fbMessaging
+    // Push notification firebase
+    implementation 'com.google.firebase:firebase-config:19.1.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 //    implementation 'com.google.firebase:firebase-config:19.1.0'
 //    implementation 'com.google.firebase:firebase-core:17.2.1'
@@ -96,47 +95,42 @@ dependencies {
 //    implementation 'com.google.firebase:firebase-config:16.0.0'
     // implementation 'com.google.firebase:firebase-core:16.0.0'
 
-
-
     // Google Services
-    implementation supportDependencies.ggServicesMaps
-    implementation supportDependencies.ggServicesLocation
-    implementation supportDependencies.ggServicesAds
-    implementation supportDependencies.ggServicesGcm
-    // implementation supportDependencies.ggServicesPlaces
-
-    // firebase
-    implementation supportDependencies.firebaseCore
+//    implementation 'com.google.android.gms:play-services-maps'
+//    implementation 'com.google.android.gms:play-services-location'
+//    implementation 'com.google.android.gms:play-services-ads'
+//    implementation 'com.google.android.gms:play-services-gcm'
+    // implementation 'com.google.android.gms:play-services-places'
 
     // coroutines
-    implementation supportDependencies.coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
     // gson
-    implementation supportDependencies.gson
+    implementation "com.google.code.gson:gson:2.8.5"
     // glide
-    implementation supportDependencies.glide
+    implementation "com.github.bumptech.glide:glide:3.8.0"
 
     // Reactive
-    implementation supportDependencies.rxkotlin
-    implementation supportDependencies.rxandroid
+    // implementation supportDependencies.rxkotlin
+    // implementation supportDependencies.rxandroid
     // rx permission, khong can dung trong thang app
     // implementation supportDependencies.rxpermissions
 
     // Support application lifecycle
-    implementation supportDependencies.archLifecycle
+    implementation "android.arch.lifecycle:extensions:1.1.1"
     // Mapping
-    implementation supportDependencies.butterknife
-    kapt supportDependencies.butterknifeCompiler
+//    implementation supportDependencies.butterknife
+//    kapt supportDependencies.butterknifeCompiler
 
     // lottie
-    implementation supportDependencies.lottie
+    implementation "com.airbnb.android:lottie:2.2.5"
     // retrofit
-    implementation supportDependencies.retrofit
-    annotationProcessor supportDependencies.retrofit
-    implementation supportDependencies.retrofitGson
-    implementation supportDependencies.retrofitLog
-    implementation supportDependencies.picasso
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    annotationProcessor "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    // implementation supportDependencies.picasso
     // eventbus
-    implementation supportDependencies.eventbus
+    implementation "org.greenrobot:eventbus:3.1.1"
 
     // Conductor
     // implementation supportDependencies.conductor
@@ -162,12 +156,12 @@ dependencies {
     // MVP Conductor Plugin
     // implementation supportDependencies.conductorMvp
 
-    implementation supportDependencies.butterknife
-    kapt supportDependencies.butterknifeCompiler
+    // implementation supportDependencies.butterknife
+    // kapt supportDependencies.butterknifeCompiler
 
     // Cac thu vien ben ngoai, test truoc khi dua vao he thong
-    implementation supportDependencies.superBottomSheet
-    implementation supportDependencies.modalBottomSheetDialogFragment
+    implementation "com.github.andrefrsousa:SuperBottomSheet:1.5.0"
+    implementation "com.github.Commit451:ModalBottomSheetDialogFragment:1.1.0"
 
     // Test
     // implementation 'com.konaire.numeric-keyboard:numeric-keyboard:1.1.0'

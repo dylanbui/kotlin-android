@@ -10,6 +10,7 @@ import com.dylanbui.routerapp.typicode.bottom_sheet.DemoBottomSheetViewControlle
 import com.dylanbui.routerapp.typicode.format_edittext.FormatEditTextController
 import com.dylanbui.routerapp.typicode.google_map.GoogleMapViewController
 import com.dylanbui.routerapp.typicode.google_map.PlaceAutoCompleteViewController
+import com.dylanbui.routerapp.typicode.install_apk.InstallApkController
 import com.dylanbui.routerapp.typicode.multi_upload_progress.UploadProgressController
 import com.dylanbui.routerapp.typicode.numeric_keyboard.NumericKeyboardController
 import com.dylanbui.routerapp.typicode.post.PostDetailViewController
@@ -60,8 +61,10 @@ class AppCoordinator(router: Router): BaseDbCoordinator(router), DbNavigation {
         //var vcl = NumericKeyboardController()
         //router.setRoot(RouterTransaction.with(vcl))
 
-         var vcl = FirstViewController()
+        // var vcl = FirstViewController()
         // var vcl = HitSpinnerController()
+
+        val vcl = InstallApkController()
 
         router.setRoot(RouterTransaction.with(vcl)
             .pushChangeHandler(FadeChangeHandler())

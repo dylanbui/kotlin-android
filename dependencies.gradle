@@ -10,11 +10,11 @@ ext {
             testEspressoCore        :         "androidx.test.espresso:espresso-core:3.2.0",
 
             // Google Services
-            ggServicesLocation      : 'com.google.android.gms:play-services-location:15.0.1',
-            ggServicesAds           : 'com.google.android.gms:play-services-ads:15.0.0',
-            ggServicesGcm           : 'com.google.android.gms:play-services-gcm:15.0.1',
-            ggServicesMaps          : 'com.google.android.gms:play-services-maps:15.0.1',
-            ggServicesPlaces        : 'com.google.android.gms:play-services-places:15.0.1',
+            ggServicesLocation      : 'com.google.android.gms:play-services-location',
+            ggServicesAds           : 'com.google.android.gms:play-services-ads',
+            ggServicesGcm           : 'com.google.android.gms:play-services-gcm',
+            ggServicesMaps          : 'com.google.android.gms:play-services-maps',
+            ggServicesPlaces        : 'com.google.android.gms:play-services-places',
 
             // Firebase push notification
             fbMessaging : 'com.google.firebase:firebase-messaging:20.1.0',

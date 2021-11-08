@@ -64,41 +64,56 @@ allprojects {
 
 dependencies {
 
-    testImplementation supportDependencies.testJunit
-    androidTestImplementation supportDependencies.testExtJunit
-    androidTestImplementation supportDependencies.testEspressoCore
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation supportDependencies.design
-    implementation supportDependencies.appCompat
-    implementation supportDependencies.kotlinStdlibJdk7
+    api "com.android.support:design:28.0.0"
+    api "androidx.appcompat:appcompat:1.1.0"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
 
-    implementation supportDependencies.coreKtx
-    implementation supportDependencies.constraintLayout
+    api "androidx.core:core-ktx:1.1.0"
+    api "com.android.support.constraint:constraint-layout:1.1.3"
 
-    // Push notification
-    implementation supportDependencies.fbConfig
-    implementation supportDependencies.fbCore
-    implementation supportDependencies.fbMessaging
+// Push notification firebase
+    api 'com.google.firebase:firebase-config:19.1.0'
+    api 'com.google.firebase:firebase-core:17.2.1'
+    api 'com.google.firebase:firebase-messaging:20.1.0'
+//    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+//    implementation 'com.google.firebase:firebase-config:19.1.0'
+//    implementation 'com.google.firebase:firebase-core:17.2.1'
+
+//    implementation 'com.google.firebase:firebase-core:17.2.1'
+//    // this line must be included to integrate with Firebase
+//    // implementation 'com.google.firebase:firebase-messaging:10.2.1'
+//
+//    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+//    implementation 'com.google.firebase:firebase-config:16.0.0'
+    // implementation 'com.google.firebase:firebase-core:16.0.0'
 
     // Google Services
-    implementation supportDependencies.ggServicesMaps
-    implementation supportDependencies.ggServicesLocation
-    implementation supportDependencies.ggServicesAds
-    implementation supportDependencies.ggServicesGcm
-
-    // firebase
-    implementation supportDependencies.firebaseCore
+    // implementation 'com.google.android.gms:play-services-maps'
+//    implementation 'com.google.android.gms:play-services-location'
+//    implementation 'com.google.android.gms:play-services-ads'
+//    implementation 'com.google.android.gms:play-services-gcm'
+    api "com.google.android.gms:play-services-maps:17.0.0"
+    api "com.google.android.gms:play-services-location:17.1.0"
+    api "com.google.android.gms:play-services-gcm:17.0.0"
+    api "com.google.android.gms:play-services-places:17.0.0"
+    // api "com.google.android.libraries.places:places:2.5.0"
 
     // coroutines
-    implementation supportDependencies.coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
     // gson
-    implementation supportDependencies.gson
+    api "com.google.code.gson:gson:2.8.5"
     // glide
-    implementation supportDependencies.glide
+    api "com.github.bumptech.glide:glide:3.8.0"
+    // Support application lifecycle
+    api "android.arch.lifecycle:extensions:1.1.1"
 
     // Reactive
-    implementation supportDependencies.rxkotlin
-    implementation supportDependencies.rxandroid
+    api "io.reactivex.rxjava2:rxkotlin:2.2.0"
+    api "io.reactivex.rxjava2:rxandroid:2.1.1"
     // rx permission, khong can dung trong thang app
     // implementation supportDependencies.rxpermissions
 
@@ -106,24 +121,24 @@ dependencies {
     // lottie
     // implementation supportDependencies.lottie
     // retrofit
-    implementation supportDependencies.retrofit
-    annotationProcessor supportDependencies.retrofit
-    implementation supportDependencies.retrofitGson
-    implementation supportDependencies.retrofitLog
-    implementation supportDependencies.picasso
+    api "com.squareup.retrofit2:retrofit:2.6.2"
+    annotationProcessor "com.squareup.retrofit2:retrofit:2.6.2"
+    api "com.squareup.retrofit2:converter-gson:2.6.2"
+    api "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    // implementation supportDependencies.picasso
     // eventbus
-    implementation supportDependencies.eventbus
+    api "org.greenrobot:eventbus:3.2.0"
 
     // Conductor
-    implementation 'com.bluelinelabs:conductor:3.0.0-rc5'
+    api 'com.bluelinelabs:conductor:3.0.0-rc5'
 
     // AndroidX Transition change handlers:
-    implementation 'com.bluelinelabs:conductor-androidx-transition:3.0.0-rc5'
+    api 'com.bluelinelabs:conductor-androidx-transition:3.0.0-rc5'
 
     // ViewPager PagerAdapter:
-    implementation 'com.bluelinelabs:conductor-viewpager:3.0.0-rc5'
+    api 'com.bluelinelabs:conductor-viewpager:3.0.0-rc5'
 
-    implementation  'com.hannesdorfmann.mosby3:mvp:3.1.1'
+    api  'com.hannesdorfmann.mosby3:mvp:3.1.1'
 
     // implementation supportDependencies.conductor
     ///implementation 'com.bluelinelabs:conductor:3.0.0-rc5'
@@ -131,10 +146,10 @@ dependencies {
     //implementation supportDependencies.conductorMvp
 
     // Support application lifecycle
-    implementation supportDependencies.archLifecycle
+    //implementation supportDependencies.archLifecycle
     // Mapping
-    implementation supportDependencies.butterknife
-    kapt supportDependencies.butterknifeCompiler
+    //implementation supportDependencies.butterknife
+    // kapt supportDependencies.butterknifeCompiler
 
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
